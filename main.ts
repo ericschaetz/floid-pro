@@ -27,10 +27,10 @@ namespace FloidPro {
         } else if (speedR < 0) {
             antriebszahl += 8
         }
-        pins.analogWritePin(AnalogPin.P1, Math.map(Math.abs(speedL), 0, 10, motorMin, 1023))
-        pins.analogWritePin(AnalogPin.P2, Math.map(Math.abs(speedR), 0, 10, motorMin, 1023))
+        pins.analogWritePin(AnalogPin.P0, Math.map(Math.abs(speedL), 0, 10, motorMin, 1023))
+        pins.analogWritePin(AnalogPin.P1, Math.map(Math.abs(speedR), 0, 10, motorMin, 1023))
         pins.i2cWriteNumber(
-            33,
+            57,
             antriebszahl,
             NumberFormat.Int8BE,
             false
