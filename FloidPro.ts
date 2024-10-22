@@ -18,13 +18,31 @@ enum MyEnum {
 namespace FloidPro {
     /**
      * Antrieb
-     * @param n describe parameter here, eg: 5
-     * @param s describe parameter here, eg: "Hello"
-     * @param e describe parameter here
+     * @param left Geschwindigkeit links: 10
+     * @param right Geschwindigkeit rechts: "Hello"
      */
     //% block
-    export function antrieb(n: number, s: string, e: MyEnum): void {
-        // Add code here
+    export function antrieb(left: number, right: number): void {
+        // Antriebszahl berechnen
+        let n = 0;
+        if (left > 0) {
+            n += 1
+        }
+        else if (left < 0) {
+            n += 2
+        }
+        if (right > 0) {
+            n += 4
+        }
+        else if(right < 0){
+            n += 8
+        }
+        // PWM schreiben
+        pins.analogWritePin(AnalogPin.P0, Math.abs(left) / 10 * 1023)
+        pins.analogWritePin(AnalogPin.P1, Math.abs(right) / 10 * 1023)
+
+        //
+        pins.i2cWriteNumber(57, n, NumberFormat.Int8LE, false)
     }
 
     /**
@@ -34,7 +52,7 @@ namespace FloidPro {
     //% block
     export function init(value: number): void {
         OLED.init(128, 64)
+        OLED.writeStringNewLine("FloidPro")
 
-        OLED.writeStringNewLine("Hallo Diesel-Dieter")
     }
 }
