@@ -46,7 +46,7 @@ namespace FloidPro {
     }
 
     /**
-     * TODO: Init-Funktion
+     * Init-Funktion
      * @param value describe value here, eg: 5
      */
     //% block
@@ -56,5 +56,14 @@ namespace FloidPro {
         OLED.writeNumNewLine(pins.i2cReadNumber(56, NumberFormat.Int8LE, false))
         OLED.writeNumNewLine(pins.i2cReadNumber(57, NumberFormat.Int8LE, false))
         
+    }
+
+    /**
+     * Bumper
+     */
+    //% block
+    export function bumper(): number {
+        return pins.i2cReadNumber(60, NumberFormat.Int8LE, false)
+
     }
 }
