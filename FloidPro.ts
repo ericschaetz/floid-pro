@@ -99,10 +99,10 @@ namespace FloidPro {
             n += 32
         }
         if (!HR_Blinker) {
-            n += 64
+            n += 128
         }
         if (!HR_Licht) {
-            n += 128
+            n += 164
         }
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
     }
