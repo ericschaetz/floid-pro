@@ -6,8 +6,7 @@
         "core": "*",
         "radio": "*",
         "microphone": "*",
-        "SSD1306_OLED": "github:tinkertanker/pxt-oled-ssd1306#v2.0.13",
-        "OLED12864_I2C": "github:makecode-extensions/oled12864_i2c#v1.5.0"
+        "SSD1306_OLED": "github:tinkertanker/pxt-oled-ssd1306#v2.0.14"
     },
     "files": [
         "main.ts",

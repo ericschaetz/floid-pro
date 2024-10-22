@@ -34,6 +34,7 @@ namespace FloidPro {
     //% block
     export function init(value: number): void {
         OLED.init(128, 64)
-        OLED.writeStringNewLine("FLoid Pro")
+
+        OLED.writeStringNewLine("Hallo Diesel-Dieter")
     }
 }
