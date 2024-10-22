@@ -3,7 +3,7 @@ namespace FloidPro {
     * Antrieb
     */
     //% blockId=floidpro_antrieb   
-    //% block="antrieb"
+    //% block="antrieb %power "
     export function antrieb(power: number, lenkung: number) {
         let speedL
         let speedR
@@ -27,6 +27,7 @@ namespace FloidPro {
         } else if (speedR < 0) {
             antriebszahl += 8
         }
+        1+1
         pins.analogWritePin(AnalogPin.P0, Math.map(Math.abs(speedL), 0, 10, motorMin, 1023))
         pins.analogWritePin(AnalogPin.P1, Math.map(Math.abs(speedR), 0, 10, motorMin, 1023))
         pins.i2cWriteNumber(
