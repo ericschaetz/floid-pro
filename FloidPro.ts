@@ -53,6 +53,8 @@ namespace FloidPro {
     export function init(value: number): void {
         OLED.init(128, 64)
         OLED.writeStringNewLine("FloidPro")
-
+        OLED.writeNumNewLine(pins.i2cReadNumber(56, NumberFormat.Int8LE, false))
+        OLED.writeNumNewLine(pins.i2cReadNumber(57, NumberFormat.Int8LE, false))
+        
     }
 }
