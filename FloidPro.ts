@@ -74,10 +74,10 @@ namespace FloidPro {
     //% block
     export function beleuchtung(VL_Blinker:boolean, VL_Licht:boolean): void {
         let n = 0 
-        if (VL_Blinker){
+        if (-VL_Blinker){
             n += 1
         }
-        if (VL_Licht) {
+        if (-VL_Licht) {
             n += 2
         }
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
