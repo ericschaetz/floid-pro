@@ -87,10 +87,10 @@ namespace FloidPro {
             n += 2
         }
         if (!VR_Blinker) {
-            n += 4
+            n += 8
         }
         if (!VR_Licht) {
-            n += 8
+            n += 4
         }
         if (!HL_Blinker) {
             n += 16
