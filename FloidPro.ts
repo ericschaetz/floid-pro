@@ -70,15 +70,39 @@ namespace FloidPro {
      * Beleuchtung
      * @param VL_Blinker
      * @param VL_Licht
+     * @param VR_Blinker
+     * @param VR_Licht
+     * @param HL_Blinker
+     * @param HL_Licht
+     * @param HR_Blinker
+     * @param HR_Licht
      */
     //% block
-    export function beleuchtung(VL_Blinker:boolean, VL_Licht:boolean): void {
+    export function beleuchtung(VL_Blinker:boolean, VL_Licht:boolean, VR_Blinker: boolean, VR_Licht: boolean, HL_Blinker: boolean, HL_Licht: boolean, HR_Blinker: boolean, HR_Licht: boolean): void {
         let n = 0 
         if (!VL_Blinker){
             n += 1
         }
         if (!VL_Licht) {
             n += 2
+        }
+        if (!VR_Blinker) {
+            n += 4
+        }
+        if (!VR_Licht) {
+            n += 8
+        }
+        if (!HL_Blinker) {
+            n += 16
+        }
+        if (!HL_Licht) {
+            n += 32
+        }
+        if (!HR_Blinker) {
+            n += 64
+        }
+        if (!HR_Licht) {
+            n += 128
         }
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
     }
