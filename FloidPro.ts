@@ -106,4 +106,23 @@ namespace FloidPro {
         }
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
     }
+
+    /**
+     * LineTracking
+     * @param sensor
+     */
+    //% block
+    export function LineTracking(sensor: number): boolean {
+        
+        pins.i2cWriteNumber(56, sensor + 240 - 2**(sensor+4), NumberFormat.Int8LE, false)
+        let s = pins.digitalReadPin(DigitalPin.P14)
+        if (s == 1) {
+            return true
+        }
+        else {
+            return false
+        }
+        
+    }
+
 }
