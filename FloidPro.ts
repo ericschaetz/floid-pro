@@ -64,6 +64,22 @@ namespace FloidPro {
     //% block
     export function bumper(): number {
         return pins.i2cReadNumber(60, NumberFormat.Int8LE, false)
+    }
 
+    /**
+     * Beleuchtung
+     * @param VL_Blinker
+     * @param VL_Licht
+     */
+    //% block
+    export function beleuchtung(VL_Blinker:boolean, VL_Licht:boolean): void {
+        let n = 0 
+        if (VL_Blinker){
+            n += 1
+        }
+        if (VL_Licht) {
+            n += 2
+        }
+        pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
     }
 }
