@@ -43,6 +43,7 @@ namespace FloidPro {
 
         //
         pins.i2cWriteNumber(57, n, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(59, n, NumberFormat.Int8LE, false)
     }
 
     /**
