@@ -6,7 +6,8 @@
         "core": "*",
         "radio": "*",
         "microphone": "*",
-        "SSD1306_OLED": "github:tinkertanker/pxt-oled-ssd1306#v2.0.14"
+        "SSD1306_OLED": "github:tinkertanker/pxt-oled-ssd1306#v2.0.14",
+        "pxt-sonar": "github:microsoft/pxt-sonar#v0.0.6"
     },
     "files": [
         "main.ts",

@@ -48,14 +48,26 @@ namespace FloidPro {
 
     /**
      * Init-Funktion
-     * @param value describe value here, eg: 5
      */
     //% block
-    export function init(value: number): void {
+    export function init(): void {
         OLED.init(128, 64)
         OLED.writeStringNewLine("FloidPro")
-        OLED.writeNumNewLine(pins.i2cReadNumber(56, NumberFormat.Int8LE, false))
-        OLED.writeNumNewLine(pins.i2cReadNumber(57, NumberFormat.Int8LE, false))
+        
+        for (let i = 0; i < 4; i++) {
+            pins.i2cWriteNumber(38, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
+            for (let j = 0; j < 5; j++) {
+                pins.i2cWriteNumber(58, 255 - 2 ** j - 2 ** (j + 4), NumberFormat.Int8LE, false)
+                pins.i2cWriteNumber(55, j + 240 - 2 ** (j + 4), NumberFormat.Int8LE, false)
+                basic.pause(100)
+            }
+            for (let j = 5; j > 0; j--) {
+                pins.i2cWriteNumber(58, 255 - 2 ** j - 2 ** (j + 4), NumberFormat.Int8LE, false)
+                pins.i2cWriteNumber(55, j + 240 - 2 ** (j + 4), NumberFormat.Int8LE, false)
+                basic.pause(100)
+            }
+        }
+
         
     }
 
@@ -66,6 +78,17 @@ namespace FloidPro {
     export function bumper(): number {
         return pins.i2cReadNumber(60, NumberFormat.Int8LE, false)
     }
+
+
+    /**
+     * Ultraschall
+     */
+    //% block
+    export function ultraschall(): number {
+
+        return sonar.ping(DigitalPin.P8, DigitalPin.P12, PingUnit.Centimeters)
+    }
+
 
     /**
      * Beleuchtung
@@ -126,5 +149,7 @@ namespace FloidPro {
         }
         
     }
+
+
 
 }
