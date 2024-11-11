@@ -61,7 +61,7 @@ namespace FloidPro {
                 pins.i2cWriteNumber(55, j + 240 - 2 ** (j + 4), NumberFormat.Int8LE, false)
                 basic.pause(100)
             }
-            for (let j = 4; j >= 0; j--) {
+            for (let j = 3; j >= 0; j--) {
                 pins.i2cWriteNumber(58, 255 - 2 ** j - 2 ** (j + 4), NumberFormat.Int8LE, false)
                 pins.i2cWriteNumber(55, j + 240 - 2 ** (j + 4), NumberFormat.Int8LE, false)
                 basic.pause(100)
