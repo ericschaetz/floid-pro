@@ -44,6 +44,7 @@ namespace FloidPro {
         //
         pins.i2cWriteNumber(57, n, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(59, n, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(61, n, NumberFormat.Int8LE, false)
     }
 
     /**
@@ -80,6 +81,20 @@ namespace FloidPro {
     //% block
     export function bumper(): number {
         return pins.i2cReadNumber(60, NumberFormat.Int8LE, false)
+    }
+
+
+    /**
+     * I²C-Pins
+     */
+    //% block
+    
+    export function i2cpins(): number {
+        
+        for (let i = 0; i < 128; i++) {
+            
+        }
+        return sonar.ping(DigitalPin.P8, DigitalPin.P12, PingUnit.Centimeters)
     }
 
 
