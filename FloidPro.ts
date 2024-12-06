@@ -90,11 +90,19 @@ namespace FloidPro {
     //% block
     
     export function i2cpins(): number {
-        
-        for (let i = 0; i < 128; i++) {
-            
+        let availableAddresses: number[] = [];
+        for (let address = 1; address <= 127; address++) {
+            try {
+                // Sende ein leeres Byte an die Adresse
+                pins.i2cWriteNumber(address, 0, NumberFormat.UInt8LE, true);
+                // Wenn keine Fehler auftreten, füge die Adresse zur Liste hinzu
+                availableAddresses.push(address);
+            } catch (e) {
+                // Ignoriere Fehler, die auftreten, wenn keine Antwort kommt
+            }
         }
-        return sonar.ping(DigitalPin.P8, DigitalPin.P12, PingUnit.Centimeters)
+        return availableAddresses;
+        
     }
 
 
