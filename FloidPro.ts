@@ -107,6 +107,7 @@ namespace Display {
     /**
      * Löscht den Inhalt des Displays.
      */
+    //% block clear
     export function clearLCD() {
         lcdByte(0x01, LCD_CMD); // Displayinhalt löschen
         basic.pause(5); // Wartezeit für die LCD-Verarbeitung
