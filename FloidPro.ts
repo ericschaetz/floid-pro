@@ -78,6 +78,7 @@ namespace Display {
      * @param {string} message - Anzuzeigende Zeichenkette.
      * @param {number} line - Zeilennummer (1-4).
      */
+    //% block "LCD String"
     export function lcdString(message: string, line: number) {
         // Nachricht auf die Displaybreite anpassen
         if (message.length < LCD_WIDTH) {
