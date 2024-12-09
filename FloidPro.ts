@@ -11,6 +11,72 @@ enum MyEnum {
     Two
 }
 
+
+/**
+ * Custom blocks
+ */
+//% weight=100 color=#0fbc11 icon="🚗"
+namespace Display {
+    // HD44780 I2C Display Bibliothek für den micro:bit
+    let I2C_ADDR = 0x27; // Standard I2C-Adresse des Displays
+
+    /**
+     * Initialisiert das HD44780-Display über I2C.
+     */
+    function initHD44780() {
+        basic.pause(50); // Wartezeit, damit das Display startet
+        sendCommand(0x33); // Initialisierungssequenz
+        sendCommand(0x32); // Wechsel zu 4-Bit-Modus
+        sendCommand(0x28); // 4-Bit, 2 Zeilen, 5x8-Punkte
+        sendCommand(0x0C); // Display EIN, Cursor AUS
+        sendCommand(0x06); // Automatisches Weiterschalten des Cursors
+        sendCommand(0x01); // Löschen des Displays
+    }
+
+    /**
+     * Sendet einen Befehl an das Display.
+     * @param command Der zu sendende Befehl.
+     */
+    function sendCommand(command: number) {
+        sendI2C(command, 0x00);
+    }
+
+    /**
+     * Sendet ein Zeichen an das Display.
+     * @param char Das Zeichen, das angezeigt werden soll.
+     */
+    function sendChar(char: number) {
+        sendI2C(char, 0x01);
+    }
+
+    /**
+     * Sendet Daten über I2C an das Display.
+     * @param data Die zu sendenden Daten.
+     * @param mode 0x00 für Befehle, 0x01 für Daten.
+     */
+    function sendI2C(data: number, mode: number) {
+        let highNibble = (data & 0xF0) | mode | 0x08;
+        let lowNibble = ((data << 4) & 0xF0) | mode | 0x08;
+
+        pins.i2cWriteNumber(I2C_ADDR, highNibble | 0x04, NumberFormat.UInt8BE); // Enable HIGH
+        pins.i2cWriteNumber(I2C_ADDR, highNibble, NumberFormat.UInt8BE);        // Enable LOW
+        pins.i2cWriteNumber(I2C_ADDR, lowNibble | 0x04, NumberFormat.UInt8BE);  // Enable HIGH
+        pins.i2cWriteNumber(I2C_ADDR, lowNibble, NumberFormat.UInt8BE);         // Enable LOW
+    }
+
+    /**
+     * Schreibt einen Text auf das Display.
+     * @param text Der anzuzeigende Text.
+     */
+    function writeText(text: string) {
+        for (let i = 0; i < text.length; i++) {
+            sendChar(text.charCodeAt(i));
+        }
+    }
+}
+
+
+
 /**
  * Custom blocks
  */
@@ -101,7 +167,8 @@ namespace FloidPro {
                 // Ignoriere Fehler, die auftreten, wenn keine Antwort kommt
             }
         }
-        return availableAddresses;
+        return 0
+        //return availableAddresses;
         
     }
 
