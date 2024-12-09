@@ -32,7 +32,7 @@ namespace Display {
     /**
      * Initialisiert das LCD-Display
      */
-    //% block
+    //% block "Init LCD"
     export function initLCD() {
         lcdByte(0x33, LCD_CMD); // Initialisierung
         lcdByte(0x32, LCD_CMD); // Initialisierung
