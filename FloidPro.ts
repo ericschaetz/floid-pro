@@ -32,7 +32,8 @@ namespace Display {
     /**
      * Initialisiert das LCD-Display
      */
-    function initLCD() {
+    //% block
+    export function initLCD() {
         lcdByte(0x33, LCD_CMD); // Initialisierung
         lcdByte(0x32, LCD_CMD); // Initialisierung
         lcdByte(0x06, LCD_CMD); // Cursor nach rechts
