@@ -117,13 +117,6 @@ namespace FloidPro {
         pins.i2cWriteBuffer(address, pins.createBufferFromArray([data]));
     }
 
-    //initLCD()
-
-    //lcdString('Das ist Zeile 1', 1)
-    //lcdString('Das ist Zeile 2', 2)
-    //lcdString('Das ist Zeile 3', 3)
-    //lcdString('Das ist Zeile 4', 4)
-
 
 
     /**
