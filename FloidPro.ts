@@ -65,14 +65,14 @@ namespace Display {
 
     // Funktion zum Anzeigen einer Zeichenkette auf einer bestimmten Zeile
     //% block ZeigeString
-    export function lcdString(message: string, line: number): void {
+    export function lcdString(message: string, line: number, column: number): void {
         // Nachricht auf die Displaybreite anpassen
         if (message.length < LCD_WIDTH) {
             let padding = "";
             for (let i = 0; i < LCD_WIDTH - message.length; i++) {
                 padding += " "; // Leerzeichen hinzufügen
             }
-            message = message + padding;
+            //message = message + padding;
         } else {
             message = message.slice(0, LCD_WIDTH); // Kürzen, falls zu lang
         }
@@ -90,7 +90,7 @@ namespace Display {
 
         // Zeichen einzeln senden
         for (let i = 0; i < LCD_WIDTH; i++) {
-            lcdByte(message.charCodeAt(i), LCD_CHR);
+            lcdByte(message.charCodeAt(i+column), LCD_CHR);
         }
     }
 
@@ -128,7 +128,7 @@ namespace FloidPro {
     /**
      * Antrieb
      * @param left Geschwindigkeit links: 10
-     * @param right Geschwindigkeit rechts: "Hello"
+     * @param right Geschwindigkeit rechts: 10
      */
     //% block
     export function antrieb(left: number, right: number): void {
