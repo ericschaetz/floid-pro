@@ -90,7 +90,7 @@ namespace Display {
 
         // Zeichen einzeln senden
         for (let i = 0; i < LCD_WIDTH; i++) {
-            lcdByte(message.charCodeAt(i+column), LCD_CHR);
+            lcdByte(message.charCodeAt(i), LCD_CHR);
         }
     }
 
