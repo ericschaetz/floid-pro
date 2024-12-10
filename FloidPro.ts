@@ -67,26 +67,23 @@ namespace Display {
     //% block ZeigeString
     export function lcdString(message: string, line: number, column: number): void {
         // Nachricht auf die Displaybreite anpassen
-        if (message.length < LCD_WIDTH) {
-            let padding = "";
-            for (let i = 0; i < LCD_WIDTH - message.length; i++) {
-                padding += " "; // Leerzeichen hinzufügen
-            }
-            //message = message + padding;
-        } else {
-            message = message.slice(0, LCD_WIDTH); // Kürzen, falls zu lang
-        }
+        if (message.length + column > LCD_WIDTH) {
+            message = message.slice(0, LCD_WIDTH - column); // Kürzen, falls zu lang
+        } 
 
         // Auswahl der Zeile
+        let adresse: number
+
         if (line === 1) {
-            lcdByte(LCD_LINE_1, LCD_CMD);
+            adresse = LCD_LINE_1;
         } else if (line === 2) {
-            lcdByte(LCD_LINE_2, LCD_CMD);
+            adresse = LCD_LINE_2;
         } else if (line === 3) {
-            lcdByte(LCD_LINE_3, LCD_CMD);
+            adresse = LCD_LINE_3;
         } else if (line === 4) {
-            lcdByte(LCD_LINE_4, LCD_CMD);
+            adresse = LCD_LINE_4;
         }
+        lcdByte(adresse + column, LCD_CMD);
 
         // Zeichen einzeln senden
         for (let i = 0; i < message.length; i++) {
