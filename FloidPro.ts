@@ -77,9 +77,18 @@ namespace FloidPro {
         basic.pause(1);
     }
 
+    /**
+     * Zeige einen String auf dem LCD an
+     * @param message is String, eg: "Hello"
+     * @param line, [1 - 4], eg: 1
+     * @param column, [1 - 20], eg: 1
+     */
     // Funktion zum Anzeigen einer Zeichenkette auf einer bestimmten Zeile
-    //% block ZeigeString
-    export function lcdString(message: string, line: number, column: number): void {
+    //% blockid="floidpro_showlcd" block="Zeige auf Display: Nachricht %message in Zeile %line in Spalte %column"
+    //% line.min=1 line.max=4
+    //% column.min=1 column.max=20
+    export function showOnLcd(message: string, line: number, column: number): void {
+        column -= 1
         // Nachricht auf die Displaybreite anpassen
         if (message.length + column > LCD_WIDTH) {
             message = message.slice(0, LCD_WIDTH - column); // Kürzen, falls zu lang
@@ -175,7 +184,7 @@ namespace FloidPro {
         pins.i2cWriteNumber(56, 255, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(38, 252, NumberFormat.Int8LE, false)
         initLCD()
-        lcdString("FloidPro", 1, 5)
+        showOnLcd("FloidPro", 1, 5)
 
 
         
