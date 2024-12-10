@@ -17,86 +17,75 @@ enum MyEnum {
  */
 //% weight=100 color=#0fbc11 icon="🚗"
 namespace Display {
-    // LCD Display Konstanten und Befehle
-    const LCD_ADDR = 0x27; // I2C Adresse des Displays (Standard)
+    const LCD_ADDR = 0x27; // I2C-Adresse des Displays (Standard)
     const LCD_WIDTH = 20; // Zeichen pro Zeile des Displays
     const LCD_CHR = 1; // Modus für Daten
     const LCD_CMD = 0; // Modus für Befehle
     const LCD_LINE_1 = 0x80; // Adresse für Zeile 1
     const LCD_LINE_2 = 0xC0; // Adresse für Zeile 2
-    const LCD_LINE_3 = 0x94; // Adresse für Zeile 3
+    const LCD_LINE_3 = 0x94; // Adresse für Zeile 3 (für 4-Zeilen-Displays)
     const LCD_LINE_4 = 0xD4; // Adresse für Zeile 4
     const LCD_BACKLIGHT = 0x08; // Hintergrundbeleuchtung
     const ENABLE = 0x04; // Enable Bit
 
-    /**
-     * Initialisiert das LCD-Display
-     */
-    //% block "Init LCD"
-    export function initLCD() {
+    // Display initialisiere
+    //% block Init
+    function initLCD(): void {
         lcdByte(0x33, LCD_CMD); // Initialisierung
         lcdByte(0x32, LCD_CMD); // Initialisierung
         lcdByte(0x06, LCD_CMD); // Cursor nach rechts
         lcdByte(0x0C, LCD_CMD); // Display ein, Cursor aus
         lcdByte(0x28, LCD_CMD); // 4 Zeilen, 5x7-Matrix
         lcdByte(0x01, LCD_CMD); // Bildschirm leeren
-        basic.pause(5);
+        basic.pause(5); // Wartezeit für Verarbeitung
     }
 
-    /**
-     * Sendet ein Byte an das LCD.
-     * @param {number} bits - Zu sendendes Byte.
-     * @param {number} mode - Modus: 0 = Befehl, 1 = Daten.
-     */
-    function lcdByte(bits: number, mode: number) {
-        let bitsHigh = mode | (bits & 0xF0) | LCD_BACKLIGHT;
-        let bitsLow = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT;
+    // Sendet ein Byte an das LCD
+    function lcdByte(bits: number, mode: number): void {
+        const bitsHigh: number = mode | (bits & 0xF0) | LCD_BACKLIGHT;
+        const bitsLow: number = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT;
 
         // High-Bits senden
-        pins.i2cWriteNumber(LCD_ADDR, bitsHigh, NumberFormat.UInt8BE);
+        i2cWrite(LCD_ADDR, bitsHigh);
         lcdToggleEnable(bitsHigh);
 
         // Low-Bits senden
-        pins.i2cWriteNumber(LCD_ADDR, bitsLow, NumberFormat.UInt8BE);
+        i2cWrite(LCD_ADDR, bitsLow);
         lcdToggleEnable(bitsLow);
     }
 
-    /**
-     * Umschalten des Enable-Bits, um das LCD zu triggern.
-     * @param {number} bits - Das zu sendende Byte mit Enable-Bit.
-     */
-    function lcdToggleEnable(bits: number) {
-        basic.pause(1);
-        pins.i2cWriteNumber(LCD_ADDR, bits | ENABLE, NumberFormat.UInt8BE);
-        basic.pause(1);
-        pins.i2cWriteNumber(LCD_ADDR, bits & ~ENABLE, NumberFormat.UInt8BE);
+    // Umschalten des Enable-Bits, um das LCD zu triggern
+    function lcdToggleEnable(bits: number): void {
+        basic.pause(1); // Kurze Wartezeit
+        i2cWrite(LCD_ADDR, bits | ENABLE);
+        basic.pause(1); // Wartezeit für das Umschalten
+        i2cWrite(LCD_ADDR, bits & ~ENABLE);
         basic.pause(1);
     }
 
-    /**
-     * Zeigt eine Zeichenkette auf einer bestimmten Zeile an.
-     * @param {string} message - Anzuzeigende Zeichenkette.
-     * @param {number} line - Zeilennummer (1-4).
-     */
-    //% block "LCD String"
-    export function lcdString(message: string, line: number) {
+    // Funktion zum Anzeigen einer Zeichenkette auf einer bestimmten Zeile
+    function lcdString(message: string, line: number): void {
         // Nachricht auf die Displaybreite anpassen
         if (message.length < LCD_WIDTH) {
-            
+            let padding = "";
             for (let i = 0; i < LCD_WIDTH - message.length; i++) {
-                message += " "
+                padding += " "; // Leerzeichen hinzufügen
             }
+            message = message + padding;
         } else {
-            message = message.slice(0, LCD_WIDTH);
+            message = message.slice(0, LCD_WIDTH); // Kürzen, falls zu lang
         }
 
         // Auswahl der Zeile
-        let lineAddress = LCD_LINE_1;
-        if (line === 2) lineAddress = LCD_LINE_2;
-        else if (line === 3) lineAddress = LCD_LINE_3;
-        else if (line === 4) lineAddress = LCD_LINE_4;
-
-        lcdByte(lineAddress, LCD_CMD);
+        if (line === 1) {
+            lcdByte(LCD_LINE_1, LCD_CMD);
+        } else if (line === 2) {
+            lcdByte(LCD_LINE_2, LCD_CMD);
+        } else if (line === 3) {
+            lcdByte(LCD_LINE_3, LCD_CMD);
+        } else if (line === 4) {
+            lcdByte(LCD_LINE_4, LCD_CMD);
+        }
 
         // Zeichen einzeln senden
         for (let i = 0; i < LCD_WIDTH; i++) {
@@ -104,14 +93,24 @@ namespace Display {
         }
     }
 
-    /**
-     * Löscht den Inhalt des Displays.
-     */
-    //% block clear
-    export function clearLCD() {
+    // Display-Inhalt löschen
+    function clearLCD(): void {
         lcdByte(0x01, LCD_CMD); // Displayinhalt löschen
         basic.pause(5); // Wartezeit für die LCD-Verarbeitung
     }
+
+    // Funktion für I2C-Schreiben
+    function i2cWrite(address: number, data: number): void {
+        pins.i2cWriteBuffer(address, pins.createBufferFromArray([data]));
+    }
+
+    initLCD()
+
+    lcdString('Das ist Zeile 1', 1)
+    lcdString('Das ist Zeile 2', 2)
+    lcdString('Das ist Zeile 3', 3)
+    lcdString('Das ist Zeile 4', 4)
+
 
     
 
