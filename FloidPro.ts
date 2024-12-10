@@ -30,6 +30,7 @@ namespace Display {
  * Custom blocks
  */
 //% weight=100 color=#0fbc11 icon="🚗"
+//% groups="['Display','Antrieb']"
 namespace FloidPro {
     const LCD_ADDR = 0x27; // I2C-Adresse des Displays (Standard)
     const LCD_WIDTH = 20; // Zeichen pro Zeile des Displays
@@ -88,6 +89,7 @@ namespace FloidPro {
     //% line.min=1 line.max=4
     //% column.min=1 column.max=20
     //% weight=90 blockGap=8
+    //% group="Display"
     export function showOnLcd(message: string, line: number, column: number): void {
         column -= 1
         // Nachricht auf die Displaybreite anpassen
@@ -119,6 +121,7 @@ namespace FloidPro {
      */
     //% blockid="floidpro_clearlcd" block="Displayinhalt löschen"
     //% weight=92 blockGap=7
+    //% group="Display"
     export function clearLCD(): void {
         lcdByte(0x01, LCD_CMD); // Displayinhalt löschen
         basic.pause(5); // Wartezeit für die LCD-Verarbeitung
