@@ -118,7 +118,7 @@ namespace FloidPro {
      * Displayinhalt löschen
      */
     //% blockid="floidpro_clearlcd" block="Displayinhalt löschen"
-    //% weight=89 blockGap=7
+    //% weight=92 blockGap=7
     export function clearLCD(): void {
         lcdByte(0x01, LCD_CMD); // Displayinhalt löschen
         basic.pause(5); // Wartezeit für die LCD-Verarbeitung
