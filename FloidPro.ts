@@ -17,6 +17,20 @@ enum MyEnum {
  */
 //% weight=100 color=#0fbc11 icon="🚗"
 namespace Display {
+    
+
+
+    
+
+}
+
+
+
+/**
+ * Custom blocks
+ */
+//% weight=100 color=#0fbc11 icon="🚗"
+namespace FloidPro {
     const LCD_ADDR = 0x27; // I2C-Adresse des Displays (Standard)
     const LCD_WIDTH = 20; // Zeichen pro Zeile des Displays
     const LCD_CHR = 1; // Modus für Daten
@@ -29,8 +43,8 @@ namespace Display {
     const ENABLE = 0x04; // Enable Bit
 
     // Display initialisiere
-    //% block Init
-    export function initLCD(): void {
+
+    function initLCD(): void {
         lcdByte(0x33, LCD_CMD); // Initialisierung
         lcdByte(0x32, LCD_CMD); // Initialisierung
         lcdByte(0x06, LCD_CMD); // Cursor nach rechts
@@ -69,7 +83,7 @@ namespace Display {
         // Nachricht auf die Displaybreite anpassen
         if (message.length + column > LCD_WIDTH) {
             message = message.slice(0, LCD_WIDTH - column); // Kürzen, falls zu lang
-        } 
+        }
 
         // Auswahl der Zeile
         let adresse: number
@@ -111,17 +125,7 @@ namespace Display {
     //lcdString('Das ist Zeile 4', 4)
 
 
-    
 
-}
-
-
-
-/**
- * Custom blocks
- */
-//% weight=100 color=#0fbc11 icon="🚗"
-namespace FloidPro {
     /**
      * Antrieb
      * @param left Geschwindigkeit links: 10
@@ -177,6 +181,9 @@ namespace FloidPro {
         pins.i2cWriteNumber(58, 255, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(56, 255, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(38, 252, NumberFormat.Int8LE, false)
+        initLCD()
+        lcdString("FloidPro", 0, 5)
+
 
         
     }
