@@ -81,12 +81,13 @@ namespace FloidPro {
      * Zeige einen String auf dem LCD an
      * @param message is String, eg: "Hello"
      * @param line is zeilennummer, [1 - 4], eg: 1
-     * @param column is spaltennummer, [1 - 20], eg: 1
+     * @param column is spaltennummer, [1 - 15], eg: 1
      */
     // Funktion zum Anzeigen einer Zeichenkette auf einer bestimmten Zeile
     //% blockid="floidpro_showlcd" block="Zeige auf Display: Nachricht %message in Zeile %line in Spalte %column"
     //% line.min=1 line.max=4
     //% column.min=1 column.max=20
+    //% weight=90 blockGap=8
     export function showOnLcd(message: string, line: number, column: number): void {
         column -= 1
         // Nachricht auf die Displaybreite anpassen
@@ -113,9 +114,11 @@ namespace FloidPro {
             lcdByte(message.charCodeAt(i), LCD_CHR);
         }
     }
-
-    // Display-Inhalt löschen
-    //% block Reinigen
+    /**
+     * Displayinhalt löschen
+     */
+    //% blockid="floidpro_clearlcd" block="Displayinhalt löschen"
+    //% weight=89 blockGap=7
     export function clearLCD(): void {
         lcdByte(0x01, LCD_CMD); // Displayinhalt löschen
         basic.pause(5); // Wartezeit für die LCD-Verarbeitung
