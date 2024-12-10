@@ -30,7 +30,7 @@ namespace Display {
 
     // Display initialisiere
     //% block Init
-    function initLCD(): void {
+    export function initLCD(): void {
         lcdByte(0x33, LCD_CMD); // Initialisierung
         lcdByte(0x32, LCD_CMD); // Initialisierung
         lcdByte(0x06, LCD_CMD); // Cursor nach rechts
@@ -94,7 +94,8 @@ namespace Display {
     }
 
     // Display-Inhalt löschen
-    function clearLCD(): void {
+    //% block Reinigen
+    export function clearLCD(): void {
         lcdByte(0x01, LCD_CMD); // Displayinhalt löschen
         basic.pause(5); // Wartezeit für die LCD-Verarbeitung
     }
@@ -104,12 +105,12 @@ namespace Display {
         pins.i2cWriteBuffer(address, pins.createBufferFromArray([data]));
     }
 
-    initLCD()
+    //initLCD()
 
-    lcdString('Das ist Zeile 1', 1)
-    lcdString('Das ist Zeile 2', 2)
-    lcdString('Das ist Zeile 3', 3)
-    lcdString('Das ist Zeile 4', 4)
+    //lcdString('Das ist Zeile 1', 1)
+    //lcdString('Das ist Zeile 2', 2)
+    //lcdString('Das ist Zeile 3', 3)
+    //lcdString('Das ist Zeile 4', 4)
 
 
     
