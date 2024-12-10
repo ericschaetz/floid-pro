@@ -80,8 +80,8 @@ namespace FloidPro {
     /**
      * Zeige einen String auf dem LCD an
      * @param message is String, eg: "Hello"
-     * @param line, [1 - 4], eg: "1"
-     * @param column, [1 - 20], eg: "1"
+     * @param line is zeilennummer, [1 - 4], eg: 1
+     * @param column is spaltennummer, [1 - 20], eg: 1
      */
     // Funktion zum Anzeigen einer Zeichenkette auf einer bestimmten Zeile
     //% blockid="floidpro_showlcd" block="Zeige auf Display: Nachricht %message in Zeile %line in Spalte %column"
