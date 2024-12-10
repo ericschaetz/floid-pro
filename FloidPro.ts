@@ -175,7 +175,7 @@ namespace FloidPro {
         pins.i2cWriteNumber(56, 255, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(38, 252, NumberFormat.Int8LE, false)
         initLCD()
-        lcdString("FloidPro", 0, 5)
+        lcdString("FloidPro", 1, 5)
 
 
         
