@@ -64,7 +64,8 @@ namespace Display {
     }
 
     // Funktion zum Anzeigen einer Zeichenkette auf einer bestimmten Zeile
-    function lcdString(message: string, line: number): void {
+    //% block ZeigeString
+    export function lcdString(message: string, line: number): void {
         // Nachricht auf die Displaybreite anpassen
         if (message.length < LCD_WIDTH) {
             let padding = "";
