@@ -215,6 +215,7 @@ namespace FloidPro {
             try {
                 // Sende ein leeres Byte an die Adresse
                 pins.i2cWriteNumber(address, 1, NumberFormat.UInt8LE, true);
+                pins.i2cWriteNumber(address, 0, NumberFormat.Int8LE, false)
                 // Wenn keine Fehler auftreten, füge die Adresse zur Liste hinzu
                 availableAddresses.push(address);
             } catch (e) {
