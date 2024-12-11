@@ -30,7 +30,7 @@ namespace Display {
  * Custom blocks
  */
 //% weight=100 color=#0fbc11 icon="🚗"
-//% groups="[, 'Display','Antrieb']"
+//% groups="['Sensorik', 'Display', 'Antrieb', 'Beleuchtung']"
 namespace FloidPro {
     const LCD_ADDR = 0x27; // I2C-Adresse des Displays (Standard)
     const LCD_WIDTH = 20; // Zeichen pro Zeile des Displays
@@ -208,9 +208,8 @@ namespace FloidPro {
     /**
      * I²C-Pins
      */
-    //% block
-    
-    export function i2cpins(): number {
+    //% block="I²C Pins"
+    export function i2cpins(): number[] {
         let availableAddresses: number[] = [];
         for (let address = 1; address <= 127; address++) {
             try {
@@ -222,8 +221,8 @@ namespace FloidPro {
                 // Ignoriere Fehler, die auftreten, wenn keine Antwort kommt
             }
         }
-        return 0
-        //return availableAddresses;
+        //return 0
+        return availableAddresses;
         
     }
 
@@ -298,6 +297,7 @@ namespace FloidPro {
         
     }
 
+    
 
 
 }
