@@ -132,6 +132,14 @@ namespace FloidPro {
         pins.i2cWriteBuffer(address, pins.createBufferFromArray([data]));
     }
 
+    /**
+     * Zahl anzeigen
+     * @param Zahl is number, eg: 0
+     * @param line is zeilennummer, [1 - 4], eg: 1
+     * @param column is spalte, [1 - 20], eg: 1
+     * @param length is number, [1,10], eg: 3
+     */
+    //% blockid="floidpro_shownumber" block="Stelle Zahl %zahl mit der max. Länge %length in Zeile %line und Spalte %column dar"
 
 
     /**
@@ -175,6 +183,7 @@ namespace FloidPro {
         
         for (let i = 0; i < 3; i++) {
             pins.i2cWriteNumber(38, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
+            pins.i2cWriteNumber(62, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
             for (let j = 0; j < 5; j++) {
                 pins.i2cWriteNumber(58, 255 - 2 ** j - 2 ** (j + 4), NumberFormat.Int8LE, false)
                 pins.i2cWriteNumber(56, j + 240 - 2 ** (j + 4), NumberFormat.Int8LE, false)
@@ -189,6 +198,7 @@ namespace FloidPro {
         pins.i2cWriteNumber(58, 255, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(56, 255, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(38, 252, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(62, 252, NumberFormat.Int8LE, false)
         initLCD()
         showOnLcd("FloidPro", 1, 7)
 
@@ -203,6 +213,7 @@ namespace FloidPro {
     export function bumper(): number {
         return pins.i2cReadNumber(60, NumberFormat.Int8LE, false)
     }
+
 
 
     /**
