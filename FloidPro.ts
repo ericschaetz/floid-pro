@@ -116,6 +116,9 @@ namespace FloidPro {
             lcdByte(message.charCodeAt(i), LCD_CHR);
         }
     }
+
+
+
     /**
      * Displayinhalt löschen
      */
@@ -134,13 +137,29 @@ namespace FloidPro {
 
     /**
      * Zahl anzeigen
-     * @param Zahl is number, eg: 0
+     * @param zahl is number, eg: 0
      * @param line is zeilennummer, [1 - 4], eg: 1
      * @param column is spalte, [1 - 20], eg: 1
-     * @param length is number, [1,10], eg: 3
+     * @param laenge is number, [1,10], eg: 3
      */
-    //% blockid="floidpro_shownumber" block="Stelle Zahl %zahl mit der max. Länge %length in Zeile %line und Spalte %column dar"
-
+    //% blockid="floidpro_shownumber" block="Stelle Zahl %zahl mit der max. Länge %laenge in Zeile %line und Spalte %column dar"
+    //% weight=93 
+    //% group="Display"
+    export function showNumber(zahl: number, line:number, column:number, laenge:number): void{
+        let message = "" + zahl;
+        let padding = "";
+        
+        
+        if (message.length > laenge) {
+            message = message.slice(0, laenge); // Kürzen, falls zu lang
+        } else {
+            for (let i = 0; i < laenge - message.length; i++) {
+                padding += " ";
+            }
+        }
+        message = padding + padding; 
+        showOnLcd(message, line, column);
+    }
 
     /**
      * Antrieb
