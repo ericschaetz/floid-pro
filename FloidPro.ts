@@ -159,7 +159,7 @@ namespace FloidPro {
             }
         }
         message = padding + padding; 
-        showOnLcd(message, line, column);
+        showOnLcd(message, 3, 3);
     }
 
     /**
