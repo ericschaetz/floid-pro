@@ -170,7 +170,7 @@ namespace FloidPro {
      * @param right Geschwindigkeit rechts: 10
      */
     //% block
-    export function antrieb(left: number, right: number): void {
+    function antriebsimple(left: number, right: number): void {
         // Antriebszahl berechnen
         let n = 0;
         if (left > 0) {
