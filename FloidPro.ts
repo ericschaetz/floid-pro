@@ -3,13 +3,6 @@
 * Weitere Informationen unter https://makecode.microbit.org/blocks/custom
 */
 
-enum MyEnum {
-    //% block="one"
-    One,
-    //% block="two"
-    Two
-}
-
 
 /**
  * Display-Funktionen
