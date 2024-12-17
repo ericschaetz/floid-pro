@@ -147,7 +147,7 @@ namespace FloidPro {
     //% group="Display"
     export function showNumber(zahl: number, line:number, column:number, laenge:number): void{
         showOnLcd("ausgabe", 3, 3);
-        let message = "hallo"; //+ zahl;
+        let message = zahl + '';
         let padding = "";
         
         
@@ -158,8 +158,8 @@ namespace FloidPro {
                 padding += " ";
             }
         }
-        message = padding + padding; 
-        showOnLcd(zahl + '', 3, 3);
+        message = padding + message; 
+        showOnLcd(message, line, column);
     }
 
     /**
