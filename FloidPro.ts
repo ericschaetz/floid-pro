@@ -197,9 +197,7 @@ namespace FloidPro {
      */
     //% block
     export function init(): void {
-        OLED.init(128, 64)
-        OLED.writeStringNewLine("FloidPro")
-        
+                
         for (let i = 0; i < 3; i++) {
             pins.i2cWriteNumber(38, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
             pins.i2cWriteNumber(62, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
