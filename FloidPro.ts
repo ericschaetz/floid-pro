@@ -146,6 +146,7 @@ namespace FloidPro {
     //% weight=93 
     //% group="Display"
     export function showNumber(zahl: number, line:number, column:number, laenge:number): void{
+        showOnLcd("ausgabe", 3, 3);
         let message = "hallo" //+ zahl;
         let padding = "";
         
