@@ -145,7 +145,7 @@ namespace FloidPro {
     //% blockid="floidpro_shownumber" block="Stelle Zahl %zahl mit der max. Länge %laenge in Zeile %line und Spalte %column dar"
     //% weight=93 
     //% group="Display"
-    export function showNumber(zahl: number, line:number, column:number, laenge:number): void{
+    export function showNumber(zahl: number, laenge:number, line:number, column:number): void{
         showOnLcd("ausgabe", 3, 3);
         let message = zahl + '';
         let padding = "";
