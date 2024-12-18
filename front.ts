@@ -1,9 +1,9 @@
 /**
  * Custom blocks
  */
-//% weight=100 color=#0fbc11 icon="1F697" block="FloidPro - Frontsektion"
+//% weight=89 color=#0fbc11 icon="1F697" block="FloidPro - Frontsektion"
 
-namespace FloidProFrontsektion {
+namespace Front {
     /**
          * Ultraschall
          */

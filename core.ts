@@ -1,7 +1,7 @@
 /**
  * Custom blocks
  */
-//% weight=100 color=#0fbc11 icon="🚗" block="FloidPro - Hauptsektion"
+//% weight=90 color=#0fbc11 icon="🚗" block="FloidPro - Hauptsektion"
 //% groups="['Display', 'Bumper', 'Beleuchtung']"
 namespace FloidProMittelsektion {
 
