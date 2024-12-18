@@ -1,9 +1,9 @@
 /**
  * Custom blocks
  */
-//% weight=90 color=#0fbc11 icon="🚗" block="FloidPro - Hauptsektion"
+//% weight=200 color=#0fbc11 icon="🚗" block="FloidPro - Hauptsektion"
 //% groups="['Display', 'Bumper', 'Beleuchtung']"
-namespace FloidProMittelsektion {
+namespace Core {
 
     const LCD_ADDR = 0x27; // I2C-Adresse des Displays (Standard)
     const LCD_WIDTH = 20; // Zeichen pro Zeile des Displays
