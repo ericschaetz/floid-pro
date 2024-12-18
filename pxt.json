@@ -12,7 +12,9 @@
         "main.ts",
         "README.md",
         "FloidPro.ts",
-        "motors.ts"
+        "motors.ts",
+        "front.ts",
+        "core.ts"
     ],
     "testFiles": [
         "test.ts"
