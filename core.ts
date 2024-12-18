@@ -120,13 +120,11 @@ namespace Core {
         }
     }
 
-
-
     /**
      * Displayinhalt löschen
      */
     //% blockid="floidpro_clearlcd" block="Displayinhalt löschen"
-    //% weight=92 blockGap=7
+    //% weight=80 blockGap=7
     //% group="Display"
     export function clearLCD(): void {
         lcdByte(0x01, LCD_CMD); // Displayinhalt löschen
@@ -139,14 +137,14 @@ namespace Core {
     }
 
     /**
-     * Zahl anzeigen
+     * Zahl auf dem Display anzeigen und rechtsbündig ausrichten
      * @param zahl is number, eg: 0
      * @param line is zeilennummer, [1 - 4], eg: 1
      * @param column is spalte, [1 - 20], eg: 1
      * @param laenge is number, [1,10], eg: 3
      */
     //% blockid="floidpro_shownumber" block="Stelle Zahl %zahl mit der max. Länge %laenge in Zeile %line und Spalte %column dar"
-    //% weight=93 
+    //% weight=85 
     //% group="Display"
     export function showNumber(zahl: number, laenge: number, line: number, column: number): void {
         let message = zahl + '';
