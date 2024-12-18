@@ -1,6 +1,6 @@
 /// <reference path="FloidPro.ts" />
 
-namespace FloidPro{
+namespace FloidProMotors{
     /**
      * Antrieb1
      * @param left Geschwindigkeit links: 10

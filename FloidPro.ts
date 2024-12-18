@@ -16,12 +16,6 @@ namespace Display {
 
 }
 
-
-
-
-
-
-
 /**
  * Custom blocks
  */
