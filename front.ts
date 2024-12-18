@@ -2,7 +2,7 @@
  * Custom blocks
  */
 //% weight=100 color=#0fbc11 icon="🚗" 
-//% block= "FPFrontsektion"
+//% blockNamespace="FPFront"
 namespace FloidProFrontsektion {
     /**
          * Ultraschall
