@@ -137,7 +137,8 @@ namespace Core {
     /**
      * Init-Funktion
      */
-    //% block="Init" weight = 100
+    //% blockid="floidpro_init" 
+    //% block="Init" weight=100
     export function init(): void {
 
         for (let i = 0; i < 3; i++) {
