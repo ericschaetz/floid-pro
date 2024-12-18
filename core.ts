@@ -6,10 +6,10 @@
 namespace Core {
 
     /**
-     * Init-Funktion
+     * Init-Funktion, startet den Roboter korrekt
      */
     //% blockid="floidpro_init" 
-    //% block="Init" weight=100
+    //% block="FloidPro hochfahren" weight=100
     //% group="Initialisierung"
     export function init(): void {
 
