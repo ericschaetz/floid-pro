@@ -5,6 +5,36 @@
 //% groups="['Display', 'Bumper', 'Beleuchtung','Initialisierung' ]"
 namespace Core {
 
+    /**
+     * Init-Funktion
+     */
+    //% blockid="floidpro_init" 
+    //% block="Init" weight=100
+    //% group="Initialisierung"
+    export function init(): void {
+
+        for (let i = 0; i < 3; i++) {
+            pins.i2cWriteNumber(38, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
+            pins.i2cWriteNumber(62, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
+            for (let j = 0; j < 5; j++) {
+                pins.i2cWriteNumber(58, 255 - 2 ** j - 2 ** (j + 4), NumberFormat.Int8LE, false)
+                pins.i2cWriteNumber(56, j + 240 - 2 ** (j + 4), NumberFormat.Int8LE, false)
+                basic.pause(40)
+            }
+            for (let j = 3; j >= 0; j--) {
+                pins.i2cWriteNumber(58, 255 - 2 ** j - 2 ** (j + 4), NumberFormat.Int8LE, false)
+                pins.i2cWriteNumber(56, j + 240 - 2 ** (j + 4), NumberFormat.Int8LE, false)
+                basic.pause(40)
+            }
+        }
+        pins.i2cWriteNumber(58, 255, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(56, 255, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(38, 252, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(62, 252, NumberFormat.Int8LE, false)
+        initLCD()
+        showOnLcd("FloidPro", 1, 7)
+    }
+
     const LCD_ADDR = 0x27; // I2C-Adresse des Displays (Standard)
     const LCD_WIDTH = 20; // Zeichen pro Zeile des Displays
     const LCD_CHR = 1; // Modus für Daten
@@ -134,38 +164,7 @@ namespace Core {
         showOnLcd(message, line, column);
     }
 
-    /**
-     * Init-Funktion
-     */
-    //% blockid="floidpro_init" 
-    //% block="Init" weight=100
-    //% group="Initialisierung"
-    export function init(): void {
-
-        for (let i = 0; i < 3; i++) {
-            pins.i2cWriteNumber(38, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
-            pins.i2cWriteNumber(62, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
-            for (let j = 0; j < 5; j++) {
-                pins.i2cWriteNumber(58, 255 - 2 ** j - 2 ** (j + 4), NumberFormat.Int8LE, false)
-                pins.i2cWriteNumber(56, j + 240 - 2 ** (j + 4), NumberFormat.Int8LE, false)
-                basic.pause(40)
-            }
-            for (let j = 3; j >= 0; j--) {
-                pins.i2cWriteNumber(58, 255 - 2 ** j - 2 ** (j + 4), NumberFormat.Int8LE, false)
-                pins.i2cWriteNumber(56, j + 240 - 2 ** (j + 4), NumberFormat.Int8LE, false)
-                basic.pause(40)
-            }
-        }
-        pins.i2cWriteNumber(58, 255, NumberFormat.Int8LE, false)
-        pins.i2cWriteNumber(56, 255, NumberFormat.Int8LE, false)
-        pins.i2cWriteNumber(38, 252, NumberFormat.Int8LE, false)
-        pins.i2cWriteNumber(62, 252, NumberFormat.Int8LE, false)
-        initLCD()
-        showOnLcd("FloidPro", 1, 7)
-
-
-
-    }
+    
 
     /**
      * Bumper
