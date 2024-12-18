@@ -1,8 +1,8 @@
 /**
  * Custom blocks
  */
-//% weight=100 color=#0fbc11 icon="🚗" name="olaf"
-
+//% weight=100 color=#0fbc11 icon="🚗" 
+//% block= "Floid Pro Ultra superduper Frontsektion!!!1!!elf!?"
 namespace FloidProFrontsektion {
     /**
          * Ultraschall
