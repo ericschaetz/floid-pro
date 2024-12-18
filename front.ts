@@ -1,7 +1,7 @@
 /**
  * Custom blocks
  */
-//% weight=100 color=#0fbc11 icon="\u{f1b9}" block="FloidPro - Frontsektion"
+//% weight=100 color=#0fbc11 icon="\u{1f1b9}" block="FloidPro - Frontsektion"
 
 namespace FloidProFrontsektion {
     /**
