@@ -141,14 +141,14 @@ namespace Core {
      * @param zahl is number, eg: 0
      * @param zahl ist Zahl, welche angezeigt wird
      * @param line is zeilennummer, [1 - 4], eg: 1
-     * @param column is spalte, [1 - 20], eg: 1
+     * @param column is Spalte, [1 - 20], eg: 1
      * @param laenge is number, [1,10], eg: 3
      */
     //% blockid="floidpro_shownumber" block="Zeige Zahl %zahl mit max. Länge %laenge in Zeile %line und Spalte %column"
     //% weight=85 blockGap=8
     //% group="Display"
     //% line.min=1 line.max=4
-    //% column.min=1 column.max=20
+    //% Spalte.min=1 Spalte.max=20
     export function showNumber(zahl: number, laenge: number, line: number, column: number): void {
         let message = zahl + '';
         let padding = "";
