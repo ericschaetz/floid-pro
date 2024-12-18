@@ -1,7 +1,7 @@
 /**
  * Custom blocks
  */
-//% weight=100 color=#0fbc11 icon="🚗"
+//% weight=100 color=#0fbc11 icon="🚗" name="olaf"
 
 namespace FloidProFrontsektion {
     /**
