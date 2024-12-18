@@ -144,7 +144,7 @@ namespace Core {
      * @param column is Spalte, [1 - 20], eg: 1
      * @param laenge is number, [1,10], eg: 3
      */
-    //% blockid="floidpro_shownumber" block="Zeige Zahl %zahl mit max. Länge %laenge in Zeile %line und Spalte %column"
+    //% blockid="floidpro_shownumber" block="Zeige Zahl %zahl mit max. Länge %laenge in Zeile %line und Spalte %Spalte"
     //% weight=85 blockGap=8
     //% group="Display"
     //% line.min=1 line.max=4
