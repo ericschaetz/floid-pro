@@ -1,6 +1,6 @@
 /// <reference path="FloidPro.ts" />
 
-//% weight=99 color=#0fbc11 icon="🚗"
+//% weight=99 color=#0fbc11 icon="🚗" block="FloidPro - Antrieb"
 namespace FloidProMotors{
     /**
      * Antrieb
