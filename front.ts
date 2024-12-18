@@ -1,16 +1,27 @@
 /**
  * Custom blocks
  */
-//% weight=100 color=#0fbc11 icon="🚗" block="FPFront"
+//% weight=100 color=#0fbc11 icon="\f1b9" block="FloidPro - Frontsektion"
 
 namespace FloidProFrontsektion {
     /**
          * Ultraschall
          */
-    //% block
-    export function ultraschall(): number {
+    //% block="Distanzmessung"
+    export function sonar(): number {
+        // send pulse
+        let trig = DigitalPin.P8
+        let echo = DigitalPin.P12
+        pins.setPull(trig, PinPullMode.PullNone);
+        pins.digitalWritePin(trig, 0);
+        control.waitMicros(2);
+        pins.digitalWritePin(trig, 1);
+        control.waitMicros(10);
+        pins.digitalWritePin(trig, 0);
 
-        return sonar.ping(DigitalPin.P8, DigitalPin.P12, PingUnit.Centimeters)
+        // read pulse
+        const d = pins.pulseIn(echo, PulseValue.High, 256 * 58);
+        return Math.idiv(d, 58);
     }
 
     /**
