@@ -1,7 +1,7 @@
 /**
  * Custom blocks
  */
-//% weight=89 color=#0fbc11 icon="1F697" block="FloidPro - Frontsektion"
+//% weight=190 color=#0fbc11 icon="1F697" block="FloidPro - Frontsektion"
 
 namespace Front {
     /**
