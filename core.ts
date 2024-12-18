@@ -138,7 +138,7 @@ namespace Core {
 
     /**
      * Zahl auf dem Display anzeigen und rechtsbündig ausrichten
-     * @param zahl is number, eg: 0
+     * @param zahl is Zahl welche angezeigt wird, eg: 0
      * @param line is zeilennummer, [1 - 4], eg: 1
      * @param column is spalte, [1 - 20], eg: 1
      * @param laenge is number, [1,10], eg: 3
