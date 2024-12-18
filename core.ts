@@ -2,7 +2,7 @@
  * Custom blocks
  */
 //% weight=200 color=#004A99 icon="" block="FloidPro - Hauptsektion"
-//% groups="['Initialisierung' ,'Display', 'Bumper', 'Beleuchtung']"
+//% groups="['Display', 'Bumper', 'Beleuchtung','Initialisierung' ]"
 namespace Core {
 
     const LCD_ADDR = 0x27; // I2C-Adresse des Displays (Standard)
