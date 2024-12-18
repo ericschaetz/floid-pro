@@ -1,6 +1,6 @@
 /// <reference path="FloidPro.ts" />
 
-//% weight=180 color=#0fbc11 icon="" block="FloidPro - Antrieb"
+//% weight=180 color=#0fbc11 icon="" block="FloidPro - Antrieb"
 namespace Motors{
     /**
      * Antrieb
