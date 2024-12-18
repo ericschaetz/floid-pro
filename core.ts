@@ -58,7 +58,7 @@ namespace Core {
      * @param column is spaltennummer, [1 - 15], eg: 1
      */
     // Funktion zum Anzeigen einer Zeichenkette auf einer bestimmten Zeile
-    //% blockid="floidpro_showlcd" block="Zeige auf Display: Nachricht %message in Zeile %line in Spalte %column"
+    //% blockid="floidpro_showlcd" block="Stelle Text %message in Zeile %line und Spalte %column dar"
     //% line.min=1 line.max=4
     //% column.min=1 column.max=20
     //% weight=90 blockGap=8
