@@ -1,7 +1,7 @@
 /**
  * Custom blocks
  */
-//% weight=100 color=#0fbc11 icon="🚗" block="FloidPro - Mittelsektion"
+//% weight=100 color=#0fbc11 icon="🚗" block="FloidPro - Hauptsektion"
 //% groups="['Display', 'Bumper', 'Beleuchtung']"
 namespace FloidProMittelsektion {
 
@@ -137,7 +137,7 @@ namespace FloidProMittelsektion {
     /**
      * Init-Funktion
      */
-    //% block
+    //% block="Init" weight = 100
     export function init(): void {
 
         for (let i = 0; i < 3; i++) {
