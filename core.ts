@@ -143,7 +143,7 @@ namespace Core {
      * @param column is spalte, [1 - 20], eg: 1
      * @param laenge is number, [1,10], eg: 3
      */
-    //% blockid="floidpro_shownumber" block="Stelle Zahl %zahl mit der max. Länge %laenge in Zeile %line und Spalte %column dar"
+    //% blockid="floidpro_shownumber" block="Zeige Zahl %zahl mit max. Länge %laenge in Zeile %line und Spalte %column"
     //% weight=85 
     //% group="Display"
     export function showNumber(zahl: number, laenge: number, line: number, column: number): void {
