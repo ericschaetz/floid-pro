@@ -243,6 +243,10 @@ namespace Core {
     let lights = [0,0,0,0,0,0,0,0]
     export function setlights(light:number, status:number):void{
         lights[light] = status;
-        
+        let n = 0;
+        for (let i = 0; i < 8; i++) {
+            n += 2**(i*lights[i])
+        }
+        pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
     }
 }
