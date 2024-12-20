@@ -5,8 +5,7 @@
     "dependencies": {
         "core": "*",
         "radio": "*",
-        "microphone": "*",
-        "LOI-MV-SEK1": "github:eschaetz/loi-mv-sek1#v1.4.5"
+        "microphone": "*"
     },
     "files": [
         "main.ts",
