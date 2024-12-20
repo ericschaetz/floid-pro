@@ -241,5 +241,8 @@ namespace Core {
     }
 
     let lights = [0,0,0,0,0,0,0,0]
-
+    export function setlights(light:number, status:number):void{
+        lights[light] = status;
+        
+    }
 }
