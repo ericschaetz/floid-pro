@@ -24,6 +24,24 @@ namespace Front {
         return Math.idiv(d, 58);
     }
 
+    enum USSensor {
+        Rechts = 0,
+        Vorne = 1,
+        Links = 2,
+        Hinten = 3,
+    }
+    /**
+         * Ultraschall-Weiche einstellen
+         */
+    //% block="Ultraschallweiche einstellen"
+    export function sonar_switch(richtung:USSensor): void {
+        pins.i2cWriteNumber(62, richtung, NumberFormat.Int8LE, false)
+        
+    }
+
+
+
+
     /**
      * LineTracking
      * @param sensor
