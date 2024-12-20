@@ -119,8 +119,8 @@ namespace Motors{
 
 
         // PWM schreiben
-        pins.analogWritePin(AnalogPin.P0, Math.abs(left) / 10 * 723 + 300)
-        pins.analogWritePin(AnalogPin.P1, Math.abs(right) / 10 * 723 + 300)
+        pins.analogWritePin(AnalogPin.P0, Math.min(Math.abs(left) / 10 * 723 + 300,1023))
+        pins.analogWritePin(AnalogPin.P1, Math.min(Math.abs(right) / 10 * 723 + 300,1023))
 
         //
         pins.i2cWriteNumber(57, n, NumberFormat.Int8LE, false)
