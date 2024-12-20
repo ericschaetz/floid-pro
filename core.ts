@@ -258,5 +258,6 @@ namespace Core {
             n += 2**(i*lights[i])
         }
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
+        Core.showNumber(n, 3, 1, 1)
     }
 }
