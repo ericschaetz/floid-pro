@@ -1,9 +1,5 @@
 /// <reference path="FloidPro.ts" />
 
-enum Motor{
-    A = 1,
-    B = 2
-}
 
 //% weight=180 color=#004A99 icon="" block="FloidPro - Antrieb"
 namespace Motors{
@@ -85,6 +81,42 @@ namespace Motors{
         pins.i2cWriteNumber(61, drivenumber, NumberFormat.Int8LE, false)
     }
 
+    
+    /**
+     * Antriebssteuerung für Module 1-3: 
+     */
+    //% blockid="floidpro_motors4" block="Setze Antrieb auf %left und Motor B auf %right"
+    //% speed.min=-10 speed.max=10
+    //% direction.min=-10 direction.max=10
+    //% weight=60 blockGap=8
+
+    export function motors4(speed: number, direction: number): void {
+        // Antriebszahl berechnen
+        let n = 0;
+
+        //Vorwärts, leichte Drehung
+        if ( direction < 5 && direction > -5 && speed > 0 ) {
+            n = 5
+        }
+        //Vorwärts starke Drehung links
+        else if (direction < -5 && speed > 0) {
+            n = 10
+        }
+
+        //Vorwärts starke Drehung rechts 
+        else if (direction < 5 && speed < 0) {
+            n = 10
+        }
+
+        // PWM schreiben
+        pins.analogWritePin(AnalogPin.P0, Math.abs(left) / 10 * 723 + 300)
+        pins.analogWritePin(AnalogPin.P1, Math.abs(right) / 10 * 723 + 300)
+
+        //
+        pins.i2cWriteNumber(57, n, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(59, n, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(61, n, NumberFormat.Int8LE, false)
+    }
     
     
     
