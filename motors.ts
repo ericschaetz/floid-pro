@@ -1,18 +1,21 @@
 /// <reference path="FloidPro.ts" />
 
+enum Motor{
+    A = 1,
+    B = 2
+}
+
 //% weight=180 color=#004A99 icon="" block="FloidPro - Antrieb"
 namespace Motors{
     
     
     /**
-     * Antriebssteuerung für alle Module: ein positiver Wert lässt die Motoren vorwärts drehen, ein negativer rückwärts.
-     * @param left Geschwindigkeit links: 10
-     * @param right Geschwindigkeit rechts: 10
+     * Antriebssteuerung für Module 1-3: ein positiver Wert lässt die Motoren vorwärts drehen, ein negativer rückwärts.
      */
     //% blockid="floidpro_motors1" block="Setze Motor A auf %left und Motor B auf %right"
     //% left.min=-10 left.max=10
     //% right.min=-10 right.max=10
-    //% weight=100 blockGap=8
+    //% weight=60 blockGap=8
 
     export function motors1(left: number, right: number): void {
         // Antriebszahl berechnen
@@ -40,16 +43,14 @@ namespace Motors{
     }
 
     /**
-     * Antriebssteuerung für die Module 1-3: Die Steuerzahl bestimmt die Richtugn der Motoren, die PWM-Werte die Geschwindigkeit 
-     * @param drivenumber: 0
-     * @param left:0
-     * @param right: 0
+     * Antriebssteuerung für die Module 1-3: Die Steuerzahl bestimmt die Richtung der Motoren, die PWM-Werte die Geschwindigkeit 
      */
-    //% blockid="floidpro_motors2" block="Sende Steuerzahl %drivenumber. Setze Geschwindigkeit von Motor A auf %left und Geschwindigkeit von Motor B auf %right."
+    //% blockid="floidpro_motors2" block="Sende Steuerzahl %drivenumber Setze Geschwindigkeit von Motor A auf %left und Geschwindigkeit von Motor B auf %right."
     //% drivenumber.min=0 drivenumber.max=255
     //% left.min=0 left.max=1023
     //% right.min=0 right.max=1023
     //% weight=90 blockGap=8
+    
 
     export function motors2(drivenumber:number, left: number, right: number): void {
 
@@ -63,6 +64,29 @@ namespace Motors{
         pins.i2cWriteNumber(61, drivenumber, NumberFormat.Int8LE, false)
     }
 
+    /**
+     * Antriebssteuerung für die Modul 4: Die Steuerzahl bestimmt die Richtung der Motoren, PWM-Werte die Geschwindigkeit
+     */
+    //% blockid="floidpro_motors3" block="Sende Steuerzahl %drivenumber Setze Geschwindigkeit Motor A auf: AN:%lon ms AUS:%loff ms und Motor B auf: AN:%ron ms AUS:%roff ms."
+    //% drivenumber.min=0 drivenumber.max=255
+    //% lon.min=0 lon.max=1023
+    //% ron.min=0 ron.max=1023
+    //% loff.min=0 loff.max=1023
+    //% roff.min=0 roff.max=1023
+    //% weight=80 blockGap=8
+    //% inlineInputMode=inline
+
+    export function motors3(drivenumber: number, lon: number, loff: number, ron: number, roff:number): void {
+
+        // PWM-Funktion schreiben
+        
+        pins.i2cWriteNumber(57, drivenumber, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(59, drivenumber, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(61, drivenumber, NumberFormat.Int8LE, false)
+    }
+
     
     
+    
+
 }
