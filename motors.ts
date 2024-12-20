@@ -85,7 +85,7 @@ namespace Motors{
     /**
      * Antriebssteuerung für Module 1-3: 
      */
-    //% blockid="floidpro_motors4" block="Setze Antrieb auf %left und Motor B auf %right"
+    //% blockid="floidpro_motors4" block="Setze Geschwindigkeit auf %speed und Richtung auf %direction"
     //% speed.min=-10 speed.max=10
     //% direction.min=-10 direction.max=10
     //% weight=60 blockGap=8
