@@ -1,3 +1,5 @@
+let lights = [0, 0, 0, 0, 0, 0, 0, 0]
+
 /**
  * Custom blocks
  */
@@ -240,6 +242,14 @@ namespace Core {
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
     }
 
-    
+    //%block
+    export function setlight(lampe:number, status:number):void{
+        lights[0] = status;
+        let n = 0;
+        for (let i = 0; i < 8; i++) {
+            n += 2**(i*lights[i])
+        }
+        pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
+    }
 
 }
