@@ -34,7 +34,7 @@ namespace Front {
          * Ultraschall-Weiche einstellen
          */
     //% block="Ultraschallweiche einstellen %richtung"
-    export function sonar_switch(richtung:number): void {
+    export function sonar_switch(richtung:USSensor): void {
         pins.i2cWriteNumber(62, richtung, NumberFormat.Int8LE, false)
         
     }
