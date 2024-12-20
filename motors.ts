@@ -99,39 +99,6 @@ namespace Motors{
         left = speed+direction; //Werte zwischen -20 und 20
         right = speed - direction; //Werte zwischen -20 und 20
 
-        if(right > 10){ //Verteilen des Antriebs
-            left += - (right % 10)
-            if (right == 20){
-                left = - 10
-            }
-            right = 10
-        }
-
-        else if (right < -10) { //Verteilen des Antriebs
-            left += - (right % 10)
-            if (right == - 20) {
-                left =  10
-            }
-            right = -110
-        }
-
-
-        if (left > 10) { //Verteilen des Antriebs
-            right += - (left % 10)
-            if (left == 20) {
-                right = - 10
-            }
-            left = 10
-        }
-        
-        else if (left < -10) { //Verteilen des Antriebs
-            right += - (left % 10)
-            if (left == - 20) {
-                left = 10
-            }
-            left = -10
-        }
-
         //Antriebszahl berechnen
 
         if (left <= 0 && right <= 0){
