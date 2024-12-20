@@ -99,28 +99,43 @@ namespace Motors{
         left = Math.round(speed+direction); //Werte zwischen -20 und 20
         right = Math.round(speed - direction); //Werte zwischen -20 und 20
 
-        if(right>10){
-            left=right-20
+        if(right > 10){ //Verteilen des Antriebs
+            left += right-20
+            right = 10
         }
-        if (left > 10) {
-            right = left - 20
+
+        else if (right < -10) { //Verteilen des Antriebs
+            left += right + 20
+            right = -110
+        }
+
+
+        if (left > 10) { //Verteilen des Antriebs
+            right += left - 20
+            left = 10
         }
         
-
-        if (left < 0 && right < 0){
-            n=10
+        else if (left < -10) { //Verteilen des Antriebs
+            right += left + 20
+            left = -10
         }
 
-        else if (left > 0 && right > 0) {
-            n=5
+        //Antriebszahl berechnen
+
+        if (left <= 0 && right <= 0){
+            n = 10
         }
 
-        else if (left < 0 && right > 0) {
-
+        else if (left >= 0 && right >= 0) {
+            n = 5
         }
 
-        else if (left > 0 && right < 0) {
+        else if (left <= 0 && right >= 0) {
+            n = 6
+        }
 
+        else if (left >= 0 && right <= 0) {
+            n = 9
         }
 
 
