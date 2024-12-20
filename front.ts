@@ -1,3 +1,18 @@
+enum USSensor {
+    //% block="rechts"
+    Rechts = 0,
+
+    //% block="vorne"
+    Vorne = 1,
+
+    //% block="links"
+    Links = 2,
+
+    //% block="hinten"
+    Hinten = 3,
+}
+
+
 /**
  * Custom blocks
  */
@@ -24,12 +39,8 @@ namespace Front {
         return Math.idiv(d, 58);
     }
 
-    enum USSensor {
-        Rechts = 0,
-        Vorne = 1,
-        Links = 2,
-        Hinten = 3,
-    }
+    
+
     /**
          * Ultraschall-Weiche einstellen
          */
