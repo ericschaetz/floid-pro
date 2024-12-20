@@ -88,7 +88,7 @@ namespace Motors{
     //% blockid="floidpro_motors4" block="Setze Geschwindigkeit auf %speed und Richtung auf %direction"
     //% speed.min=-10 speed.max=10
     //% direction.min=-10 direction.max=10
-    //% weight=60 blockGap=8
+    //% weight=100 blockGap=8
 
     export function motors4(speed: number, direction: number): void {
         // Antriebszahl berechnen
@@ -96,15 +96,23 @@ namespace Motors{
         let left=0;
         let right=0;
 
-        left=Math.round(speed+direction);
-        left = Math.round(speed - direction);
+        left = Math.round(speed+direction); //Werte zwischen -20 und 20
+        right = Math.round(speed - direction); //Werte zwischen -20 und 20
+
+        if(right>10){
+            left=right-20
+        }
+        if (left > 10) {
+            right = left - 20
+        }
+        
 
         if (left < 0 && right < 0){
-            
+            n=10
         }
 
         else if (left > 0 && right > 0) {
-
+            n=5
         }
 
         else if (left < 0 && right > 0) {
