@@ -1,3 +1,11 @@
+enum OnOff {
+    //% block="An"
+    On = 0,
+
+    //% block="Aus"
+    Off = 1,
+}
+
 /**
  * Custom blocks
  */
@@ -241,9 +249,9 @@ namespace Core {
     }
 
     
-    let lights = [0,0,0,0,0,0,0,0]
+    let lights = [1,1,1,1,1,1,1,1]
     //%block="Schalte Lampe %light auf %status"
-    export function setlights(light:number, status:number):void{
+    export function setlights(light:number, status:OnOff):void{
         lights[light] = status;
         let n = 0;
         for (let i = 0; i < 8; i++) {
