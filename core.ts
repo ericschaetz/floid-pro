@@ -1,4 +1,4 @@
-let lights = [0, 0, 0, 0, 0, 0, 0, 0]
+let lights = [0, 0, 0, 0, 0, 0, 0, 0];
 
 /**
  * Custom blocks
