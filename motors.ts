@@ -93,20 +93,28 @@ namespace Motors{
     export function motors4(speed: number, direction: number): void {
         // Antriebszahl berechnen
         let n = 0;
+        let left=0;
+        let right=0;
 
-        //Vorwärts, leichte Drehung
-        if ( direction < 5 && direction > -5 && speed > 0 ) {
-            n = 5
-        }
-        //Vorwärts starke Drehung links
-        else if (direction < -5 && speed > 0) {
-            n = 10
+        left=Math.round(speed+direction);
+        left = Math.round(speed - direction);
+
+        if (left < 0 && right < 0){
+            
         }
 
-        //Vorwärts starke Drehung rechts 
-        else if (direction < 5 && speed < 0) {
-            n = 10
+        else if (left > 0 && right > 0) {
+
         }
+
+        else if (left < 0 && right > 0) {
+
+        }
+
+        else if (left > 0 && right < 0) {
+
+        }
+
 
         // PWM schreiben
         pins.analogWritePin(AnalogPin.P0, Math.abs(left) / 10 * 723 + 300)
