@@ -96,27 +96,39 @@ namespace Motors{
         let left=0;
         let right=0;
 
-        left = Math.round(speed+direction); //Werte zwischen -20 und 20
-        right = Math.round(speed - direction); //Werte zwischen -20 und 20
+        left = speed+direction; //Werte zwischen -20 und 20
+        right = speed - direction; //Werte zwischen -20 und 20
 
         if(right > 10){ //Verteilen des Antriebs
-            left += right-20
+            left += - (right % 10)
+            if (right == 20){
+                left = - 10
+            }
             right = 10
         }
 
         else if (right < -10) { //Verteilen des Antriebs
-            left += right + 20
+            left += - (right % 10)
+            if (right == - 20) {
+                left =  10
+            }
             right = -110
         }
 
 
         if (left > 10) { //Verteilen des Antriebs
-            right += left - 20
+            right += - (left % 10)
+            if (left == 20) {
+                right = - 10
+            }
             left = 10
         }
         
         else if (left < -10) { //Verteilen des Antriebs
-            right += left + 20
+            right += - (left % 10)
+            if (left == - 20) {
+                left = 10
+            }
             left = -10
         }
 
