@@ -63,7 +63,7 @@ namespace Motors{
     /**
      * Antriebssteuerung für die Modul 4: Die Steuerzahl bestimmt die Richtung der Motoren, PWM-Werte die Geschwindigkeit
      */
-    //% blockid="floidpro_motors3" block="Sende Steuerzahl %drivenumber Setze Geschwindigkeit Motor A auf: AN:%lon ms AUS:%loff ms und Motor B auf: AN:%ron ms AUS:%roff ms."
+    //% blockid="floidpro_motors3" block="Sende Steuerzahl %drivenumber Schalte Motor A: AN:%lon ms AUS:%loff ms und Motor B: AN:%ron ms AUS:%roff ms."
     //% drivenumber.min=0 drivenumber.max=255
     //% lon.min=0 lon.max=1023
     //% ron.min=0 ron.max=1023
