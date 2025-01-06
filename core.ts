@@ -15,6 +15,7 @@ namespace Core {
 
     /**
      * Prüft ob ein Controller an einem 
+     * @param adress is Adresse, [0 - 127], eg: 1
      */
     //% blockid="floidpro_i2c_scan" 
     //% block="Controller %adress ist angeschlossen" weight=90
