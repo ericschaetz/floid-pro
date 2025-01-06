@@ -14,6 +14,33 @@ enum OnOff {
 namespace Core {
 
     /**
+     * Prüft ob ein Controller an einem 
+     */
+    //% blockid="floidpro_i2c_scan" 
+    //% block="Controller %adress ist angeschlossen" weight=90
+    //% group="Initialisierung"
+    export function testDevice(address: number): boolean {
+        let testValue=42;
+        try {
+
+            let response = pins.i2cReadNumber(address, NumberFormat.UInt8BE, false)
+            if (response != 0) {
+                return true
+            }
+            else {
+                pins.i2cWriteNumber(address, testValue, NumberFormat.UInt8BE, false)
+                let response = pins.i2cReadNumber(address, NumberFormat.UInt8BE, false)
+                pins.i2cWriteNumber(address, 0, NumberFormat.UInt8BE, false)
+            }
+            return response === testValue
+        } catch (e) {
+            // Falls eine Ausnahme auftritt, ist die Adresse ungültig
+            return false
+        }
+    }
+
+
+    /**
      * Init-Funktion, startet den Roboter korrekt
      */
     //% blockid="floidpro_init" 
