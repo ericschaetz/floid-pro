@@ -137,9 +137,15 @@ namespace Motors{
         let left=0;
         let right=0;
 
-        left = speed+direction; //Werte zwischen -20 und 20
+        left = speed + direction; //Werte zwischen -20 und 20
         right = speed - direction; //Werte zwischen -20 und 20
 
+        if (testDevice(61)){
+            if (direction < 0 ){left = 0}
+            else if (direction > 0){right = 0} 
+        }
+
+        
         //Antriebszahl berechnen
 
         if (left <= 0 && right <= 0){
