@@ -33,6 +33,7 @@ namespace Motors{
     //% weight=60 blockGap=8
 
     export function motors1(left: number, right: number): void {
+        let left1 = left
         // Antriebszahl berechnen
         if (testDevice(61)){
             if (Math.sign(left) != Math.sign(right)){ //Motoren würden bei diesen Bedingungen gegenläufig drehen
@@ -44,20 +45,22 @@ namespace Motors{
                         right = 0
                     }
                 }
-                if ( Math.abs(left) < Math.abs(right)){
-                    left = 0
-                }
-                if (Math.abs(left) > Math.abs(right)) {
-                    right = 0
-                }
+            if ( Math.abs(left) < Math.abs(right)){
+                left = 0
+                left1 = right
+            }
+            if (Math.abs(left) > Math.abs(right)) {
+                right = 0
+                left1 = left
+            }
                 
             }
         }
         let n = 0;
-        if (left > 0) {
+        if (left1 > 0) {
             n += 1
         }
-        else if (left < 0) {
+        else if (left1 < 0) {
             n += 2
         }
         if (right > 0) {
