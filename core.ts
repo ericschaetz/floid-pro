@@ -15,13 +15,12 @@ namespace Core {
 
     /**
      * Prüft ob ein Controller mit einer bestimmten Adresse angeschlossen ist 
-     * @param adress is adresse, [0 - 127], eg: 1
+     * @param adress is Adresse, [0 - 127], eg: 1
      */
     //% blockid="floidpro_i2c_scan" 
-    //% block="Controller %adress ist angeschlossen" weight=90
-    //% adress.min=0 adress.max=127
+    //% block="Controller %address ist angeschlossen" weight=90
+    //% address.min=0 address.max=127
     //% group="Initialisierung"
-    
     export function testDevice(address: number): boolean {
         let testValue=42;
         try {
