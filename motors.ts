@@ -4,6 +4,25 @@
 //% weight=180 color=#004A99 icon="" block="FloidPro - Antrieb"
 namespace Motors{
     
+    function testDevice(address: number): boolean {
+        let testValue = 128;
+        try {
+
+            let response = pins.i2cReadNumber(address, NumberFormat.UInt8BE, false)
+            if (response != 0) {
+                return true
+            }
+            else {
+                pins.i2cWriteNumber(address, testValue, NumberFormat.UInt8BE, false)
+                let response = pins.i2cReadNumber(address, NumberFormat.UInt8BE, false)
+                pins.i2cWriteNumber(address, 0, NumberFormat.UInt8BE, false)
+            }
+            return response === testValue
+        } catch (e) {
+            // Falls eine Ausnahme auftritt, ist die Adresse ungültig
+            return false
+        }
+    }
     
     /**
      * Antriebssteuerung für Module 1-3: ein positiver Wert lässt die Motoren vorwärts drehen, ein negativer rückwärts.
@@ -15,6 +34,25 @@ namespace Motors{
 
     export function motors1(left: number, right: number): void {
         // Antriebszahl berechnen
+        if (testDevice(61)){
+            if (Math.sign(left) != Math.sign(right)){ //Motoren würden bei diesen Bedingungen gegenläufig drehen
+                if (Math.abs(left) == Math.abs(right)){
+                    if (Math.sign(left) < Math.sign(right)){
+                        left = 0
+                    }
+                    else{
+                        right = 0
+                    }
+                }
+                if ( Math.abs(left) < Math.abs(right)){
+                    left = 0
+                }
+                if (Math.abs(left) > Math.abs(right)) {
+                    right = 0
+                }
+                
+            }
+        }
         let n = 0;
         if (left > 0) {
             n += 1
