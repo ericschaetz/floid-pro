@@ -22,7 +22,7 @@ namespace Core {
     //% address.min=0 address.max=127
     //% group="Initialisierung"
     export function testDevice(address: number): boolean {
-        let testValue=42;
+        let testValue=128;
         try {
 
             let response = pins.i2cReadNumber(address, NumberFormat.UInt8BE, false)
