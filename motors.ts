@@ -113,7 +113,7 @@ namespace Motors{
     //% weight=80 blockGap=8
     //% inlineInputMode=inline
 
-    export function motors3(drivenumber: number, lon: number, loff: number, ron: number, roff:number): void {
+    function motors3(drivenumber: number, lon: number, loff: number, ron: number, roff:number): void {
 
         // PWM-Funktion schreiben
         
@@ -131,7 +131,7 @@ namespace Motors{
     //% direction.min=-10 direction.max=10
     //% weight=100 blockGap=8
 
-    export function motors4(speed: number, direction: number): void {
+    function motors4(speed: number, direction: number): void {
         // Antriebszahl berechnen
         let n = 0;
         let left=0;
