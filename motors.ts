@@ -175,9 +175,6 @@ namespace Motors{
         pins.i2cWriteNumber(61, n, NumberFormat.Int8LE, false)
     }
     
-    const tyre_diameter = 14.4
-    const axle_width = 18
-    const turn_diameter = 56.5
     
     /**
      * Geradeausfahren: 
@@ -187,6 +184,10 @@ namespace Motors{
     //% direction.min= 0 direction.max= 1
     //% weight=100 blockGap=8
     export function gradeaus(distance: number, direction: number): void {
+        const tyre_diameter = 14.4
+        const axle_width = 18
+        const turn_diameter = 56.5
+
         let distancel = 0
         let distancer = 0
         let last_statel = pins.analogReadPin(AnalogPin.P2)
@@ -226,7 +227,7 @@ namespace Motors{
         }
 
         // Stop motors
-        motors2(0, 0, 0)
+        motors2(5, 0, 0)
     }
 
 }
