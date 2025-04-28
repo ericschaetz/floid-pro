@@ -175,7 +175,58 @@ namespace Motors{
         pins.i2cWriteNumber(61, n, NumberFormat.Int8LE, false)
     }
     
+    const tyre_diameter = 14.4
+    const axle_width = 18
+    const turn_diameter = 56.5
     
-    
+    /**
+     * Geradeausfahren: 
+     */
+    //% blockid="floidpro_geradeaus" block="Fahre %distance cm geradeaus %direction"
+    //% distance.min=0 distance.max=255
+    //% direction.min= 0 direction.max= 1
+    //% weight=100 blockGap=8
+    function gradeaus(distance: number, direction: number): void {
+        let distancel = 0
+        let distancer = 0
+        let last_statel = pins.analogReadPin(AnalogPin.P2)
+        let last_stater = pins.analogReadPin(AnalogPin.P3)
+        basic.pause(10)
+        let new_statel = pins.analogReadPin(AnalogPin.P2)
+        let new_stater = pins.analogReadPin(AnalogPin.P3)
+        basic.pause(10)
+        let changes = 0
+
+        let targetdistance = distance
+        if (direction == 0) {
+            motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        } else if (direction == 1) {
+            motors2(10, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        }
+
+        while (distancel < targetdistance || distancer < targetdistance) {
+            let next_statel = pins.analogReadPin(AnalogPin.P2)
+            let next_stater = pins.analogReadPin(AnalogPin.P3)
+
+            if (Math.abs(new_statel - last_statel) >= 100 && Math.abs(new_statel - next_statel) <= 100) {
+                changes += 1
+                distancel += tyre_diameter / 4
+            }
+            last_statel = new_statel
+            new_statel = next_statel
+
+            if (Math.abs(new_stater - last_stater) >= 200 && Math.abs(new_stater - next_stater) <= 200) {
+                changes += 1
+                distancer += tyre_diameter / 4
+            }
+            last_stater = new_stater
+            new_stater = next_stater
+
+            basic.pause(10)
+        }
+
+        // Stop motors
+        motors2(0, 0, 0)
+    }
 
 }
