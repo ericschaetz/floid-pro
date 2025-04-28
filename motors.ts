@@ -187,7 +187,7 @@ namespace Motors{
         const tyre_diameter = 14.4
         const axle_width = 18
         const turn_diameter = 56.5
-
+        basic.clearScreen()
         let distancel = 0
         let distancer = 0
         let last_statel = pins.analogReadPin(AnalogPin.P2)
@@ -205,7 +205,7 @@ namespace Motors{
             motors2(10, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
 
-        while (distancel < targetdistance || distancer < targetdistance) {
+        while (distancel < targetdistance){// || distancer < targetdistance) {
             let next_statel = pins.analogReadPin(AnalogPin.P2)
             let next_stater = pins.analogReadPin(AnalogPin.P3)
 
