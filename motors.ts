@@ -205,7 +205,7 @@ namespace Motors{
             motors2(10, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
 
-        while (distancel < targetdistance){// || distancer < targetdistance) {
+        while (distancel < targetdistance && distancer < targetdistance) {
             let next_statel = pins.analogReadPin(AnalogPin.P2)
             let next_stater = pins.analogReadPin(AnalogPin.P3)
 
