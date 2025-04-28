@@ -216,7 +216,7 @@ namespace Motors{
             last_statel = new_statel
             new_statel = next_statel
 
-            if (Math.abs(new_stater - last_stater) >= 200 && Math.abs(new_stater - next_stater) <= 200) {
+            if (Math.abs(new_stater - last_stater) >= 100 && Math.abs(new_stater - next_stater) <= 100) {
                 changes += 1
                 distancer += tyre_diameter / 4
             }
