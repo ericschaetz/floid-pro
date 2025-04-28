@@ -174,8 +174,7 @@ namespace Motors{
         pins.i2cWriteNumber(59, n, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(61, n, NumberFormat.Int8LE, false)
     }
-    
-    
+
     /**
      * Geradeausfahren: 
      */
@@ -208,7 +207,8 @@ namespace Motors{
         while /*(distancel < targetdistance && */ (distancer < targetdistance) {
             let next_statel = pins.analogReadPin(AnalogPin.P2)
             let next_stater = pins.analogReadPin(AnalogPin.P3)
-
+            Core.showNumber(next_statel, 4, 1, 1)
+            Core.showNumber(next_stater, 4, 2, 1)
             if (Math.abs(new_statel - last_statel) >= 100 && Math.abs(new_statel - next_statel) <= 100) {
                 changes += 1
                 distancel += tyre_diameter / 4
