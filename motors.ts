@@ -235,7 +235,7 @@ namespace Motors{
     /**
      * Geradeausfahren: 
      */
-    //% blockid="floidpro_graddrehen" block="Fahre %distance cm geradeaus %direction"
+    //% blockid="floidpro_graddrehen" block="Drehung um %targetdegrees °"
     //% targetdegrees.min=-360 targetdegrees.max=360
     //% weight=100 blockGap=8
     export function graddrehen(targetdegrees: number): void {
