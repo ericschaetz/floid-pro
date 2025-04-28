@@ -186,7 +186,7 @@ namespace Motors{
     //% distance.min=0 distance.max=255
     //% direction.min= 0 direction.max= 1
     //% weight=100 blockGap=8
-    function gradeaus(distance: number, direction: number): void {
+    export function gradeaus(distance: number, direction: number): void {
         let distancel = 0
         let distancer = 0
         let last_statel = pins.analogReadPin(AnalogPin.P2)
