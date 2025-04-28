@@ -175,6 +175,10 @@ namespace Motors{
         pins.i2cWriteNumber(61, n, NumberFormat.Int8LE, false)
     }
 
+    const tyre_diameter = 14.4
+    const axle_width = 18
+    const turn_diameter = 56.5
+    const numberofholes = 4
     /**
      * Geradeausfahren: 
      */
@@ -183,10 +187,13 @@ namespace Motors{
     //% direction.min= 0 direction.max= 1
     //% weight=100 blockGap=8
     export function gradeaus(distance: number, direction: number): void {
-        const tyre_diameter = 14.4
-        const axle_width = 18
-        const turn_diameter = 56.5
+        
         basic.clearScreen()
+        if (direction == 0) {
+            motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        } else if (direction == 1) {
+            motors2(10, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        }
         let distancel = 0
         let distancer = 0
         let last_statel = pins.analogReadPin(AnalogPin.P2)
@@ -198,27 +205,23 @@ namespace Motors{
         let changes = 0
 
         let targetdistance = distance
-        if (direction == 0) {
-            motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
-        } else if (direction == 1) {
-            motors2(10, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
-        }
+        
 
-        while /*(distancel < targetdistance && */ (distancer < targetdistance) {
+        while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
             let next_statel = pins.analogReadPin(AnalogPin.P2)
             let next_stater = pins.analogReadPin(AnalogPin.P3)
             Core.showNumber(next_statel, 4, 1, 1)
             Core.showNumber(next_stater, 4, 2, 1)
             if (Math.abs(new_statel - last_statel) >= 100 && Math.abs(new_statel - next_statel) <= 100) {
                 changes += 1
-                distancel += tyre_diameter / 4
+                distancel += tyre_diameter / numberofholes
             }
             last_statel = new_statel
             new_statel = next_statel
 
             if (Math.abs(new_stater - last_stater) >= 100 && Math.abs(new_stater - next_stater) <= 100) {
                 changes += 1
-                distancer += tyre_diameter / 4
+                distancer += tyre_diameter / numberofholes
             }
             last_stater = new_stater
             new_stater = next_stater
@@ -228,6 +231,70 @@ namespace Motors{
 
         // Stop motors
         motors2(5, 0, 0)
+    }
+    /**
+     * Geradeausfahren: 
+     */
+    //% blockid="floidpro_graddrehen" block="Fahre %distance cm geradeaus %direction"
+    //% targetdegrees.min=-360 targetdegrees.max=360
+    //% weight=100 blockGap=8
+    export function graddrehen(targetdegrees: number): void {
+        let m = 9
+        if (targetdegrees < 0) {
+            m = 6
+        }
+        targetdegrees = Math.abs(targetdegrees)
+
+        motors2(m, 700 , 700)
+        // Zielentfernung berechnen (basierend auf Drehwinkel)
+        let targetdistance = turn_diameter * targetdegrees / 360
+
+        let distancel = 0
+        let distancer = 0
+
+        // Erste Sensormessungen
+        let last_statel = pins.analogReadPin(AnalogPin.P2)
+        let last_stater = pins.analogReadPin(AnalogPin.P3)
+        basic.pause(10)
+        let new_statel = pins.analogReadPin(AnalogPin.P2)
+        let new_stater = pins.analogReadPin(AnalogPin.P3)
+        basic.pause(10)
+
+        let changes = 0
+
+        // Schleife bis beide Seiten die Zielentfernung erreicht haben
+        while (distancel < targetdistance && distancer < targetdistance) {
+            let next_statel = pins.analogReadPin(AnalogPin.P2)
+            let next_stater = pins.analogReadPin(AnalogPin.P3)
+
+            // Linke Seite prüfen
+            if (Math.abs(new_statel - last_statel) >= 100 && Math.abs(new_statel - next_statel) <= 100) {
+                changes += 1
+                distancel += tyre_diameter / numberofholes
+                if (distancel >= targetdistance) {
+                    // Linker Motor stoppen, wenn Ziel erreicht
+                    motors2(m, 0, 700)
+                }
+            }
+            last_statel = new_statel
+            new_statel = next_statel
+
+            // Rechte Seite prüfen
+            if (Math.abs(new_stater - last_stater) >= 200 && Math.abs(new_stater - next_stater) <= 200) {
+                changes += 1
+                distancer += tyre_diameter / numberofholes
+                if (distancer >= targetdistance) {
+                    // Rechter Motor stoppen, wenn Ziel erreicht
+                    motors2(m, 700, 0)
+                }
+            }
+            last_stater = new_stater
+            new_stater = next_stater
+
+            basic.pause(10)
+        }
+
+        motors2(m, 0, 0)
     }
 
 }
