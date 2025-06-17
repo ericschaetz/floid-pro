@@ -13,7 +13,8 @@
         "FloidPro.ts",
         "motors.ts",
         "front.ts",
-        "core.ts"
+        "core.ts",
+        "motors2.ts"
     ],
     "testFiles": [
         "test.ts"
