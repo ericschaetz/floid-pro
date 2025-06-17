@@ -78,7 +78,7 @@ namespace Motors{
     }
 
     /**
-     * Antriebssteuerung für Module 1-3: ein positiver Wert lässt die Motoren vorwärts drehen, ein negativer rückwärts.
+     * Antriebssteuerung für Module 1-4: ein positiver Wert lässt die Motoren vorwärts drehen, ein negativer rückwärts.
      */
     //% blockid="floidpro_motors1" block="Setze Motor A auf %left und Motor B auf %right"
     //% left.min=-10 left.max=10
@@ -180,7 +180,7 @@ namespace Motors{
     //% weight=80 blockGap=8
     //% inlineInputMode=inline
 
-    function motors3(drivenumber: number, lon: number, loff: number, ron: number, roff:number): void {
+    export function motors3(drivenumber: number, lon: number, loff: number, ron: number, roff:number): void {
 
         // PWM-Funktion schreiben
     
@@ -198,7 +198,7 @@ namespace Motors{
     //% direction.min=-10 direction.max=10
     //% weight=100 blockGap=8
 
-    function motors4(speed: number, direction: number): void {
+    export function motors4(speed: number, direction: number): void {
         // Antriebszahl berechnen
         let n = 0;
         let left=0;

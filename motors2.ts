@@ -1,5 +1,4 @@
 /// <reference path="FloidPro.ts"/>
-
 namespace Motors{
 
     const tyre_diameter = 14.4
