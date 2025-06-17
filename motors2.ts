@@ -12,7 +12,7 @@ namespace Motors{
     //% blockid="floidpro_geradeaus" block="Fahre %distance cm geradeaus %direction"
     //% distance.min=0 distance.max=255
     //% direction.min= 0 direction.max= 1
-    //% weight=100 blockGap=8
+    //% weight=20 blockGap=8
     export function gradeaus(distance: number, direction: number): void {
 
         basic.clearScreen()
@@ -64,7 +64,7 @@ namespace Motors{
      */
     //% blockid="floidpro_graddrehen" block="Drehung um %targetdegrees °"
     //% targetdegrees.min=-360 targetdegrees.max=360
-    //% weight=100 blockGap=8
+    //% weight=20 blockGap=8
     export function graddrehen(targetdegrees: number): void {
         let m = 9
         if (targetdegrees < 0) {
@@ -130,7 +130,7 @@ namespace Motors{
     //% blockid="floidpro_kurvenfahrt" block="Kurven fahrt %degrees ° mit %radius cm Radius"
     //% degrees.min=0 degrees.max=360
     //% radius.min=0 radius.max=255
-    //% weight=100 blockGap=8
+    //% weight=20 blockGap=8
     export function kurvenfahrt(degrees: number, radius: number, directionx: number, directiony: number): void {
         // Kreisfahrt Start
         let targetdistancel = (2 * Math.PI * (radius - (axle_width / 2))) / (degrees / 360)
