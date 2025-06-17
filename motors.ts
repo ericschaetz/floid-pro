@@ -34,7 +34,9 @@ namespace Motors{
         }
     }
 
-
+    /**
+     * funktion zur Hintergrunfausführung der Puls-Weiten-Modulation für Modul 4
+     */
     function pwm(left: number, right: number): void {
         pwmLeft = Math.clamp(0, 1023, left)
         pwmRight = Math.clamp(0, 1023, right)
@@ -150,15 +152,20 @@ namespace Motors{
     
 
     export function motors2(drivenumber:number, left: number, right: number): void {
-
-        // PWM schreiben
-        pins.analogWritePin(AnalogPin.P0, left)
-        pins.analogWritePin(AnalogPin.P1, right)
-
-        //
+        // Senden der Steuerzahl an alle Controlleradressen
         pins.i2cWriteNumber(57, drivenumber, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(59, drivenumber, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(61, drivenumber, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(63, drivenumber, NumberFormat.Int8LE, false)
+
+        // PWM schreiben
+        if (testDevice(63)) {
+            pwm(Math.abs(left) / 10 * 723 + 300, Math.abs(right) / 10 * 723 + 300)
+        }
+        else {
+            pins.analogWritePin(AnalogPin.P0, Math.abs(left) / 10 * 723 + 300)
+            pins.analogWritePin(AnalogPin.P1, Math.abs(right) / 10 * 723 + 300)
+        }
     }
 
     /**
