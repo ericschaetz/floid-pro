@@ -3,7 +3,17 @@
 
 //% weight=180 color=#004A99 icon="" block="FloidPro - Antrieb"
 namespace Motors{
-    
+    let pwmLeft = 0
+    let pwmRight = 0
+    let running = false
+
+    const pinLeft = DigitalPin.P1
+    const pinRight = DigitalPin.P2
+    const periode = 10 // in ms
+
+    /** 
+     * Diese Funktion prüft für eine Adresse, ob ein I^2C-Chip angeschlossen ist.
+    */
     function testDevice(address: number): boolean {
         let testValue = 128;
         try {
@@ -23,7 +33,48 @@ namespace Motors{
             return false
         }
     }
-    
+
+
+    function pwm(left: number, right: number): void {
+        pwmLeft = Math.clamp(0, 1023, left)
+        pwmRight = Math.clamp(0, 1023, right)
+
+        if (pwmLeft === 0 && pwmRight === 0) {
+            running = false
+            pins.digitalWritePin(pinLeft, 0)
+            pins.digitalWritePin(pinRight, 0)
+            return
+        }
+
+        if (running) return
+        running = true
+
+        control.inBackground(function () {
+            const step = 100 // 100 µs Schritte
+
+            while (running) {
+                let dutyL = pwmLeft / 1023
+                let dutyR = pwmRight / 1023
+
+                let einL = periode * dutyL * 1000  // in µs
+                let einR = periode * dutyR * 1000
+
+                for (let t = 0; t < periode * 1000; t += step) {
+                    pins.digitalWritePin(pinLeft, t < einL ? 1 : 0)
+                    pins.digitalWritePin(pinRight, t < einR ? 1 : 0)
+                    control.waitMicros(step)
+                }
+
+                // Nach jedem Zyklus prüfen, ob beide Werte 0 sind (z. B. live geändert)
+                if (pwmLeft === 0 && pwmRight === 0) {
+                    pins.digitalWritePin(pinLeft, 0)
+                    pins.digitalWritePin(pinRight, 0)
+                    running = false
+                }
+            }
+        })
+    }
+
     /**
      * Antriebssteuerung für Module 1-3: ein positiver Wert lässt die Motoren vorwärts drehen, ein negativer rückwärts.
      */
@@ -34,8 +85,9 @@ namespace Motors{
 
     export function motors1(left: number, right: number): void {
         let left1 = left
+
         // Antriebszahl berechnen
-        if (testDevice(61)){
+        if (testDevice(61)){ //Passt die Vorzeichen entsprechend der Spezifikationen von Einheit 3 an
             if (Math.sign(left) != Math.sign(right)){ //Motoren würden bei diesen Bedingungen gegenläufig drehen
                 if (Math.abs(left) == Math.abs(right)){
                     if (Math.sign(left) < Math.sign(right)){
@@ -56,27 +108,35 @@ namespace Motors{
                 
             }
         }
-        let n = 0;
-        if (left1 > 0) {
+
+        let n = 0; //Berechnung der Steuerzahl in Abhänigkeit zu den Vorzeichen der Variablen
+        if (left1 > 0) { //Motor A vorwärts
             n += 1
         }
-        else if (left1 < 0) {
+        else if (left1 < 0) { //Motor A rückwärts
             n += 2
         }
-        if (right > 0) {
+        if (right > 0) { //Motor B vorwärts
             n += 4
         }
-        else if (right < 0) {
+        else if (right < 0) { //Motor B rückwärts
             n += 8
         }
-        // PWM schreiben
-        pins.analogWritePin(AnalogPin.P0, Math.abs(left) / 10 * 723 + 300)
-        pins.analogWritePin(AnalogPin.P1, Math.abs(right) / 10 * 723 + 300)
 
-        //
+        // Senden der Steuerzahl an alle Controlleradressen
         pins.i2cWriteNumber(57, n, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(59, n, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(61, n, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(63, n, NumberFormat.Int8LE, false)
+
+        // PWM schreiben
+        if (testDevice(63)){
+            pwm(Math.abs(left) / 10 * 723 + 300, Math.abs(right) / 10 * 723 + 300)
+        }
+        else{
+        pins.analogWritePin(AnalogPin.P0, Math.abs(left) / 10 * 723 + 300)
+        pins.analogWritePin(AnalogPin.P1, Math.abs(right) / 10 * 723 + 300)
+        }
     }
 
     /**
