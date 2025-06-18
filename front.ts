@@ -8,10 +8,10 @@ namespace Front {
     /**
      * Misst die Distanz über den eingestellten Ultraschallsensor
      */
-    //% blockid = "floidpro_sonar"
-    //% block = "gemessene Distanz"
-    //% group = "Ultraschall und RGB"
-    //% weigth = 90
+    //% blockid="floidpro_sonar"
+    //% block="gemessene Distanz"
+    //% group="Ultraschall und RGB"
+    //% weigth=90
     export function sonar(): number {
         // send pulse
         let trig = DigitalPin.P8
@@ -31,21 +31,24 @@ namespace Front {
     /**
      * Stellt die Ultraschall-Weiche, um den gewünschten Sensor zu verbinden
      */
-    //% blockid = "floidpro_sonarswitch"
-    //% block = "Ultraschallweiche auf %richtung einstellen"
-    //% group = "Ultraschall und RGB" 
+    //% blockid="floidpro_sonarswitch"
+    //% block="Ultraschallweiche auf %richtung einstellen"
+    //% weigth=85
+    //% group="Ultraschall und RGB" 
     export function sonar_switch(richtung:USSensor): void {
         pins.i2cWriteNumber(62, richtung, NumberFormat.Int8LE, false)
         
     }
 
-
-
+    /*Ende Ultraschall und RGB *******************************************************************************************************************************/
 
     /**
-     * LineTracking
+     * Gibt zurück, ob der eingestellte Sensor schwarzen Untergurnd erkannt hat
      */
+    //% blockid="floidpro_linetrackingsimple"
     //% block="%sensor erkennt schwarzen Untergrund"
+    //% weight=80
+    //% group="Linetracking"
     export function LineTracking(sensor: Linetracker): boolean {
 
         pins.i2cWriteNumber(56, sensor + 240 - 2 ** (sensor + 4), NumberFormat.Int8LE, false)
@@ -54,5 +57,6 @@ namespace Front {
         return !!s
 
     }
+    /*Ende Linetracking*******************************************************************************************************************************/
 
 }
