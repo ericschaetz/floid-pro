@@ -157,30 +157,6 @@ namespace Core {
     /*Ende Bumper*******************************************************************************************************************************/
   
     /**
-     * Gibt ein Array der angeschlossenen I²C-Controller aus
-     */
-    //%blockid="i2cscan"
-    //% block="angeschlossene I²C-Controller"
-    //% group="I2C"
-    export function i2cpins(): number[] {
-        let availableAddresses: number[] = [];
-        for (let address = 1; address <= 127; address++) {
-            try {
-                // Sende ein leeres Byte an die Adresse
-                pins.i2cWriteNumber(address, 1, NumberFormat.UInt8LE, true);
-                pins.i2cWriteNumber(address, 0, NumberFormat.Int8LE, false)
-                // Wenn keine Fehler auftreten, füge die Adresse zur Liste hinzu
-                availableAddresses.push(address);
-            } catch (e) {
-                // Ignoriere Fehler, die auftreten, wenn keine Antwort kommt
-            }
-        }
-        //return 0
-        return availableAddresses;
-
-    }
-
-    /**
      * Schaltet die Beleuchtung nach der Vorgabe an bzw. aus
      */
     //% blockid="floidpro_light"
@@ -215,19 +191,48 @@ namespace Core {
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
     }
 
-    
+
     //% blockid=="floidpro_singlelight"
     //% block="Schalte Lampe %light auf %status"
     //% group="Beleuchtung"
-    export function setlights(light:number, status:OnOff):void{
+    export function setlights(light: number, status: OnOff): void {
         lights[light] = status;
         let n = 0;
         for (let i = 0; i < 8; i++) {
-            n += 2**(i*lights[i])
+            n += 2 ** (i * lights[i])
         }
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
         Core.showNumber(n, 3, 1, 1)
     }
+
+
+    /*Ende Beleuchtung*******************************************************************************************************************************/
+    
+    /**
+     * Gibt ein Array der angeschlossenen I²C-Controller aus
+     */
+    //%blockid="i2cscan"
+    //% block="angeschlossene I²C-Controller"
+    //% group="I2C"
+    export function i2cpins(): number[] {
+        let availableAddresses: number[] = [];
+        for (let address = 1; address <= 127; address++) {
+            try {
+                // Sende ein leeres Byte an die Adresse
+                pins.i2cWriteNumber(address, 1, NumberFormat.UInt8LE, true);
+                pins.i2cWriteNumber(address, 0, NumberFormat.Int8LE, false)
+                // Wenn keine Fehler auftreten, füge die Adresse zur Liste hinzu
+                availableAddresses.push(address);
+            } catch (e) {
+                // Ignoriere Fehler, die auftreten, wenn keine Antwort kommt
+            }
+        }
+        //return 0
+        return availableAddresses;
+
+    }
+
+    /*Ende I2C*******************************************************************************************************************************/
 
     /*Ende Frontend*******************************************************************************************************************************/
 

@@ -1,10 +1,17 @@
+/**
+ * Die Frontsektion umfasst die Funktionen für Ultraschall, RGB und Linetracking
+ */
 //% weight=190 color=#004A99 icon="" block="FloidPro - Frontsektion"
+//% groups="['Ultraschall und RGB', 'Linetracking']"
 
 namespace Front {
     /**
-         * Ultraschall
-         */
-    //% block="Distanzmessung"
+     * Misst die Distanz über den eingestellten Ultraschallsensor
+     */
+    //% blockid = "floidpro_sonar"
+    //% block = "gemessene Distanz"
+    //% group = "Ultraschall und RGB"
+    //% weigth = 90
     export function sonar(): number {
         // send pulse
         let trig = DigitalPin.P8
@@ -19,14 +26,14 @@ namespace Front {
         // read pulse
         const d = pins.pulseIn(echo, PulseValue.High, 256 * 58);
         return Math.idiv(d, 58);
-    }
-
-    
+    }    
 
     /**
-         * Ultraschall-Weiche einstellen
-         */
-    //% block="Ultraschallweiche einstellen %richtung"
+     * Stellt die Ultraschall-Weiche, um den gewünschten Sensor zu verbinden
+     */
+    //% blockid = "floidpro_sonarswitch"
+    //% block = "Ultraschallweiche auf %richtung einstellen"
+    //% group = "Ultraschall und RGB" 
     export function sonar_switch(richtung:USSensor): void {
         pins.i2cWriteNumber(62, richtung, NumberFormat.Int8LE, false)
         
@@ -37,20 +44,14 @@ namespace Front {
 
     /**
      * LineTracking
-     * @param sensor
      */
-    //% block
-    export function LineTracking(sensor: number): boolean {
+    //% block="%sensor erkennt schwarzen Untergrund"
+    export function LineTracking(sensor: Linetracker): boolean {
 
         pins.i2cWriteNumber(56, sensor + 240 - 2 ** (sensor + 4), NumberFormat.Int8LE, false)
         let s = pins.digitalReadPin(DigitalPin.P14)
         pins.i2cWriteNumber(56, 255, NumberFormat.Int8LE, false)
-        if (s == 1) {
-            return true
-        }
-        else {
-            return false
-        }
+        return !!s
 
     }
 

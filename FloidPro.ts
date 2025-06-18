@@ -124,4 +124,18 @@ enum BumperSensor {
     //% block="hinten links"
     HL = 2,
 }
+
+enum Linetracker {
+    //% block="LT0"
+    LT0 = 0,
+
+    //% block="LT1"
+    LT1 = 1,
+
+    //% block="LT2"
+    LT2 = 2,
+
+    //% block="LT3"
+    LT3 = 3,
+}
 /**************************************************************************************************/
