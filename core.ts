@@ -161,32 +161,31 @@ namespace Core {
      * Schaltet die Beleuchtung nach der Vorgabe an bzw. aus
      */
     //% blockid="floidpro_light"
-    //% inlineInputMode=inline
-    //% block="Schalte Blinker VL:%VL_Blinker, VR:%VR_Blinker, HL:%HR_Blinker, HR:%HR_Blinker und Licht VL:%VL_Licht, VR:%VR_Licht, HL:%HR_Licht, HR:%HR_Licht "
+    //% block="Schalte Blinker VL:%VL_Blinker                 VR:%VR_Blinker                 HL:%HL_Blinker                 HR:%HR_Blinker         Licht   VL:%VL_Licht                 VR:%VR_Licht                 HL:%HR_Licht                 HR:%HR_Licht "
     export function beleuchtung(VL_Blinker: OnOff, VL_Licht: OnOff, VR_Blinker: OnOff, VR_Licht: OnOff, HL_Blinker: OnOff, HL_Licht: OnOff, HR_Blinker: OnOff, HR_Licht: OnOff): void {
         let n = 0
-        if (VL_Blinker) {
+        if (!VL_Blinker) {
             n += 1
         }
-        if (VL_Licht) {
+        if (!VL_Licht) {
             n += 2
         }
-        if (VR_Blinker) {
+        if (!VR_Blinker) {
             n += 8
         }
-        if (VR_Licht) {
+        if (!VR_Licht) {
             n += 4
         }
-        if (HL_Blinker) {
+        if (!HL_Blinker) {
             n += 16
         }
-        if (HL_Licht) {
+        if (!HL_Licht) {
             n += 32
         }
-        if (HR_Blinker) {
+        if (!HR_Blinker) {
             n += 128
         }
-        if (HR_Licht) {
+        if (!HR_Licht) {
             n += 164
         }
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)

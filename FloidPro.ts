@@ -106,17 +106,4 @@ enum USSensor {
     //% block="hinten"
     Hinten = 3,
 }
-
-// Benutzerdefinierter Typ
-type LichtGruppe = {
-    //% block="VL"
-    VL: OnOff;
-    //% block="VR"
-    VR: OnOff;
-    //% block="HL"
-    HL: OnOff;
-    //% block="HR"
-    HR: OnOff;
-};
-
 /**************************************************************************************************/
