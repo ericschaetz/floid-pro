@@ -1,5 +1,6 @@
 {
     "name": "Floid Pro",
+    "icon": "icon.png",
     "version": "0.0.18",
     "description": "",
     "dependencies": {
