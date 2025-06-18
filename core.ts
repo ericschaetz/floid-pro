@@ -1,55 +1,30 @@
-enum OnOff {
-    //% block="An"
-    On = 0,
-
-    //% block="Aus"
-    Off = 1,
-}
-
 /**
- * Custom blocks
+ * Die Hauptsektion umfasst die Funktionen für Initialisierung, Display, I2C, Bumper und Beleuchtung
  */
 //% weight=200 color=#004A99 icon="" block="FloidPro - Hauptsektion"
 //% groups="['Display', 'Bumper', 'Beleuchtung','Initialisierung' ]"
 namespace Core {
 
     /**
-     * Prüft ob ein Controller mit einer bestimmten Adresse angeschlossen ist 
-     * @param adress is Adresse, [0 - 127], eg: 1
+     * Prüft ob ein Controller mit einer bestimmten Adresse angeschlossen ist: boolean
+     * @param address is Adresse, eg: 0
      */
     //% blockid="floidpro_i2c_scan" 
     //% block="Controller %address ist angeschlossen" weight=90
     //% address.min=0 address.max=127
     //% group="Initialisierung"
-    export function testDevice(address: number): boolean {
-        let testValue=128;
-        try {
-
-            let response = pins.i2cReadNumber(address, NumberFormat.UInt8BE, false)
-            if (response != 0) {
-                return true
-            }
-            else {
-                pins.i2cWriteNumber(address, testValue, NumberFormat.UInt8BE, false)
-                let response = pins.i2cReadNumber(address, NumberFormat.UInt8BE, false)
-                pins.i2cWriteNumber(address, 0, NumberFormat.UInt8BE, false)
-            }
-            return response === testValue
-        } catch (e) {
-            // Falls eine Ausnahme auftritt, ist die Adresse ungültig
-            return false
-        }
+    export function testDevice_front(address: number): boolean {
+        return testDevice(address)
     }
-
-
+ 
     /**
-     * Init-Funktion, startet den Roboter korrekt
+     * Init-Funktion, startet den Roboter korrekt und setzt das Level auf dem der Roboter arbeitet: void
      */
     //% blockid="floidpro_init" 
-    //% block="FloidPro hochfahren" weight=100
+    //% block="FloidPro auf %lvl hochfahren" weight=100
     //% group="Initialisierung"
-    export function init(): void {
-
+    export function init(lvl:Level): void {
+        level = lvl
         for (let i = 0; i < 3; i++) {
             pins.i2cWriteNumber(38, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
             pins.i2cWriteNumber(62, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
@@ -72,59 +47,12 @@ namespace Core {
         showOnLcd("FloidPro", 1, 7)
     }
 
-    const LCD_ADDR = 0x27; // I2C-Adresse des Displays (Standard)
-    const LCD_WIDTH = 20; // Zeichen pro Zeile des Displays
-    const LCD_CHR = 1; // Modus für Daten
-    const LCD_CMD = 0; // Modus für Befehle
-    const LCD_LINE_1 = 0x80; // Adresse für Zeile 1
-    const LCD_LINE_2 = 0xC0; // Adresse für Zeile 2
-    const LCD_LINE_3 = 0x94; // Adresse für Zeile 3 (für 4-Zeilen-Displays)
-    const LCD_LINE_4 = 0xD4; // Adresse für Zeile 4
-    const LCD_BACKLIGHT = 0x08; // Hintergrundbeleuchtung
-    const ENABLE = 0x04; // Enable Bit
-
-    // Display initialisiere
-
-    function initLCD(): void {
-        lcdByte(0x33, LCD_CMD); // Initialisierung
-        lcdByte(0x32, LCD_CMD); // Initialisierung
-        lcdByte(0x06, LCD_CMD); // Cursor nach rechts
-        lcdByte(0x0C, LCD_CMD); // Display ein, Cursor aus
-        lcdByte(0x28, LCD_CMD); // 4 Zeilen, 5x7-Matrix
-        lcdByte(0x01, LCD_CMD); // Bildschirm leeren
-        basic.pause(5); // Wartezeit für Verarbeitung
-    }
-
-    // Sendet ein Byte an das LCD
-    function lcdByte(bits: number, mode: number): void {
-        const bitsHigh: number = mode | (bits & 0xF0) | LCD_BACKLIGHT;
-        const bitsLow: number = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT;
-
-        // High-Bits senden
-        i2cWrite(LCD_ADDR, bitsHigh);
-        lcdToggleEnable(bitsHigh);
-
-        // Low-Bits senden
-        i2cWrite(LCD_ADDR, bitsLow);
-        lcdToggleEnable(bitsLow);
-    }
-
-    // Umschalten des Enable-Bits, um das LCD zu triggern
-    function lcdToggleEnable(bits: number): void {
-        basic.pause(1); // Kurze Wartezeit
-        i2cWrite(LCD_ADDR, bits | ENABLE);
-        basic.pause(1); // Wartezeit für das Umschalten
-        i2cWrite(LCD_ADDR, bits & ~ENABLE);
-        basic.pause(1);
-    }
-
     /**
-     * Zeige einen String auf dem LCD an
-     * @param message is String, eg: "Hello"
+     * Zeigt einen String ab einer bestimmten Position auf dem LCD an: void
+     * @param message is String, eg: "Hallo Welt"
      * @param line is zeilennummer, [1 - 4], eg: 1
      * @param column is spaltennummer, [1 - 15], eg: 1
      */
-    // Funktion zum Anzeigen einer Zeichenkette auf einer bestimmten Zeile
     //% blockid="floidpro_showlcd" block="Stelle Text %message in Zeile %line und Spalte %column dar"
     //% line.min=1 line.max=4
     //% column.min=1 column.max=20
@@ -158,7 +86,7 @@ namespace Core {
     }
 
     /**
-     * Displayinhalt löschen
+     * Löscht den gesamten Displayinhalt.
      */
     //% blockid="floidpro_clearlcd" block="Displayinhalt löschen"
     //% weight=80 blockGap=7
@@ -166,11 +94,6 @@ namespace Core {
     export function clearLCD(): void {
         lcdByte(0x01, LCD_CMD); // Displayinhalt löschen
         basic.pause(5); // Wartezeit für die LCD-Verarbeitung
-    }
-
-    // Funktion für I2C-Schreiben
-    function i2cWrite(address: number, data: number): void {
-        pins.i2cWriteBuffer(address, pins.createBufferFromArray([data]));
     }
 
     /**
@@ -191,7 +114,6 @@ namespace Core {
         let message = zahl + '';
         let padding = "";
 
-
         if (message.length > laenge) {
             message = message.slice(0, laenge); // Kürzen, falls zu lang
         } else {
@@ -202,13 +124,11 @@ namespace Core {
         message = padding + message;
         showOnLcd(message, line, column);
     }
-
-    
-
+  
     /**
-     * Bumper
+     * Liest die Werte der Bumper als eine Dezimalzahl aus: number
      */
-    //% block
+    //% block="Dezimalzahl der Bumper"
     export function bumper(): number {
         return pins.i2cReadNumber(60, NumberFormat.Int8LE, false)
     }
@@ -288,5 +208,45 @@ namespace Core {
         }
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
         Core.showNumber(n, 3, 1, 1)
+    }
+
+    // Display initialisiere
+
+    function initLCD(): void {
+        lcdByte(0x33, LCD_CMD); // Initialisierung
+        lcdByte(0x32, LCD_CMD); // Initialisierung
+        lcdByte(0x06, LCD_CMD); // Cursor nach rechts
+        lcdByte(0x0C, LCD_CMD); // Display ein, Cursor aus
+        lcdByte(0x28, LCD_CMD); // 4 Zeilen, 5x7-Matrix
+        lcdByte(0x01, LCD_CMD); // Bildschirm leeren
+        basic.pause(5); // Wartezeit für Verarbeitung
+    }
+
+    // Sendet ein Byte an das LCD
+    function lcdByte(bits: number, mode: number): void {
+        const bitsHigh: number = mode | (bits & 0xF0) | LCD_BACKLIGHT;
+        const bitsLow: number = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT;
+
+        // High-Bits senden
+        i2cWrite(LCD_ADDR, bitsHigh);
+        lcdToggleEnable(bitsHigh);
+
+        // Low-Bits senden
+        i2cWrite(LCD_ADDR, bitsLow);
+        lcdToggleEnable(bitsLow);
+    }
+
+    // Umschalten des Enable-Bits, um das LCD zu triggern
+    function lcdToggleEnable(bits: number): void {
+        basic.pause(1); // Kurze Wartezeit
+        i2cWrite(LCD_ADDR, bits | ENABLE);
+        basic.pause(1); // Wartezeit für das Umschalten
+        i2cWrite(LCD_ADDR, bits & ~ENABLE);
+        basic.pause(1);
+    }
+
+    // Funktion für I2C-Schreiben
+    function i2cWrite(address: number, data: number): void {
+        pins.i2cWriteBuffer(address, pins.createBufferFromArray([data]));
     }
 }

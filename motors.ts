@@ -1,39 +1,5 @@
- /// <reference path="FloidPro.ts" />
-
-
-//% weight=180 color=#004A99 icon="" block="FloidPro - Antrieb"
+ //% weight=180 color=#004A99 icon="" block="FloidPro - Antrieb"
 namespace Motors{
-    let pwmLeft = 0
-    let pwmRight = 0
-    let running = false
-
-    const pinLeft = DigitalPin.P1
-    const pinRight = DigitalPin.P2
-    const periode = 10 // in ms
-
-    /** 
-     * Diese Funktion prüft für eine Adresse, ob ein I^2C-Chip angeschlossen ist.
-    */
-    function testDevice(address: number): boolean {
-        let testValue = 128;
-        try {
-
-            let response = pins.i2cReadNumber(address, NumberFormat.UInt8BE, false)
-            if (response != 0) {
-                return true
-            }
-            else {
-                pins.i2cWriteNumber(address, testValue, NumberFormat.UInt8BE, false)
-                let response = pins.i2cReadNumber(address, NumberFormat.UInt8BE, false)
-                pins.i2cWriteNumber(address, 0, NumberFormat.UInt8BE, false)
-            }
-            return response === testValue
-        } catch (e) {
-            // Falls eine Ausnahme auftritt, ist die Adresse ungültig
-            return false
-        }
-    }
-
     /**
      * funktion zur Hintergrunfausführung der Puls-Weiten-Modulation für Modul 4
      */
