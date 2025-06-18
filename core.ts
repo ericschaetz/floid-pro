@@ -2,12 +2,11 @@
  * Die Hauptsektion umfasst die Funktionen für Initialisierung, Display, I2C, Bumper und Beleuchtung
  */
 //% weight=200 color=#004A99 icon="" block="FloidPro - Hauptsektion"
-//% groups="['Display', 'Bumper', 'Beleuchtung','Initialisierung' ]"
+//% groups="['Display', 'Bumper', 'Beleuchtung','Initialisierung','I2C' ]"
 namespace Core {
 
     /**
-     * Prüft ob ein Controller mit einer bestimmten Adresse angeschlossen ist: boolean
-     * @param address is Adresse, eg: 0
+     * Prüft ob ein Controller mit einer bestimmten Adresse angeschlossen ist
      */
     //% blockid="floidpro_i2c_scan" 
     //% block="Controller %address ist angeschlossen" weight=90
@@ -130,6 +129,7 @@ namespace Core {
      * Liest die Werte der Bumper als eine Dezimalzahl aus: number
      */
     //% block="Dezimalzahl der Bumper"
+    //% group="Bumper"
     export function bumper(): number {
         return pins.i2cReadNumber(60, NumberFormat.Int8LE, false)
     }
@@ -139,6 +139,7 @@ namespace Core {
      */
     //%blockid="i2cscan"
     //% block="angeschlossene I²C-Controller"
+    //% group="I2C"
     export function i2cpins(): number[] {
         let availableAddresses: number[] = [];
         for (let address = 1; address <= 127; address++) {
@@ -162,6 +163,7 @@ namespace Core {
      */
     //% blockid="floidpro_light"
     //% block="Schalte Blinker VL:%VL_Blinker                 VR:%VR_Blinker                 HL:%HL_Blinker                 HR:%HR_Blinker         Licht   VL:%VL_Licht                 VR:%VR_Licht                 HL:%HL_Licht                 HR:%HR_Licht "
+    //% group="Beleuchtung"
     export function beleuchtung(VL_Blinker: OnOff, VR_Blinker: OnOff, HL_Blinker: OnOff, HR_Blinker: OnOff, VL_Licht: OnOff, VR_Licht: OnOff, HL_Licht: OnOff, HR_Licht: OnOff): void {
         let n = 0
         if (VL_Blinker) {
@@ -186,14 +188,15 @@ namespace Core {
             n += 128
         }
         if (HR_Licht) {
-            n += 164
+            n += 64
         }
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
     }
 
     
-    let lights = [1,1,1,1,1,1,1,1]
-    //%block="Schalte Lampe %light auf %status"
+    //% blockid=="floidpro_singlelight"
+    //% block="Schalte Lampe %light auf %status"
+    //% group="Beleuchtung"
     export function setlights(light:number, status:OnOff):void{
         lights[light] = status;
         let n = 0;
@@ -203,6 +206,8 @@ namespace Core {
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
         Core.showNumber(n, 3, 1, 1)
     }
+
+    /*Ende Frontend*******************************************************************************************************************************/
 
     // Display initialisiere
 

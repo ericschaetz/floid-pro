@@ -31,6 +31,8 @@ const pinLeft = DigitalPin.P0;
 const pinRight = DigitalPin.P1;
 const periode = 10 // in ms;
 
+let lights = [1, 1, 1, 1, 1, 1, 1, 1]
+
 /**************************************************************************************************/
 
 /** 
