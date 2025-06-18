@@ -2,19 +2,8 @@
  * Die Hauptsektion umfasst die Funktionen für Initialisierung, Display, I2C, Bumper und Beleuchtung
  */
 //% weight=200 color=#004A99 icon="" block="FloidPro - Hauptsektion"
-//% groups="['Display', 'Bumper', 'Beleuchtung','Initialisierung','I2C' ]"
+//% groups="['Initialisierung', 'Display', 'Bumper', 'Beleuchtung','I2C' ]"
 namespace Core {
-
-    /**
-     * Prüft ob ein Controller mit einer bestimmten Adresse angeschlossen ist
-     */
-    //% blockid="floidpro_i2c_scan" 
-    //% block="Controller %address ist angeschlossen" weight=90
-    //% address.min=0 address.max=127
-    //% group="Initialisierung"
-    export function testDevice_front(address: number): boolean {
-        return testDevice(address)
-    }
  
     /**
      * Init-Funktion, startet den Roboter korrekt und setzt das Level auf dem der Roboter arbeitet.
@@ -47,15 +36,29 @@ namespace Core {
     }
 
     /**
+     * Prüft ob ein Controller mit einer bestimmten Adresse angeschlossen ist
+     */
+    //% blockid="floidpro_i2c_scan" 
+    //% block="Controller %address ist angeschlossen" 
+    //% weight=95
+    //% address.min=0 address.max=127
+    //% group="Initialisierung"
+    export function testDevice_front(address: number): boolean {
+        return testDevice(address)
+    }
+
+    /*Ende Initialisierung*******************************************************************************************************************************/
+
+    /**
      * Zeigt einen String ab einer bestimmten Position auf dem LCD an.
      * @param message is String, eg: "Hallo Welt"
-     * @param line is zeilennummer, [1 - 4], eg: 1
-     * @param column is spaltennummer, [1 - 15], eg: 1
+     * @param line is zeilennummer, eg: 1
+     * @param column is spaltennummer, eg: 1
      */
     //% blockid="floidpro_showlcd" block="Stelle Text %message in Zeile %line und Spalte %column dar"
     //% line.min=1 line.max=4
     //% column.min=1 column.max=20
-    //% weight=90 blockGap=8
+    //% weight=90
     //% group="Display"
     export function showOnLcd(message: string, line: number, column: number): void {
         column -= 1
@@ -85,18 +88,6 @@ namespace Core {
     }
 
     /**
-     * Löscht den gesamten Displayinhalt.
-     */
-    //% blockid="floidpro_clearlcd" 
-    //% block="Displayinhalt löschen"
-    //% weight=80 blockGap=7
-    //% group="Display"
-    export function clearLCD(): void {
-        lcdByte(0x01, LCD_CMD); // Displayinhalt löschen
-        basic.pause(5); // Wartezeit für die LCD-Verarbeitung
-    }
-
-    /**
      * Zeigt eine Zahl auf dem Display an und richtet sie rechtsbündig aus.
      * @param zahl is number, eg: 0
      * @param line is zeilennummer, [1 - 4], eg: 1
@@ -105,7 +96,7 @@ namespace Core {
      */
     //% blockid="floidpro_shownumber"
     //% block="Zeige Zahl %zahl mit max. Länge %laenge in Zeile %line und Spalte %column"
-    //% weight=85 blockGap=8
+    //% weight=85
     //% group="Display"
     //% line.min=1 line.max=4
     //% column.min=1 column.max=20
@@ -124,14 +115,38 @@ namespace Core {
         message = padding + message;
         showOnLcd(message, line, column);
     }
-  
+
+    /**
+     * Löscht den gesamten Displayinhalt.
+     */
+    //% blockid="floidpro_clearlcd" 
+    //% block="Displayinhalt löschen"
+    //% weight=80 blockGap=7
+    //% group="Display"
+    export function clearLCD(): void {
+        lcdByte(0x01, LCD_CMD); // Displayinhalt löschen
+        basic.pause(5); // Wartezeit für die LCD-Verarbeitung
+    }
+
+    
+    /**
+     * Gibt wieder, ob ein bestimmter Bumper gedrückt ist
+     */
+    //% block="Bumper %bumper ist gedrückt"
+    //% group="Bumper"
+    //% weight=70
+    export function bumpersingle(bumper:BumperSensor): boolean {
+        return !((bumperall() & (1 << bumper) )!= 0)
+    }
+
     /**
      * Liest die Werte der Bumper als eine Dezimalzahl aus: number
      */
     //% block="Dezimalzahl der Bumper"
     //% group="Bumper"
-    export function bumper(): number {
-        return pins.i2cReadNumber(60, NumberFormat.Int8LE, false)
+    //% weight=70
+    export function bumperall(): number {
+        return -1*pins.i2cReadNumber(60, NumberFormat.Int8LE, false)
     }
 
     /**

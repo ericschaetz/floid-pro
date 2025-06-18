@@ -108,4 +108,18 @@ enum USSensor {
     //% block="hinten"
     Hinten = 3,
 }
+
+enum BumperSensor {
+    //% block="vorne rechts"
+    VR = 1,
+
+    //% block="vorne links"
+    VL = 0,
+
+    //% block="hinten rechts"
+    HR = 3,
+
+    //% block="hinten links"
+    HL = 2,
+}
 /**************************************************************************************************/
