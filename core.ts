@@ -128,13 +128,15 @@ namespace Core {
         basic.pause(5); // Wartezeit für die LCD-Verarbeitung
     }
 
-    
+    /*Ende Display*******************************************************************************************************************************/
+
     /**
      * Gibt wieder, ob ein bestimmter Bumper gedrückt ist
      */
+    //% blockid="floidpro_bumpersingle"
     //% block="Bumper %bumper ist gedrückt"
     //% group="Bumper"
-    //% weight=70
+    //% weight=75
     export function bumpersingle(bumper:BumperSensor): boolean {
         return ((bumperall() & (1 << bumper) )!= 0)
     }
@@ -142,13 +144,18 @@ namespace Core {
     /**
      * Liest die Werte der Bumper als eine Dezimalzahl aus: number
      */
+    //% blockid="floidpro_bumperall"
     //% block="Dezimalzahl der Bumper"
     //% group="Bumper"
     //% weight=70
     export function bumperall(): number {
-        return -1*pins.i2cReadNumber(60, NumberFormat.Int8LE, false)
+        let shift = 0
+        if (!reservepin60) shift=240
+        return pins.i2cReadNumber(60, NumberFormat.UInt8LE, false) - shift
     }
 
+    /*Ende Bumper*******************************************************************************************************************************/
+  
     /**
      * Gibt ein Array der angeschlossenen I²C-Controller aus
      */
