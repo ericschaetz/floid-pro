@@ -138,4 +138,32 @@ enum Linetracker {
     //% block="LT3"
     LT3 = 3,
 }
+
+enum Light {
+    //% block="Blinker VL"
+    BVL = 0,
+
+    //% block="Blinker VR"
+    BVR = 3,
+
+    //% block="Blinker HL"
+    BHL = 4,
+
+    //% block="Blinker HR"
+    BHR = 7,
+
+    //% block="Licht VL"
+    LVL = 1,
+
+    //% block="Licht VR"
+    LVR = 2,
+
+    //% block="Licht HL"
+    LHL = 5,
+
+    //% block="Licht HR"
+    LHR = 6,
+
+    
+}
 /**************************************************************************************************/

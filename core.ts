@@ -195,7 +195,7 @@ namespace Core {
     //% blockid=="floidpro_singlelight"
     //% block="Schalte Lampe %light auf %status"
     //% group="Beleuchtung"
-    export function setlights(light: number, status: OnOff): void {
+    export function setlights(light: Light, status: OnOff): void {
         lights[light] = status;
         let n = 0;
         for (let i = 0; i < 8; i++) {
