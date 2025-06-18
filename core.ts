@@ -199,7 +199,7 @@ namespace Core {
         lights[light] = status;
         let n = 0;
         for (let i = 0; i < 8; i++) {
-            n += 2 ** (i * lights[i])
+            n += lights[i] * (2 ** (i))
         }
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
         Core.showNumber(n, 3, 1, 1)
