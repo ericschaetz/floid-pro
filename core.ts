@@ -136,7 +136,7 @@ namespace Core {
     //% group="Bumper"
     //% weight=70
     export function bumpersingle(bumper:BumperSensor): boolean {
-        return !((bumperall() & (1 << bumper) )!= 0)
+        return ((bumperall() & (1 << bumper) )!= 0)
     }
 
     /**
