@@ -18,7 +18,7 @@ namespace Core {
     }
  
     /**
-     * Init-Funktion, startet den Roboter korrekt und setzt das Level auf dem der Roboter arbeitet: void
+     * Init-Funktion, startet den Roboter korrekt und setzt das Level auf dem der Roboter arbeitet.
      */
     //% blockid="floidpro_init" 
     //% block="FloidPro auf %lvl hochfahren" weight=100
@@ -48,7 +48,7 @@ namespace Core {
     }
 
     /**
-     * Zeigt einen String ab einer bestimmten Position auf dem LCD an: void
+     * Zeigt einen String ab einer bestimmten Position auf dem LCD an.
      * @param message is String, eg: "Hallo Welt"
      * @param line is zeilennummer, [1 - 4], eg: 1
      * @param column is spaltennummer, [1 - 15], eg: 1
@@ -88,7 +88,8 @@ namespace Core {
     /**
      * Löscht den gesamten Displayinhalt.
      */
-    //% blockid="floidpro_clearlcd" block="Displayinhalt löschen"
+    //% blockid="floidpro_clearlcd" 
+    //% block="Displayinhalt löschen"
     //% weight=80 blockGap=7
     //% group="Display"
     export function clearLCD(): void {
@@ -97,14 +98,14 @@ namespace Core {
     }
 
     /**
-     * Zahl auf dem Display anzeigen und rechtsbündig ausrichten
+     * Zeigt eine Zahl auf dem Display an und richtet sie rechtsbündig aus.
      * @param zahl is number, eg: 0
-     * @param zahl ist Zahl, welche angezeigt wird
      * @param line is zeilennummer, [1 - 4], eg: 1
      * @param column is spalte, [1 - 20], eg: 1
      * @param laenge is number, [1,10], eg: 3
      */
-    //% blockid="floidpro_shownumber" block="Zeige Zahl %zahl mit max. Länge %laenge in Zeile %line und Spalte %column"
+    //% blockid="floidpro_shownumber"
+    //% block="Zeige Zahl %zahl mit max. Länge %laenge in Zeile %line und Spalte %column"
     //% weight=85 blockGap=8
     //% group="Display"
     //% line.min=1 line.max=4
@@ -134,9 +135,10 @@ namespace Core {
     }
 
     /**
-     * I²C-Pins
+     * Gibt ein Array der angeschlossenen I²C-Controller aus
      */
-    //% block="I²C Pins"
+    //%blockid="i2cscan"
+    //% block="angeschlossene I²C-Controller"
     export function i2cpins(): number[] {
         let availableAddresses: number[] = [];
         for (let address = 1; address <= 127; address++) {
@@ -155,43 +157,36 @@ namespace Core {
 
     }
 
-
     /**
-     * Beleuchtung
-     * @param VL_Blinker
-     * @param VL_Licht
-     * @param VR_Blinker
-     * @param VR_Licht
-     * @param HL_Blinker
-     * @param HL_Licht
-     * @param HR_Blinker
-     * @param HR_Licht
+     * Schaltet die Beleuchtung nach der Vorgabe an bzw. aus
      */
-    //% block
-    export function beleuchtung(VL_Blinker: boolean, VL_Licht: boolean, VR_Blinker: boolean, VR_Licht: boolean, HL_Blinker: boolean, HL_Licht: boolean, HR_Blinker: boolean, HR_Licht: boolean): void {
+    //% blockid="floidpro_light"
+    //% inlineInputMode=inline
+    //% block="Schalte Blinker VL:%VL_Blinker, VR:%VR_Blinker, HL:%HR_Blinker, HR:%HR_Blinker und Licht VL:%VL_Licht, VR:%VR_Licht, HL:%HR_Licht, HR:%HR_Licht "
+    export function beleuchtung(VL_Blinker: OnOff, VL_Licht: OnOff, VR_Blinker: OnOff, VR_Licht: OnOff, HL_Blinker: OnOff, HL_Licht: OnOff, HR_Blinker: OnOff, HR_Licht: OnOff): void {
         let n = 0
-        if (!VL_Blinker) {
+        if (VL_Blinker) {
             n += 1
         }
-        if (!VL_Licht) {
+        if (VL_Licht) {
             n += 2
         }
-        if (!VR_Blinker) {
+        if (VR_Blinker) {
             n += 8
         }
-        if (!VR_Licht) {
+        if (VR_Licht) {
             n += 4
         }
-        if (!HL_Blinker) {
+        if (HL_Blinker) {
             n += 16
         }
-        if (!HL_Licht) {
+        if (HL_Licht) {
             n += 32
         }
-        if (!HR_Blinker) {
+        if (HR_Blinker) {
             n += 128
         }
-        if (!HR_Licht) {
+        if (HR_Licht) {
             n += 164
         }
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)

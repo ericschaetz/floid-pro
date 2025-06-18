@@ -1,21 +1,3 @@
-enum USSensor {
-    //% block="rechts"
-    Rechts = 0,
-
-    //% block="vorne"
-    Vorne = 1,
-
-    //% block="links"
-    Links = 2,
-
-    //% block="hinten"
-    Hinten = 3,
-}
-
-
-/**
- * Custom blocks
- */
 //% weight=190 color=#004A99 icon="" block="FloidPro - Frontsektion"
 
 namespace Front {

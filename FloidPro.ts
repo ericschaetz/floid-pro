@@ -93,4 +93,30 @@ enum Level {
     l3c = 33,
 }
 
+enum USSensor {
+    //% block="rechts"
+    Rechts = 0,
+
+    //% block="vorne"
+    Vorne = 1,
+
+    //% block="links"
+    Links = 2,
+
+    //% block="hinten"
+    Hinten = 3,
+}
+
+// Benutzerdefinierter Typ
+type LichtGruppe = {
+    //% block="VL"
+    VL: OnOff;
+    //% block="VR"
+    VR: OnOff;
+    //% block="HL"
+    HL: OnOff;
+    //% block="HR"
+    HR: OnOff;
+};
+
 /**************************************************************************************************/
