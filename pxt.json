@@ -1,6 +1,5 @@
 {
     "name": "Floid Pro",
-    "icon": "icon.png",
     "version": "0.0.18",
     "description": "",
     "dependencies": {
@@ -26,5 +25,6 @@
     "supportedTargets": [
         "microbit"
     ],
-    "preferredEditor": "tsprj"
+    "preferredEditor": "tsprj",
+    "icon": "icon.png"
 }
