@@ -193,7 +193,9 @@ Funktion liefert Wahrheitswert darüber, ob der eingestellte Sensor schwarzen Un
 Front.LineTracking(Linetracker.LT0)
 ```
 
-#####Beispiel
+##### Beispiel
+
+Prüft, ob an einem der äußeren Linetrackingsensoren schwarzer Untergrund erkannt wird.
 
 ```blocks
 if (Front.LineTracking(Linetracker.LT0) || Front.LineTracking(Linetracker.LT3)) {
