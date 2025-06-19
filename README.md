@@ -13,7 +13,7 @@ Diese Erweiterung erlaubt die einfache Ansteuerung des **FloidPro** im Microsoft
 
 Die Funktionen sind in drei logische Bereiche entsprechend der Aufteilung des Roboters unterteilt:
 
-##  1. Hauptsektion
+##  🖥️ 1. Hauptsektion
 Funktionen für die Initialisierung, das Display, die Bumper, die Beleuchtung und I<sup>2</sup>C.
 
 ### Initialisierung
@@ -121,45 +121,87 @@ for (let index = 0; index < 4; index++) {
     basic.pause(500)
 }
 ```
+### I<sub>2</sub>C
 
+#### Angeschlossene Controller abfragen
 
----
-
-### 🔷 2. Hauptsektion
-Zentrale Steuerungen, wie Piezo, Statusanzeigen oder Kommunikationsfunktionen.
-
-#### Beispiel: Piepton ausgeben
+Funktion, welche ein Array der Adressen aller angeschlossenen I<sub>2</sub>C-Controllern zurückgibt.
 
 ```ts
-floid.beep()
+Core.i2cpins()
 ```
 
-```blocks
-// Piept einmal
-floid.beep()
+#### Bestimmten Controller abfragen
+
+Funktion zum bestimmen eines Wahrheitswerts darüber, ob ein Controller an der Adresse angeschlossen ist.
+
+```ts
+Core.testDevice_front(0)
 ```
+
+##### Beispiel
+
+Zeigt auf dem Display an, ob der Controller mit der Adresse 39 angeschlossen ist.
+
+```blocks
+if (Core.testDevice_front(39)) {
+    Core.showOnLcd("39 angeschlossen", 1, 1)
+}
+
+```
+---
+
+## 🚘 2. Frontsektion
+
+Steuerung der Funktionen für Ultraschall, Linetracking und die RGB-LEDs
+
+### Ultraschall und RGB-LEDs
+
+#### Ultraschallweiche stellen
+
+Funktion zum Stellen der Ultraschallweiche, welche den gewüschten Ultraschallsensor verbindet.
+
+```ts
+Front.sonar_switch(USSensor.Rechts)
+```
+
+#### Distanzmessung
+
+Funktion zum Auslösen der Distanzmessung mithilfe des verbundenen Sensors.
+
+```ts
+Front.sonar()
+```
+
+##### Beispiel
+
+Die Distanzmessung wird mit den rechten Ultraschallsensor durchgeführt.
+
+```blocks
+Front.sonar_switch(USSensor.Rechts)
+let Distanz = Front.sonar()
+```
+
+
+### Linetracking
+
+#### Abfragen eines Sensorwerts
+
+Funktion liefert Wahrheitswert darüber, ob der eingestellte Sensor schwarzen Untergrund erkennt.
+
+```ts
+Front.LineTracking(Linetracker.LT0)
+```
+
 
 ---
 
-### 🔷 3. Antriebsektion
+### 🏎️ 3. Antriebsektion
 Funktionen zur Steuerung der Motoren und des Fahrverhaltens.
 
-#### Beispiel: Vorwärts fahren
-
-```ts
-floid.drive(100, 100)
-```
-
-```blocks
-// Fahre geradeaus für eine Sekunde
-floid.drive(100, 100)
-basic.pause(1000)
-floid.drive(0, 0)
-```
-
 ---
 
-## 📦 Installation
+## Installation
 
 Diese Erweiterung kann über den folgenden GitHub-Link in MakeCode eingebunden werden:
 
@@ -175,7 +217,7 @@ https://github.com/ericschaetz/floid-pro
 
 - 💻 MakeCode Editor
 - 📟 micro:bit v2 (empfohlen)
-- 🤖 Floid Pro Roboter
+- 🤖 FloidPro Roboter
 
 ---
 
