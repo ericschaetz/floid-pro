@@ -193,6 +193,13 @@ Funktion liefert Wahrheitswert darüber, ob der eingestellte Sensor schwarzen Un
 Front.LineTracking(Linetracker.LT0)
 ```
 
+#####Beispiel
+
+```blocks
+if (Front.LineTracking(Linetracker.LT0) || Front.LineTracking(Linetracker.LT3)) {
+    Core.showOnLcd("Außen wurde Schwarz erkannt", 1, 1)
+}
+```
 
 ---
 
