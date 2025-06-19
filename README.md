@@ -58,6 +58,7 @@ Core.showOnLcd("Hallo Welt", 1, 4)
 Core.showNumber(10, 3, 2, 1)
 basic.pause(20)
 Core.clearLCD()
+ init(lvl:Level)
 ```
 ### Bumper
 
