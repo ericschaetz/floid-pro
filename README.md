@@ -167,7 +167,7 @@ Diese Erweiterung kann über den folgenden GitHub-Link in MakeCode eingebunden w
 https://github.com/ericschaetz/floid-pro
 ```
 
-→ Öffne MakeCode, klicke auf „Erweiterungen“ und gib den Link oben ein.
+→ Öffne MakeCode, klicke auf „Erweiterungen" und gib den Link oben ein.
 
 ---
 
