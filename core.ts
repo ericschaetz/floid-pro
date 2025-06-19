@@ -35,18 +35,6 @@ namespace Core {
         showOnLcd("FloidPro", 1, 7)
     }
 
-    /**
-     * Prüft ob ein Controller mit einer bestimmten Adresse angeschlossen ist
-     */
-    //% blockid="floidpro_i2c_scan" 
-    //% block="Controller %address ist angeschlossen" 
-    //% weight=95
-    //% address.min=0 address.max=127
-    //% group="Initialisierung"
-    export function testDevice_front(address: number): boolean {
-        return testDevice(address)
-    }
-
     /*Ende Initialisierung*******************************************************************************************************************************/
 
     /**
@@ -162,6 +150,7 @@ namespace Core {
     //% blockid="floidpro_light"
     //% block="Schalte Blinker VL:%VL_Blinker                 VR:%VR_Blinker                 HL:%HL_Blinker                 HR:%HR_Blinker         Licht   VL:%VL_Licht                 VR:%VR_Licht                 HL:%HL_Licht                 HR:%HR_Licht "
     //% group="Beleuchtung"
+    //% weight=65
     export function beleuchtung(VL_Blinker: OnOff, VR_Blinker: OnOff, HL_Blinker: OnOff, HR_Blinker: OnOff, VL_Licht: OnOff, VR_Licht: OnOff, HL_Licht: OnOff, HR_Licht: OnOff): void {
         let n = 0
         if (VL_Blinker) {
@@ -214,6 +203,7 @@ namespace Core {
     //%blockid="i2cscan"
     //% block="angeschlossene I²C-Controller"
     //% group="I2C"
+    //% weight=60
     export function i2cpins(): number[] {
         let availableAddresses: number[] = [];
         for (let address = 1; address <= 127; address++) {
@@ -231,6 +221,20 @@ namespace Core {
         return availableAddresses;
 
     }
+
+    /**
+     * Prüft ob ein Controller mit einer bestimmten Adresse angeschlossen ist
+     */
+    //% blockid="floidpro_i2c_scan" 
+    //% block="Controller %address ist angeschlossen" 
+    //% weight=
+    //% address.min=0 address.max=127
+    //% group="I2C"
+    //% weight=55
+    export function testDevice_front(address: number): boolean {
+        return testDevice(address)
+    }
+
 
     /*Ende I2C*******************************************************************************************************************************/
 
