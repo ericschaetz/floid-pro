@@ -66,7 +66,7 @@ Core.clearLCD()
 Funktion gibt einen Wahrheitswert darüber aus, ob ein bestimmter Bumper gedrückt ist.
 
 ```blocks
-if(Core.bumpersingle(BumperSensor.VR))
+if(Core.bumpersingle(BumperSensor.VR)) basic.pause(50)
 ```
 
 #### Bumper gesamt abfragen
