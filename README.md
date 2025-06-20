@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-<<link rel="stylesheet" href="/assets/css/custom.css" />>
+<link rel="stylesheet" href="/assets/css/custom.css" />
 
 # FloidPro MakeCode-Erweiterung
 
