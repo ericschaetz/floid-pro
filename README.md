@@ -22,7 +22,7 @@ Funktionen für die Initialisierung, das Display, die Bumper, die Beleuchtung un
 
 Muss beim Start des Roboters ausgeführt werden, um alle Funktionen richtig ausführen zu können. Hierbei wird das Level gesetzt, auf dem das Programm laufen soll.
 
-```ts
+```blocks
 Core.init(Level.l1A)
 ```
 
@@ -32,21 +32,21 @@ Core.init(Level.l1A)
 
 Funktion zum Darstellen von Text auf dem Display. Die Position wird über Zeilen- und Spaltennummer angegeben.
 
-```ts
+```blocks
 Core.showOnLcd("Hallo Welt", 1, 1)
 ```
 #### Zahl darstellen
 
 Funktion zum Darstellen einer Zahl mit einer maximalen Zahl an Stellen. Die Position wird über Zeilen- und Spaltennummer angegeben.
 
-```ts
+```blocks
 Core.showNumber(15, 3, 1, 1)
 ```
 #### Displayinhalt löschen
 
 Funktion zum Löschen des gesamten Displayinhalts.
 
-```ts
+```blocks
 Core.clearLCD()
 ```
 ##### Beispiel
@@ -65,7 +65,7 @@ Core.clearLCD()
 
 Funktion gibt einen Wahrheitswert darüber aus, ob ein bestimmter Bumper gedrückt ist.
 
-```ts
+```blocks
 Core.bumpersingle(BumperSensor.VR)
 ```
 
@@ -73,7 +73,7 @@ Core.bumpersingle(BumperSensor.VR)
 
 Funktion zum Abfragen aller Bumper, indem sie den gesamten I<sup>2</sup>C-Wert als Dezimalzahl liefert.
 
-```ts
+```blocks
 Core.bumperall()
 ```
 
@@ -97,7 +97,7 @@ while (0 == Core.bumperall()) {
 
 Funktion zum einstellen der Zustände für alle Blinker und Lampen des FloidPro.
 
-```ts
+```blocks
 Core.beleuchtung(OnOff.On, OnOff.On, OnOff.On, OnOff.On, OnOff.On, OnOff.On, OnOff.On, OnOff.On)
 ```
 
@@ -105,7 +105,7 @@ Core.beleuchtung(OnOff.On, OnOff.On, OnOff.On, OnOff.On, OnOff.On, OnOff.On, OnO
 
 Funktion zum Ein- oder Ausschalten eines bestimmten Blinkers/ einer bestimmten Lampe.
 
-```ts
+```blocks
 Core.setlights(Light.BVL, OnOff.On)
 ```
 ##### Beispiel
@@ -127,7 +127,7 @@ for (let index = 0; index < 4; index++) {
 
 Funktion, welche ein Array der Adressen aller angeschlossenen I<sub>2</sub>C-Controllern zurückgibt.
 
-```ts
+```blocks
 Core.i2cpins()
 ```
 
@@ -135,7 +135,7 @@ Core.i2cpins()
 
 Funktion zum bestimmen eines Wahrheitswerts darüber, ob ein Controller an der Adresse angeschlossen ist.
 
-```ts
+```blocks
 Core.testDevice_front(0)
 ```
 
@@ -161,7 +161,7 @@ Steuerung der Funktionen für Ultraschall, Linetracking und die RGB-LEDs
 
 Funktion zum Stellen der Ultraschallweiche, welche den gewüschten Ultraschallsensor verbindet.
 
-```ts
+```blocks
 Front.sonar_switch(USSensor.Rechts)
 ```
 
@@ -169,7 +169,7 @@ Front.sonar_switch(USSensor.Rechts)
 
 Funktion zum Auslösen der Distanzmessung mithilfe des verbundenen Sensors.
 
-```ts
+```blocks
 Front.sonar()
 ```
 
@@ -189,7 +189,7 @@ let Distanz = Front.sonar()
 
 Funktion liefert Wahrheitswert darüber, ob der eingestellte Sensor schwarzen Untergrund erkennt.
 
-```ts
+```blocks
 Front.LineTracking(Linetracker.LT0)
 ```
 
@@ -205,7 +205,7 @@ if (Front.LineTracking(Linetracker.LT0) || Front.LineTracking(Linetracker.LT3)) 
 
 ---
 
-### 🏎️ 3. Antriebsektion
+## 🏎️ 3. Antriebsektion
 Funktionen zur Steuerung der Motoren und des Fahrverhaltens.
 
 ---
