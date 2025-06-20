@@ -1,4 +1,4 @@
-# Floid Pro MakeCode-Erweiterung
+# FloidPro MakeCode-Erweiterung
 
 Diese Erweiterung erlaubt die einfache Ansteuerung des **FloidPro** im Microsoft MakeCode Editor. Der Roboter lässt sich dabei auf 3 Level betreiben:
 
@@ -66,7 +66,7 @@ Core.clearLCD()
 Funktion gibt einen Wahrheitswert darüber aus, ob ein bestimmter Bumper gedrückt ist.
 
 ```blocks
-Core.bumpersingle(BumperSensor.VR)
+if(Core.bumpersingle(BumperSensor.VR))
 ```
 
 #### Bumper gesamt abfragen
