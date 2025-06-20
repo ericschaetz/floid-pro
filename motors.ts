@@ -1,7 +1,7 @@
  //% weight=180 color=#004A99 icon="" block="FloidPro - Antrieb"
 namespace Motors{
     /**
-     * funktion zur Hintergrunfausführung der Puls-Weiten-Modulation für Modul 4
+     * funktion zur Hintergrundausführung der Puls-Weiten-Modulation für Modul 4
      */
     function pwm(left: number, right: number): void {
         pwmLeft = Math.clamp(0, 1023, left)
