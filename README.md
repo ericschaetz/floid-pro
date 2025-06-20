@@ -1,3 +1,9 @@
+---
+layout: default
+---
+
+<link rel="stylesheet" href="/floid-pro/assets/css/custom.css" />
+
 # FloidPro MakeCode-Erweiterung
 
 Diese Erweiterung erlaubt die einfache Ansteuerung des **FloidPro** im Microsoft MakeCode Editor. Der Roboter lässt sich dabei auf 3 Level betreiben:
