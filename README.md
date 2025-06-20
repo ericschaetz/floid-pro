@@ -170,7 +170,7 @@ Front.sonar_switch(USSensor.Rechts)
 Funktion zum Auslösen der Distanzmessung mithilfe des verbundenen Sensors.
 
 ```blocks
-Front.sonar()
+distanz = Front.sonar()
 ```
 
 ##### Beispiel
@@ -179,7 +179,7 @@ Die Distanzmessung wird mit den rechten Ultraschallsensor durchgeführt.
 
 ```blocks
 Front.sonar_switch(USSensor.Rechts)
-let Distanz = Front.sonar()
+let distanz = Front.sonar()
 ```
 
 
