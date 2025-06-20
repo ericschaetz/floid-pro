@@ -66,7 +66,7 @@ Core.clearLCD()
 Funktion gibt einen Wahrheitswert darüber aus, ob ein bestimmter Bumper gedrückt ist.
 
 ```blocks
-foo = Core.bumpersingle(BumperSensor.VR)
+b_vr = Core.bumpersingle(BumperSensor.VR)
 ```
 
 #### Bumper gesamt abfragen
@@ -74,7 +74,7 @@ foo = Core.bumpersingle(BumperSensor.VR)
 Funktion zum Abfragen aller Bumper, indem sie den gesamten I<sup>2</sup>C-Wert als Dezimalzahl liefert.
 
 ```blocks
-ba = Core.bumperall()
+b_all = Core.bumperall()
 ```
 
 ##### Beispiel
@@ -128,7 +128,7 @@ for (let index = 0; index < 4; index++) {
 Funktion, welche ein Array der Adressen aller angeschlossenen I<sub>2</sub>C-Controllern zurückgibt.
 
 ```blocks
-fooba = Core.i2cpins()
+i2c = Core.i2cpins()
 ```
 
 #### Bestimmten Controller abfragen
@@ -136,7 +136,7 @@ fooba = Core.i2cpins()
 Funktion zum bestimmen eines Wahrheitswerts darüber, ob ein Controller an der Adresse angeschlossen ist.
 
 ```blocks
-foo = Core.testDevice_front(0)
+i2c = Core.testDevice_front(0)
 ```
 
 ##### Beispiel
@@ -190,7 +190,7 @@ let Distanz = Front.sonar()
 Funktion liefert Wahrheitswert darüber, ob der eingestellte Sensor schwarzen Untergrund erkennt.
 
 ```blocks
-ba = Front.LineTracking(Linetracker.LT0)
+lt0 = Front.LineTracking(Linetracker.LT0)
 ```
 
 ##### Beispiel
