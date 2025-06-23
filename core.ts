@@ -144,12 +144,12 @@ namespace Core {
 
         for (let i = 0; i <= 3; i++){
             if (Front.LineTracking(i)) showOnLcd("B",i + 1,5)
-            else showOnLcd("W", i+1, 5)
+            else showOnLcd("W", i + 1, 5)
             basic.pause(5)
             if (bumpersingle(i)) showOnLcd("J", i + 1, 11)
             else showOnLcd("N", i + 1, 11)
             Front.sonar_switch(i)
-            showNumber(Front.sonar(), 3, i + 1, 18)
+            showNumber(Front.sonar(), 3, i , 18)
             basic.pause(15)
         }
 
