@@ -29,7 +29,7 @@ namespace Front {
     }    
 
     /**
-     * Stellt die Ultraschall-Weiche, um den gewünschten Sensor zu verbinden
+     * Stellt die Ultraschall-Weiche, um den gewünschten Sensor zu verbinden 
      */
     //% blockid="floidpro_sonarswitch"
     //% block="Ultraschallweiche auf %richtung einstellen"
