@@ -14,6 +14,10 @@ namespace Core {
     //% group="Initialisierung"
     export function init(lvl:Level): void {
         level = lvl
+        initLCD()
+        showOnLcd("FloidPro", 1, 7)
+        showOnLcd("Version", 2, 5)
+
         for (let i = 0; i < 3; i++) {
             pins.i2cWriteNumber(38, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
             pins.i2cWriteNumber(62, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
@@ -32,8 +36,7 @@ namespace Core {
         pins.i2cWriteNumber(56, 255, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(38, 252, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(62, 252, NumberFormat.Int8LE, false)
-        initLCD()
-        showOnLcd("FloidPro", 1, 7)
+        
     }
 
     /*Ende Initialisierung*******************************************************************************************************************************/
