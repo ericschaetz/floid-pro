@@ -142,19 +142,18 @@ namespace Core {
             showOnLcd("LT3:  BHR:   USH:", 4, 1)
         }
 
-        if (Front.LineTracking(Linetracker.LT0)) showOnLcd("B",1,5)
-        else showOnLcd("W", 1, 5)
-        basic.pause(15)
-        if (Front.LineTracking(Linetracker.LT1)) showOnLcd("B", 2, 5)
-        else showOnLcd("W", 2, 5)
-        basic.pause(15)
-        if (Front.LineTracking(Linetracker.LT2)) showOnLcd("B", 3, 5)
-        else showOnLcd("W", 3, 5)
-        basic.pause(15)
-        if (Front.LineTracking(Linetracker.LT3)) showOnLcd("B", 4, 5)
-        else showOnLcd("W", 4, 5)
-        basic.pause(15)
+        for (let i = 0; i <= 3; i++){
+            if (Front.LineTracking(i)) showOnLcd("B",i+1,5)
+            else showOnLcd("W", i+1, 5)
+            basic.pause(15)
+        }
 
+        for (let i = 0; i <= 3; i++) {
+            Front.sonar_switch(i)
+            showNumber(Front.sonar(),3,i,18)
+            basic.pause(15)
+        }
+        
         staticdisplay = true
     }
 
