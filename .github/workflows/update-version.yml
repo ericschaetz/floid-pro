@@ -3,7 +3,10 @@ name: Update version.ts on push
 on:
   push:
     branches:
-      - master 
+      - master
+
+permissions:
+  contents: write
 
 jobs:
   update-version:
