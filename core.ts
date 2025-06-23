@@ -17,6 +17,7 @@ namespace Core {
         initLCD()
         showOnLcd("FloidPro", 1, 7)
         showOnLcd("Version", 2, 5)
+        showOnLcd("Level", 2, 0)
 
         for (let i = 0; i < 3; i++) {
             pins.i2cWriteNumber(38, 2 ** ((2 * i) + 2) + 2 ** (7 - 2 * i), NumberFormat.Int8LE, false)
