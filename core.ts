@@ -106,6 +106,23 @@ namespace Core {
     }
 
     /**
+     * Zeigt einen Wahrheitswert auf dem Display an.
+     * @param line is zeilennummer, [1 - 4], eg: 1
+     * @param column is spalte, [1 - 20], eg: 1
+     */
+    //% blockid="floidpro_showboolean"
+    //% block="Zeige Wahrheitswert %bool in Zeile %line und Spalte %column"
+    //% weight=84
+    //% group="Display"
+    //% line.min=1 line.max=4
+    //% column.min=1 column.max=20
+    //% inlineInputMode=inline
+    export function showboolean(bool: boolean, line: number, column: number): void {
+        if (bool) showOnLcd("WAHR", line, column);
+        else showOnLcd("FALSCH", line, column);
+    }
+
+    /**
      * Löscht den gesamten Displayinhalt.
      */
     //% blockid="floidpro_clearlcd" 
