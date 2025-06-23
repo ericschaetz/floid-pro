@@ -201,22 +201,14 @@ namespace Core {
     /**
      * Gibt ein Array der angeschlossenen I²C-Controller aus
      */
-    //%blockid="i2cscan"
+    //% blockid="floidpro_i2cscan"
     //% block="angeschlossene I²C-Controller"
     //% group="I2C"
     //% weight=60
     export function i2cpins(): number[] {
         let availableAddresses: number[] = [];
         for (let address = 1; address <= 127; address++) {
-            try {
-                // Sende ein leeres Byte an die Adresse
-                pins.i2cWriteNumber(address, 1, NumberFormat.UInt8LE, true);
-                pins.i2cWriteNumber(address, 0, NumberFormat.Int8LE, false)
-                // Wenn keine Fehler auftreten, füge die Adresse zur Liste hinzu
-                availableAddresses.push(address);
-            } catch (e) {
-                // Ignoriere Fehler, die auftreten, wenn keine Antwort kommt
-            }
+            if (testDevice(address)) availableAddresses.push(address);
         }
         //return 0
         return availableAddresses;
@@ -241,7 +233,7 @@ namespace Core {
 
     /*Ende Frontend*******************************************************************************************************************************/
 
-    // Display initialisiere
+    // Display initialisieren
 
     function initLCD(): void {
         lcdByte(0x33, LCD_CMD); // Initialisierung
