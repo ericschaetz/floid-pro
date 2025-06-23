@@ -144,14 +144,14 @@ namespace Core {
 
         if (Front.LineTracking(Linetracker.LT0)) showOnLcd("B",1,5)
         else showOnLcd("W", 1, 5)
-        if (Front.LineTracking(Linetracker.LT1)) showOnLcd("B", 1, 5)
+        if (Front.LineTracking(Linetracker.LT1)) showOnLcd("B", 2, 5)
         else showOnLcd("W", 2, 5)
-        if (Front.LineTracking(Linetracker.LT2)) showOnLcd("B", 1, 5)
+        if (Front.LineTracking(Linetracker.LT2)) showOnLcd("B", 3, 5)
         else showOnLcd("W", 3, 5)
-        if (Front.LineTracking(Linetracker.LT3)) showOnLcd("B", 1, 5)
+        if (Front.LineTracking(Linetracker.LT3)) showOnLcd("B", 4, 5)
         else showOnLcd("W", 4, 5)
 
-
+        staticdisplay = true
     }
 
 
