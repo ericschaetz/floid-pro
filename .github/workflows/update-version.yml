@@ -3,7 +3,7 @@ name: Update version.ts on push
 on:
   push:
     branches:
-      - main  # oder dein Branch
+      - master 
 
 jobs:
   update-version:
