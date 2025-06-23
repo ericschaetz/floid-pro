@@ -16,7 +16,7 @@ namespace Core {
         level = lvl
         initLCD()
         showOnLcd("FloidPro", 1, 7)
-        showOnLcd(versionnumber, 2, 5)
+        showOnLcd(versionnumber, 4, 1)
         showNumber(level,2, 4, 19)
 
         for (let i = 0; i < 3; i++) {
