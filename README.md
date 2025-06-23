@@ -42,6 +42,22 @@ Funktion zum Darstellen einer Zahl mit einer maximalen Zahl an Stellen. Die Posi
 ```blocks
 Core.showNumber(15, 3, 1, 1)
 ```
+#### Wahrheitswert darstellen
+
+Funktion zum Darstellen eines Wahrheitswerts ("WAHR"/"FALSCH"). Die Position wird über Zeilen- und Spaltennummer angegeben. 
+
+```blocks
+Core.showboolean(false, 1, 1)
+```
+
+#### Sensordaten auf Display anzeigen
+
+Funktion zum automatisierten Anzeigen aller Sensorwerte auf dem Display.
+
+```blocks
+Core.showsensor()
+```
+
 #### Displayinhalt löschen
 
 Funktion zum Löschen des gesamten Displayinhalts.
@@ -49,6 +65,7 @@ Funktion zum Löschen des gesamten Displayinhalts.
 ```blocks
 Core.clearLCD()
 ```
+
 ##### Beispiel
 
 Schreibt "Hallo Welt" in die erste Zeile und die vierte Spalte. Schreibt eine 10 in die zweite Zeile und die erste Spalte. Löscht den Display Inhalt nach einer kurzen Pause.
