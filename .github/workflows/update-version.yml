@@ -3,7 +3,7 @@ name: Update version.ts from pxt.json
 on:
   push:
     branches:
-      - main  # oder dein Hauptbranch
+      - master  
 
 jobs:
   update-version:
