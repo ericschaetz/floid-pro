@@ -78,6 +78,7 @@ namespace Core {
         for (let i = 0; i < message.length; i++) {
             lcdByte(message.charCodeAt(i), LCD_CHR);
         }
+        staticdisplay = false
     }
 
     /**
@@ -127,6 +128,34 @@ namespace Core {
     }
 
     /**
+     * Zeigt alle Sensordaten auf dem Display an
+     */
+    //% blockid="floidpro_showsensor"
+    //% block="Zeige Sensordaten auf Display an"
+    //% weight=83
+    //% group="Display"
+    export function showsensor():void{
+        if (!staticdisplay){
+            showOnLcd("LTO:  BVL:   USR:",1,1)
+            showOnLcd("LT1:  BVR:   USV:", 2, 1)
+            showOnLcd("LT2:  BHL:   USL:", 3, 1)
+            showOnLcd("LT3:  BHR:   USH:", 4, 1)
+        }
+
+        if (Front.LineTracking(Linetracker.LT0)) showOnLcd("B",1,5)
+        else showOnLcd("W", 1, 5)
+        if (Front.LineTracking(Linetracker.LT1)) showOnLcd("B", 1, 5)
+        else showOnLcd("W", 2, 5)
+        if (Front.LineTracking(Linetracker.LT2)) showOnLcd("B", 1, 5)
+        else showOnLcd("W", 3, 5)
+        if (Front.LineTracking(Linetracker.LT3)) showOnLcd("B", 1, 5)
+        else showOnLcd("W", 4, 5)
+
+
+    }
+
+
+    /**
      * Löscht den gesamten Displayinhalt.
      */
     //% blockid="floidpro_clearlcd" 
@@ -134,6 +163,7 @@ namespace Core {
     //% weight=80 blockGap=7
     //% group="Display"
     export function clearLCD(): void {
+        staticdisplay = false
         lcdByte(0x01, LCD_CMD); // Displayinhalt löschen
         basic.pause(5); // Wartezeit für die LCD-Verarbeitung
     }

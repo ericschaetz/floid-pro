@@ -23,6 +23,8 @@ const ENABLE = 0x04; // Enable Bit
 
 let level = 11; //Level auf dem der Roboter arbeitet
 
+let staticdisplay = false;
+
 let pwmLeft = 0;
 let pwmRight = 0;
 let running = false;
@@ -112,17 +114,17 @@ enum USSensor {
 }
 
 enum BumperSensor {
-    //% block="vorne rechts"
-    VR = 1,
-
     //% block="vorne links"
     VL = 0,
 
-    //% block="hinten rechts"
-    HR = 3,
+    //% block="vorne rechts"
+    VR = 1,  
 
     //% block="hinten links"
     HL = 2,
+
+    //% block="hinten rechts"
+    HR = 3,    
 }
 
 enum Linetracker {
