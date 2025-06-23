@@ -26,5 +26,5 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add version.ts
-          git diff --cached --quiet || git commit -m "🔄 Auto-update version.ts from pxt.json"
+          git diff --cached --quiet || git commit -m "Auto-update version.ts from pxt.json"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:master
