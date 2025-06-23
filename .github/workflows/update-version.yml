@@ -1,9 +1,9 @@
 name: Update version.ts on push
 
 on:
-  push:
-    branches:
-      - master
+  release:
+    types:[create]
+
 permissions:
   contents: write
 
@@ -20,9 +20,15 @@ jobs:
         with:
           node-version: 18
 
+      - name: Get version from pxt.json
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./pxt.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Run update-version script
         run: node update-version.js
-        
+
       - name: Commit version.ts if changed
         run: |
           git config user.name "GitHub Actions"
@@ -30,3 +36,10 @@ jobs:
           git add version.ts
           git diff --cached --quiet || git commit -m "Auto-update version.ts from pxt.json"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:master
+
+      - name: Force-push tag with version from pxt.json
+        run: |
+          git fetch --tags
+          git tag -d v${{ steps.get_version.outputs.version }} || true
+          git tag v${{ steps.get_version.outputs.version }}
+          git push --force origin v${{ steps.get_version.outputs.version }}
