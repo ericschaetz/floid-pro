@@ -9,7 +9,8 @@ namespace Core {
      * Init-Funktion, startet den Roboter korrekt und setzt das Level auf dem der Roboter arbeitet.
      */
     //% blockid="floidpro_init" 
-    //% block="FloidPro auf %lvl hochfahren" weight=100
+    //% block="FloidPro auf %lvl hochfahren" 
+    //% weight=100
     //% group="Initialisierung"
     export function init(lvl:Level): void {
         level = lvl
@@ -159,11 +160,11 @@ namespace Core {
         if (VL_Licht) {
             n += 2
         }
-        if (VR_Blinker) {
-            n += 8
-        }
         if (VR_Licht) {
             n += 4
+        }
+        if (VR_Blinker) {
+            n += 8
         }
         if (HL_Blinker) {
             n += 16
@@ -171,11 +172,11 @@ namespace Core {
         if (HL_Licht) {
             n += 32
         }
-        if (HR_Blinker) {
-            n += 128
-        }
         if (HR_Licht) {
             n += 64
+        }
+        if (HR_Blinker) {
+            n += 128
         }
         pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
     }
