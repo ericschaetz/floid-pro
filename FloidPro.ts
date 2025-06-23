@@ -99,6 +99,15 @@ enum Level {
     l3c = 33,
 }
 
+function leveltranslater(lvl:number): string{
+    const firstDigit = Math.floor(lvl / 10); // z. B. 3 bei 32
+    const secondDigit = lvl % 10;            // z. B. 2 bei 32
+
+    const letter = String.fromCharCode(64 + secondDigit); // 1→A, 2→B, 3→C
+
+    return `${firstDigit}${letter}`;
+}
+
 enum USSensor {
     //% block="rechts"
     Rechts = 0,
