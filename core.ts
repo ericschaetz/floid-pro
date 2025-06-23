@@ -136,7 +136,7 @@ namespace Core {
     //% group="Display"
     export function showsensor():void{
         if (!staticdisplay){
-            showOnLcd("LTO:  BVL:   USR:",1,1)
+            showOnLcd("LTO:  BVL:   USR:",1, 1)
             showOnLcd("LT1:  BVR:   USV:", 2, 1)
             showOnLcd("LT2:  BHL:   USL:", 3, 1)
             showOnLcd("LT3:  BHR:   USH:", 4, 1)
@@ -149,8 +149,8 @@ namespace Core {
             if (bumpersingle(i)) showOnLcd("J", i + 1, 11)
             else showOnLcd("N", i + 1, 11)
             Front.sonar_switch(i)
-            showNumber(Front.sonar(), 3, i , 18)
-            basic.pause(15)
+            showNumber(Front.sonar(), 3, i + 1 , 18)
+            
         }
 
         staticdisplay = true
