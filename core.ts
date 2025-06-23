@@ -15,7 +15,7 @@ namespace Core {
     export function init(lvl:Level): void {
         level = lvl
         initLCD()
-        showOnLcd("FloidPro", 1, 7)
+        showOnLcd("FloidPro", 2, 7)
         showOnLcd(versionnumber, 4, 1)
         showNumber(level,2, 4, 19)
 
