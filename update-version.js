@@ -7,16 +7,9 @@ const pxt = JSON.parse(raw);
 // Hole nur die Version
 const version = pxt.version;
 
-if (!version) {
-  console.error("❌ Keine Versionsnummer in pxt.json gefunden!");
-  process.exit(1);
-}
-
 // Erstelle den Inhalt für version.ts
 const tsContent = `// This file is auto-generated from pxt.json
-//% block="Erweiterungsversion"
-export const EXTENSION_VERSION = "${version}";
+let versionnumber = "${version}";
 `;
 
 fs.writeFileSync("version.ts", tsContent, "utf8");
-console.log(`✅ version.ts auf Version ${version} gesetzt.`);
