@@ -73,20 +73,21 @@ namespace Front {
      * Stellt eine RGB-LED wie gewünscht ein
      */
     //% blockid="floidpro_rgb"
-    //% block="Stelle an RGB-LED &rgb den roten Anteil %r, den grünen Anteil %g und den blauen Anteil %b."
+    //% block="Stelle an RGB-LED %rgb den roten Anteil %r, den grünen Anteil %g und den blauen Anteil %b."
     //% weight=84
     //% group="Ultraschall und RGB"
+    //% inlineInputMode=inline
     export function rgb(rgb:RGB,r:OnOff,b:OnOff,g:OnOff){
         if (advanced) errornode("RGB-LED")
         let state = Core.i2cread(Controller_read.US)
         let curr = 0
         let richtung = 0
         if (rgb==1){
-            let curr = state & 0b11111100
+            let curr = state & 0b11100011
             let richtung = (1 - r) * 4 + (1 - g) * 8 + (1 - b) * 16
         }
         else{
-            let curr = state & 0b11111100
+            let curr = state & 0b00011111
             let richtung = (1 - r) * 32 + (1 - g) * 64 + (1 - b) * 128
         }
         let curr1 = curr | richtung
