@@ -8,6 +8,7 @@
         "microphone": "*"
     },
     "files": [
+        "editor.js"
         "README.md",
         "FloidPro.ts",
         "motors.ts",
