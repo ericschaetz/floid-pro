@@ -73,10 +73,9 @@ namespace Front {
      * Stellt eine RGB-LED wie gewünscht ein
      */
     //% blockid="floidpro_rgb"
-    //% block="Stelle an RGB-LED %rgb den roten Anteil %r, den grünen Anteil %g und den blauen Anteil %b."
+    //% block="Schalte von RGB-LED   %rgb den Anteil für Rot:  %r            für Grün:%g            für Blau:%b"
     //% weight=84
     //% group="Ultraschall und RGB"
-    //% inlineInputMode=inline
     export function rgb(rgb:RGB,r:OnOff,b:OnOff,g:OnOff){
         if (advanced) errornode("RGB-LED")
         let state = Core.i2cread(Controller_read.US)
