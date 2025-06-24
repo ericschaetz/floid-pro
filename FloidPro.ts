@@ -67,8 +67,8 @@ function testDevice(address: number): boolean {
  * Funktion zum zeigen einer Fehlermeldung
  */
 function errornode(funct:string):void{
+    Core.clearLCD()
     while (true){
-        Core.clearLCD()
         Core.showOnLcd("-Fehler: Block ",1,1)
         Core.showOnLcd("-"+funct,2,1)
         Core.showOnLcd("-nicht erlaubt",3,1)
