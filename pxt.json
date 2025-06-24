@@ -14,8 +14,7 @@
         "front.ts",
         "core.ts",
         "motors2.ts",
-        "version.ts",
-        "editor.js"
+        "version.ts"
     ],
     "testFiles": [
         "test.ts"
