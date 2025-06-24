@@ -61,6 +61,18 @@ function testDevice(address: number): boolean {
     }
 }
 
+/**
+ * Funktion zum zeigen einer Fehlermeldung
+ */
+function errornode(funct:string):void{
+    while (true){
+        Core.clearLCD()
+        Core.showOnLcd("-Fehler: Block ",1,1)
+        Core.showOnLcd("-"+funct,2,1)
+        Core.showOnLcd("-nicht erlaubt",3,1)
+    }  
+}
+
 
 
 /**************************************************************************************************/
@@ -179,7 +191,7 @@ enum Light {
     
 }
 
-enum Controller{
+enum Controller_write {
     //% block="Motormodul 1 @ 57"
     M1 = 57,
 
@@ -197,6 +209,32 @@ enum Controller{
 
     //% block="Motormodul 4 @ 63"
     M4 = 63,
+
+}
+
+enum Controller_read {
+    //% block="Motormodul 1 @ 57"
+    M1 = 57,
+
+    //% block="Beleuchtung @ 58"
+    BL = 58,
+
+    //% block="Motormodul 2 @ 59"
+    M2 = 59,
+
+    //% block="Motormodul 3 @ 61"
+    M3 = 61,
+
+    //% block="Ultraschall/RGB-LED @ 62"
+    US = 62,
+
+    //%
+
+    //% block="Motormodul 4 @ 63"
+    M4 = 63,
+
+    //% block="Bumper @ 60"
+    B = 60,
 
 }
 

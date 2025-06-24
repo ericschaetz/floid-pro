@@ -204,6 +204,7 @@ namespace Core {
     //% group="Bumper"
     //% weight=75
     export function bumpersingle(bumper:BumperSensor): boolean {
+        if (advanced) errornode("Bumper einzeln")
         return ((bumperall() & (1 << bumper) )!= 0)
     }
 
@@ -215,6 +216,7 @@ namespace Core {
     //% group="Bumper"
     //% weight=70
     export function bumperall(): number {
+        if (advanced) errornode("Bumper gesamt")
         let shift = 0
         if (!reservepin60) shift=240
         return pins.i2cReadNumber(60, NumberFormat.UInt8LE, false) - shift
@@ -305,8 +307,21 @@ namespace Core {
     //% weight=50
     //% group="I2C"
     //% n.min=0 n.max=255
-    export function i2cwrite(n:number,addr:Controller):void{
+    export function i2cwrite(n:number,addr:Controller_write):void{
         pins.i2cWriteNumber(addr, n, NumberFormat.UInt8BE, false)
+    }
+
+    /**
+     * Liest die Zahl eines I2C-Controller aus
+     */
+    //% blockid="floidpro_i2cread"
+    //% block="Lies Zahl von I2C-Controller: %contr"
+    //% weight=49
+    //% group="I2C"
+    export function i2cread(addr: Controller_read): number {
+        
+        return pins.i2cReadNumber(addr,NumberFormat.Int8LE,false)
+
     }
 
 

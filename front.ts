@@ -26,7 +26,30 @@ namespace Front {
         // read pulse
         const d = pins.pulseIn(echo, PulseValue.High, 256 * 58);
         return Math.idiv(d, 58);
-    }    
+    }   
+
+    /**
+     * Misst die Distanz über den eingestellten Ultraschallsensor und glättet den Wert
+     */
+    //% blockid="floidpro_sonar_filter"
+    //% block="gemessene Distanz (geglättet)"
+    //% group="Ultraschall und RGB"
+    //% weigth=89
+    export function sonar_smooth(): number {
+        if (advanced) errornode("Ultraschall glatt")
+        let trig = DigitalPin.P8
+        let echo = DigitalPin.P12
+        pins.setPull(trig, PinPullMode.PullNone);
+        pins.digitalWritePin(trig, 0);
+        control.waitMicros(2);
+        pins.digitalWritePin(trig, 1);
+        control.waitMicros(10);
+        pins.digitalWritePin(trig, 0);
+
+        // read pulse
+        const d = pins.pulseIn(echo, PulseValue.High, 256 * 58);
+        return Math.idiv(d, 58);
+    }
 
     /**
      * Stellt die Ultraschall-Weiche, um den gewünschten Sensor zu verbinden 
@@ -36,6 +59,9 @@ namespace Front {
     //% weigth=85
     //% group="Ultraschall und RGB" 
     export function sonar_switch(richtung:USSensor): void {
+        if (advanced) errornode("Ultraschallweiche")
+        let curr = pins.i2cReadNumber(62,NumberFormat.Int8LE,false) & 0b11111100 
+        let curr1 = curr | richtung
         pins.i2cWriteNumber(62, richtung, NumberFormat.Int8LE, false)
         basic.pause(5)
         
