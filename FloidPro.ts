@@ -179,9 +179,6 @@ enum Light {
 }
 
 enum Controller{
-    //% block="Linetracking @ 56"
-    LT = 56,
-
     //% block="Motormodul 1 @ 57"
     M1 = 57,
 
