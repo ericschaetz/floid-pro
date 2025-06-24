@@ -153,7 +153,7 @@ i2c = Core.i2cpins()
 Funktion zum Senden einer Zahl an einen der angeschlossenen Controller.
 
 ```blocks
-Core.i2cwrite(128,Controller.LT)
+Core.i2cwrite(128, Controller.LT)
 ```
 
 #### Bestimmten Controller abfragen
