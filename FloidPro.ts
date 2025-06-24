@@ -177,4 +177,28 @@ enum Light {
 
     
 }
+
+enum Controller{
+    //% block="Linetracking @ 56"
+    LT = 56,
+
+    //% block="Motormodul 1 @ 57"
+    M1 = 57,
+
+    //% block="Beleuchtung @ 58"
+    BL = 58,
+
+    //% block="Motormodul 2 @ 59"
+    M2 = 59,
+
+    //% block="Motormodul 3 @ 61"
+    M3 = 61,
+
+    //% block="Ultraschall/RGB-LED @ 62"
+    US = 62,
+
+    //% block="Motormodul 4 @ 63"
+    M4 = 63,
+
+}
 /**************************************************************************************************/

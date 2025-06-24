@@ -238,6 +238,7 @@ namespace Core {
     //% blockid=="floidpro_singlelight"
     //% block="Schalte %light %status"
     //% group="Beleuchtung"
+    //% weight=60
     export function setlights(light: Light, status: OnOff): void {
         lights[light] = status;
         let n = 0;
@@ -257,7 +258,7 @@ namespace Core {
     //% blockid="floidpro_i2cscan"
     //% block="angeschlossene I²C-Controller"
     //% group="I2C"
-    //% weight=60
+    //% weight=55
     export function i2cpins(): number[] {
         let availableAddresses: number[] = [];
         for (let address = 1; address <= 127; address++) {
@@ -269,11 +270,24 @@ namespace Core {
     }
 
     /**
+     * Sendet eine Zahl an einen I2C-Controller
+     */
+    //% blockid="floidpro_i2cwrite"
+    //% block="Sende %n an I2C-Controller: %contr"
+    //% weight=50
+    //% group="I2C"
+    //% n.min=0 n.max=255
+    export function i2cwrite(n:number,addr:Controller):void{
+        pins.i2cWriteNumber(addr, n, NumberFormat.UInt8BE, false)
+    }
+
+
+    /**
      * Prüft ob ein Controller mit einer bestimmten Adresse angeschlossen ist
      */
     //% blockid="floidpro_i2c_scan" 
     //% block="Controller %address ist angeschlossen" 
-    //% weight=
+    //% weight=45
     //% address.min=0 address.max=127
     //% group="I2C"
     //% weight=55
