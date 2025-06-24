@@ -4,7 +4,6 @@
 //% weight=200 color=#004A99 icon="" block="FloidPro - Hauptsektion"
 //% groups="['Initialisierung', 'Display', 'Bumper', 'Beleuchtung','I2C' ]"
 namespace Core {
- 
     /**
      * Init-Funktion, startet den Roboter korrekt und setzt das Level auf dem der Roboter arbeitet.
      */
