@@ -82,7 +82,7 @@ namespace Front {
         let state = Core.i2cread(Controller_read.US)
         let curr = 0
         let richtung = 0
-        if (rgb==1){
+        if (rgb==2){
             let curr = state & 0b11100011
             let richtung = (1 - r) * 4 + (1 - g) * 8 + (1 - b) * 16
         }
@@ -91,6 +91,7 @@ namespace Front {
             let richtung = (1 - r) * 32 + (1 - g) * 64 + (1 - b) * 128
         }
         let curr1 = curr | richtung
+        Core.showNumber(curr1,3,1,1)
         pins.i2cWriteNumber(62, curr1, NumberFormat.UInt8LE, false)
         readus = curr1
         basic.pause(5)
