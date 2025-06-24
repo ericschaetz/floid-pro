@@ -122,8 +122,9 @@ namespace Core {
     //% group="Display"
     //% line.min=1 line.max=4
     //% column.min=1 column.max=20
+    //% zahl.min=0 zahl.max=255
     //% inlineInputMode=inline
-    export function showbinary(zahl: number, laenge: number, line: number, column: number): void {
+    export function showbinary(zahl: number, line: number, column: number): void {
         let message = binarystring(zahl)
         showOnLcd(message, line, column)
     }
