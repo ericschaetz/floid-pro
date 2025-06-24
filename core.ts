@@ -16,6 +16,10 @@ namespace Core {
         advanced = !!mod
         initLCD()
         showOnLcd("FloidPro", 2, 7)
+        if (advanced){
+            showOnLcd("A",4,12)
+        }
+        else showOnLcd("B", 4, 12)
         showOnLcd(versionnumber, 4, 1)
         showOnLcd(leveltranslater(lvl), 4, 19)
 
