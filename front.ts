@@ -60,8 +60,8 @@ namespace Front {
     //% group="Ultraschall und RGB" 
     export function sonar_switch(richtung:USSensor): void {
         if (advanced) errornode("Ultraschallweiche")
-        let curr = pins.i2cReadNumber(62, NumberFormat.UInt8LE, false)
-        let state = curr & ~(0b00)
+        let state = Core.i2cread(Controller_read.US)
+        Core.showNumber(state,3,1,1)
         let curr1 = state | (richtung & 0b11) << 0 
         pins.i2cWriteNumber(62, curr1, NumberFormat.UInt8LE, false)
         readus = curr1
