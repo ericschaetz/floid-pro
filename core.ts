@@ -41,7 +41,7 @@ namespace Core {
         pins.i2cWriteNumber(56, 255, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(38, 252, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(62, 252, NumberFormat.Int8LE, false)
-        
+        readus=252
     }
 
     /*Ende Initialisierung*******************************************************************************************************************************/
@@ -308,6 +308,9 @@ namespace Core {
     //% group="I2C"
     //% n.min=0 n.max=255
     export function i2cwrite(n:number,addr:Controller_write):void{
+        if(addr==Controller_write.US){
+            readus = n
+        }
         pins.i2cWriteNumber(addr, n, NumberFormat.UInt8BE, false)
     }
 
@@ -319,7 +322,9 @@ namespace Core {
     //% weight=49
     //% group="I2C"
     export function i2cread(addr: Controller_read): number {
-        
+        if (addr == Controller_read.US) {
+            return readus
+        }
         return pins.i2cReadNumber(addr,NumberFormat.Int8LE,false)
 
     }

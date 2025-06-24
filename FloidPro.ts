@@ -34,7 +34,9 @@ const pinLeft = DigitalPin.P0;
 const pinRight = DigitalPin.P1;
 const periode = 10 // in ms;
 
-let reservepin60 = false
+let reservepin60 = false;
+
+let readus= 0;
 
 /**************************************************************************************************/
 
