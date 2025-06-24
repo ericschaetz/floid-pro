@@ -62,7 +62,8 @@ namespace Front {
         if (advanced) errornode("Ultraschallweiche")
         let state = Core.i2cread(Controller_read.US)
         Core.showNumber(state,3,1,1)
-        let curr1 = state | (richtung & 0b11) << 0 
+        let curr = state & 0b11111100
+        let curr1 = curr | richtung 
         pins.i2cWriteNumber(62, curr1, NumberFormat.UInt8LE, false)
         readus = curr1
         basic.pause(5)
