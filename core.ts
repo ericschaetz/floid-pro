@@ -287,10 +287,9 @@ namespace Core {
      */
     //% blockid="floidpro_i2c_scan" 
     //% block="Controller %address ist angeschlossen" 
-    //% weight=45
     //% address.min=0 address.max=127
     //% group="I2C"
-    //% weight=55
+    //% weight=45
     export function testDevice_front(address: number): boolean {
         return testDevice(address)
     }

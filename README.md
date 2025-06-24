@@ -148,6 +148,14 @@ Funktion, welche ein Array der Adressen aller angeschlossenen I<sub>2</sub>C-Con
 i2c = Core.i2cpins()
 ```
 
+#### Zahl über I<sub>2</sub>C senden
+
+Funktion zum Senden einer Zahl an einen der angeschlossenen Controller.
+
+```blocks
+Core.i2cwrite(128,Controller.LT)
+```
+
 #### Bestimmten Controller abfragen
 
 Funktion zum bestimmen eines Wahrheitswerts darüber, ob ein Controller an der Adresse angeschlossen ist.
@@ -155,6 +163,8 @@ Funktion zum bestimmen eines Wahrheitswerts darüber, ob ein Controller an der A
 ```blocks
 i2c = Core.testDevice_front(0)
 ```
+
+
 
 ##### Beispiel
 
