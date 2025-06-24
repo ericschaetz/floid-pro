@@ -62,7 +62,7 @@ namespace Front {
         if (advanced) errornode("Ultraschallweiche")
         let curr = pins.i2cReadNumber(62, NumberFormat.UInt8LE, false)
         Core.showNumber(curr, 3 ,1,1)
-        let currmask = curr & 0b11111100 
+        let currmask = ~curr & 0b11111100 
         let curr1 = currmask | (richtung & 0b11) 
         pins.i2cWriteNumber(62, curr1, NumberFormat.UInt8LE, false)
         basic.pause(5)
