@@ -48,7 +48,7 @@ namespace Core {
      * @param line is zeilennummer, eg: 1
      * @param column is spaltennummer, eg: 1
      */
-    //% blockid="floidpro_showlcd" block="Stelle Text %message in Zeile %line und Spalte %column dar"
+    //% blockid="floidpro_showlcd" block="Zeige Text %message in Zeile %line und Spalte %column"
     //% line.min=1 line.max=4
     //% column.min=1 column.max=20
     //% weight=90
