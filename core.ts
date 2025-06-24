@@ -111,13 +111,32 @@ namespace Core {
     }
 
     /**
+     * Zeigt eine acht-stellige Binärzahl auf dem Display an.
+     * @param zahl is number, eg: 0
+     * @param line is zeilennummer, [1 - 4], eg: 1
+     * @param column is spalte, [1 - 20], eg: 1
+     */
+    //% blockid="floidpro_showbinary"
+    //% block="Zeige Binärzahl %zahl in Zeile %line und Spalte %column"
+    //% weight=84
+    //% group="Display"
+    //% line.min=1 line.max=4
+    //% column.min=1 column.max=20
+    //% inlineInputMode=inline
+    export function showbinary(zahl: number, laenge: number, line: number, column: number): void {
+        let message = binarystring(zahl)
+        showOnLcd(message, line, column)
+    }
+
+
+    /**
      * Zeigt einen Wahrheitswert auf dem Display an.
      * @param line is zeilennummer, [1 - 4], eg: 1
      * @param column is spalte, [1 - 20], eg: 1
      */
     //% blockid="floidpro_showboolean"
     //% block="Zeige Wahrheitswert %bool in Zeile %line und Spalte %column"
-    //% weight=84
+    //% weight=83
     //% group="Display"
     //% line.min=1 line.max=4
     //% column.min=1 column.max=20
@@ -132,7 +151,7 @@ namespace Core {
      */
     //% blockid="floidpro_showsensor"
     //% block="Zeige Sensordaten auf Display an"
-    //% weight=83
+    //% weight=82
     //% group="Display"
     export function showsensor():void{
         if (!staticdisplay){
@@ -341,5 +360,13 @@ namespace Core {
     // Funktion für I2C-Schreiben
     function i2cWrite(address: number, data: number): void {
         pins.i2cWriteBuffer(address, pins.createBufferFromArray([data]));
+    }
+
+    function binarystring(n: number): string {
+        let result = ""
+        for (let i = 7; i >= 0; i--) {
+            result += ((n >> i) & 1)
+        }
+        return result
     }
 }
