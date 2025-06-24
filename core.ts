@@ -8,11 +8,12 @@ namespace Core {
      * Init-Funktion, startet den Roboter korrekt und setzt das Level auf dem der Roboter arbeitet.
      */
     //% blockid="floidpro_init" 
-    //% block="FloidPro auf %lvl hochfahren" 
+    //% block="FloidPro auf %lvl im Modus %mod hochfahren" 
     //% weight=100
     //% group="Initialisierung"
-    export function init(lvl:Level): void {
+    export function init(lvl:Level, mod:Modus): void {
         level = lvl
+        advanced = !!mod
         initLCD()
         showOnLcd("FloidPro", 2, 7)
         showOnLcd(versionnumber, 4, 1)
@@ -239,13 +240,17 @@ namespace Core {
     //% group="Beleuchtung"
     //% weight=60
     export function setlights(light: Light, status: OnOff): void {
-        lights[light] = status;
-        let n = 0;
-        for (let i = 0; i < 8; i++) {
-            n += lights[i] * (2 ** (i))
+        let curr = pins.i2cReadNumber(58,NumberFormat.UInt8LE, false)
+        let pattern = (1 << light)
+        let new_lights = 0
+        if (!status){
+            new_lights = curr | pattern
         }
-        pins.i2cWriteNumber(58, n, NumberFormat.Int8LE, false)
-        Core.showNumber(n, 3, 1, 1)
+        else {
+            new_lights = curr & ~pattern
+        }
+        
+        pins.i2cWriteNumber(58, new_lights, NumberFormat.Int8LE, false)
     }
 
 

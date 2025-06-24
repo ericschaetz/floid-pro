@@ -22,6 +22,7 @@ const LCD_BACKLIGHT = 0x08; // Hintergrundbeleuchtung
 const ENABLE = 0x04; // Enable Bit
 
 let level = 11; //Level auf dem der Roboter arbeitet
+let advanced = true ;
 
 let staticdisplay = false;
 
@@ -32,8 +33,6 @@ let running = false;
 const pinLeft = DigitalPin.P0;
 const pinRight = DigitalPin.P1;
 const periode = 10 // in ms;
-
-let lights = [1, 1, 1, 1, 1, 1, 1, 1]
 
 let reservepin60 = false
 
@@ -200,4 +199,12 @@ enum Controller{
     M4 = 63,
 
 }
+
+enum Modus{
+    //% block="Einfach"
+    einfach = 0,
+
+    //% block="Erweitert"
+    erweitert = 1,
+ }
 /**************************************************************************************************/
