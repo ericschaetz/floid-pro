@@ -24,15 +24,13 @@ const ENABLE = 0x04; // Enable Bit
 let level = 11; //Level auf dem der Roboter arbeitet
 let advanced = true ;
 
-let pwmpina = AnalogPin.P0;
-let pwmpinb = AnalogPin.P1;
+let statusa = 0;
+let statusb = 0;
 
 let shouldrun = false;
 
-let longlob = 0;
-let loffglob = 0;
-let ronglob = 0;
-let roffglob = 0;
+let pwmpina: PWMPin = { pin: AnalogPin.P0, pwmon: 0, pwmoff: 0 , status: 0 }
+let pwmpinb: PWMPin = { pin: AnalogPin.P1, pwmon: 0, pwmoff: 0, status: 0 }
 
 let motor_a = 0;
 let motor_b = 0;
@@ -80,37 +78,38 @@ function errornode(funct:string):void{
     }  
 }
 
+function flip(pin: PWMPin): number{
+    if (!!pin.status){
+        pins.analogWritePin(pin.pin,0)
+        pin.status = 0
+        return pin.pwmoff
+    }
+    else{
+        pins.analogWritePin(pin.pin, 1)
+        pin.status = 1
+        return pin.pwmon
+    }
+
+}
+
 control.inBackground(() => {
     while (true) {
-        let l = 0
-        let r = 0
-        let pina = 0
-        let pinb = 0
-        while(shouldrun){
-            if (l <= longlob && pina == 0 && longlob != 0){
-                pins.digitalWritePin(pwmpina,1)
-                pina = 1
+        let resta = pwmpina.pwmoff
+        let restb = pwmpinb.pwmoff
+        while (shouldrun){
+            let t = Math.min(resta,restb)
+            resta-=t
+            restb-=t
+            basic.pause(t)
+            if (resta == 0){
+                resta = flip(pwmpina)
             }
-            else if (l <= loffglob + longlob && pina == 1 && loffglob != 0){
-                pins.digitalWritePin(pwmpina, 0)
-                pina = 0
+            if (restb == 0){
+                restb = flip(pwmpinb)
             }
-            else if (l > loffglob + longlob){
-                l = 0
-            }
-
-            l++
-            r++
-            basic.pause(5)
         }
-        basic.pause(10)
     }
 })
-
-
-
-
-
 
 /**************************************************************************************************/
 
@@ -124,6 +123,13 @@ enum OnOff {
 
     //% block="Aus"
     Off = 1,
+}
+
+type PWMPin = {
+    pin: AnalogPin
+    pwmon: number
+    pwmoff: number
+    status: number
 }
 
 enum Level {

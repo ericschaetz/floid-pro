@@ -5,10 +5,10 @@ namespace Motors{
      */
     //% blockid="floidpro_motors1" block="Sende Steuerzahl %drivenumber. Schalte Motor A: AN:%lon ms AUS:%loff ms und Motor B: AN:%ron ms AUS:%roff ms."
     //% drivenumber.min=0 drivenumber.max=255
-    //% lon.min=0 lon.max=1023
-    //% ron.min=0 ron.max=1023
-    //% loff.min=0 loff.max=1023
-    //% roff.min=0 roff.max=1023
+    //% lon.min=1 lon.max=1023
+    //% ron.min=1 ron.max=1023
+    //% loff.min=1 loff.max=1023
+    //% roff.min=1 roff.max=1023
     //% weight=80 blockGap=8
     //% inlineInputMode=inline
 
@@ -44,8 +44,8 @@ namespace Motors{
             pwmlight(left,right)
         }
         else {
-            pins.analogWritePin(pwmpina, left)
-            pins.analogWritePin(pwmpinb, right)
+            pins.analogWritePin(pwmpina.pin, left)
+            pins.analogWritePin(pwmpinb.pin, right)
         }
     }
 
@@ -130,8 +130,8 @@ namespace Motors{
         }
         else {
             shouldrun = false;
-            pins.analogWritePin(pwmpina, Math.abs(left) / 10 * 723 + 300)
-            pins.analogWritePin(pwmpinb, Math.abs(right) / 10 * 723 + 300)
+            pins.analogWritePin(pwmpina.pin, Math.abs(left) / 10 * 723 + 300)
+            pins.analogWritePin(pwmpinb.pin, Math.abs(right) / 10 * 723 + 300)
         }
     }
 
@@ -150,10 +150,14 @@ namespace Motors{
     }
 
     function pwm(lon: number,loff: number,ron: number,roff: number): void{
-        longlob = lon
-        loffglob = loff
-        ron = ronglob
-        roff = roffglob        
+        pins.analogWritePin(pwmpina.pin,0)
+        pins.analogWritePin(pwmpinb.pin, 0)
+        pwmpina.status = 0
+        pwmpinb.status = 0
+        pwmpina.pwmon = lon
+        pwmpina.pwmoff = loff
+        pwmpinb.pwmon = ron
+        pwmpinb.pwmoff = roff    
         shouldrun = true        
     }
 
