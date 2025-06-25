@@ -80,16 +80,24 @@ function errornode(funct:string):void{
 
 function flip(pin: PWMPin): number{
     if (!!pin.status){
-        pins.analogWritePin(pin.pin,0)
-        pin.status = 0
-        return pin.pwmoff
+        if (pin.pwmoff != 0) {
+            pins.analogWritePin(pin.pin,0)
+            pin.status = 0
+            return pin.pwmoff
+        } 
+        return pin.pwmoff   
+        
     }
     else{
-        pins.analogWritePin(pin.pin, 1023)
-        pin.status = 1
-        return pin.pwmon
+        if (pin.pwmon != 0){
+            pins.analogWritePin(pin.pin, 1023)
+            pin.status = 1
+            return pin.pwmon
+        }
+        return pin.pwmoff
     }
-
+    
+    
 }
 
 control.inBackground(() => {
@@ -100,7 +108,7 @@ control.inBackground(() => {
         while (shouldrun){
             t = Math.min(resta,restb)
             resta = resta - t
-            restb = restb - t 
+            restb = restb - t
             basic.pause(t)
             if (resta == 0){
                 resta = flip(pwmpina)
@@ -108,12 +116,7 @@ control.inBackground(() => {
             if (restb == 0){
                 restb = flip(pwmpinb)
             }
-            if (resta + restb == 0) {
-                shouldrun = false
-                break
-            }
-            else if (resta == 0) resta = restb + 1
-            else if (restb == 0) restb = resta + 1
+            
         }
         basic.pause(1)
     }
