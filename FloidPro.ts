@@ -85,9 +85,12 @@ control.inBackground(() => {
         if(shouldrun){
             pins.digitalWritePin(pwmpina,1)
             basic.pause(longlob)
-            pins.digitalWritePin(pwmpina,0)
-            basic.pause(loffglob)
+            if (loffglob != 0){
+                pins.digitalWritePin(pwmpina,0)
+                basic.pause(loffglob)
+            }
         }
+        else basic.pause(10)
     }
 })
 

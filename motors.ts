@@ -137,7 +137,7 @@ namespace Motors{
 
 
     function pwmlight(left: number, right: number): void{     
-        let periode = 30 //in ms
+        let periode = 100 //in ms
 
         let lon = periode * left / 1023
         let loff = periode - lon
