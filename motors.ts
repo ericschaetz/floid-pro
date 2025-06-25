@@ -46,12 +46,12 @@ namespace Motors{
     /**
      * Antriebssteuerung für Module 1-4: ein positiver Wert lässt die Motoren vorwärts drehen, ein negativer rückwärts.
      */
-    //% blockid="floidpro_motors1" block="Setze Motor A auf %left und Motor B auf %right"
+    //% blockid="floidpro_motors3" block="Setze Motor A auf %left und Motor B auf %right"
     //% left.min=-10 left.max=10
     //% right.min=-10 right.max=10
     //% weight=60 blockGap=8
 
-    export function motors1(left: number, right: number): void {
+    export function motors3(left: number, right: number): void {
         let left1 = left
 
         // Antriebszahl berechnen
@@ -137,7 +137,7 @@ namespace Motors{
     /**
      * Antriebssteuerung für die Modul 4: Die Steuerzahl bestimmt die Richtung der Motoren, PWM-Werte die Geschwindigkeit
      */
-    //% blockid="floidpro_motors3" block="Sende Steuerzahl %drivenumber. Schalte Motor A: AN:%lon ms AUS:%loff ms und Motor B: AN:%ron ms AUS:%roff ms."
+    //% blockid="floidpro_motors1" block="Sende Steuerzahl %drivenumber. Schalte Motor A: AN:%lon ms AUS:%loff ms und Motor B: AN:%ron ms AUS:%roff ms."
     //% drivenumber.min=0 drivenumber.max=255
     //% lon.min=0 lon.max=1023
     //% ron.min=0 ron.max=1023
@@ -146,7 +146,7 @@ namespace Motors{
     //% weight=80 blockGap=8
     //% inlineInputMode=inline
 
-    export function motors3(drivenumber: number, lon: number, loff: number, ron: number, roff:number): void {
+    export function motors1(drivenumber: number, lon: number, loff: number, ron: number, roff:number): void {
 
         // PWM-Funktion schreiben
     
