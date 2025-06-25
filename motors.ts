@@ -19,6 +19,7 @@ namespace Motors{
         pins.i2cWriteNumber(57, drivenumber, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(59, drivenumber, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(61, drivenumber, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(63, drivenumber, NumberFormat.Int8LE, false)
     }
 
     /**
