@@ -68,10 +68,10 @@ function testDevice(address: number): boolean {
  */
 function errornode(funct:string):void{
     Core.clearLCD()
+    Core.showOnLcd("-Fehler: Block ", 1, 1)
+    Core.showOnLcd("-" + funct, 2, 1)
+    Core.showOnLcd("-nicht erlaubt", 3, 1)
     while (true){
-        Core.showOnLcd("-Fehler: Block ",1,1)
-        Core.showOnLcd("-"+funct,2,1)
-        Core.showOnLcd("-nicht erlaubt",3,1)
     }  
 }
 
