@@ -85,7 +85,7 @@ function flip(pin: PWMPin): number{
             pin.status = 0
             return pin.pwmoff
         } 
-        return pin.pwmoff   
+        return pin.pwmon   
         
     }
     else{
