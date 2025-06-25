@@ -165,91 +165,86 @@ namespace Motors{
         pins.i2cWriteNumber(61, n, NumberFormat.Int8LE, false)
     }
 
+    function stopMotors() {
+        runningPWM = false
+        runningTimed = false
+        currentMode = "none"
+        pins.digitalWritePin(pinLeft, 0)
+        pins.digitalWritePin(pinRight, 0)
+    }
 
-    /**
-     * Funktion zur Hintergrundausführung der Puls-Weiten-Modulation
-     */
     function pwm(left: number, right: number): void {
+        // Stoppe die andere Funktion, falls aktiv
+        if (currentMode === "timed") stopMotors()
+
         pwmLeft = Math.clamp(0, 1023, left)
         pwmRight = Math.clamp(0, 1023, right)
 
         if (pwmLeft === 0 && pwmRight === 0) {
-            running = false
-            pins.digitalWritePin(pinLeft, 0)
-            pins.digitalWritePin(pinRight, 0)
+            stopMotors()
             return
         }
 
-        if (running) return
-        running = true
+        if (runningPWM) return
+        runningPWM = true
+        currentMode = "pwm"
 
         control.inBackground(function () {
-            const step = 100 // 100 µs Schritte
-
-            while (running) {
+            const step = 100
+            while (runningPWM) {
                 let dutyL = pwmLeft / 1023
                 let dutyR = pwmRight / 1023
 
-                let einL = periode * dutyL * 1000  // in µs
+                let einL = periode * dutyL * 1000
                 let einR = periode * dutyR * 1000
 
                 for (let t = 0; t < periode * 1000; t += step) {
+                    if (!runningPWM) break
                     pins.digitalWritePin(pinLeft, t < einL ? 1 : 0)
                     pins.digitalWritePin(pinRight, t < einR ? 1 : 0)
                     control.waitMicros(step)
                 }
 
-                // Nach jedem Zyklus prüfen, ob beide Werte 0 sind (z. B. live geändert)
-                if (pwmLeft === 0 && pwmRight === 0) {
-                    pins.digitalWritePin(pinLeft, 0)
-                    pins.digitalWritePin(pinRight, 0)
-                    running = false
-                }
+                if (pwmLeft === 0 && pwmRight === 0) stopMotors()
             }
         })
     }
 
-    /**
-     * Funktion zur manuellen Umsetzung von PWM
-     */
     function timedPWM(leftOn: number, leftOff: number, rightOn: number, rightOff: number): void {
+        // Stoppe PWM, falls aktiv
+        if (currentMode === "pwm") stopMotors()
 
-        if (running) return
-        running = true
+        if (leftOn <= 0 && rightOn <= 0) {
+            stopMotors()
+            return
+        }
+
+        if (runningTimed) return
+        runningTimed = true
+        currentMode = "timed"
 
         control.inBackground(function () {
-            const step = 100 // µs-Schritte
-            let cycleTime = Math.max(leftOn + leftOff, rightOn + rightOff) * 1000 // in µs
+            const step = 100
+            const cycleTime = Math.max(leftOn + leftOff, rightOn + rightOff) * 1000
 
-            while (running) {
+            while (runningTimed) {
                 for (let t = 0; t < cycleTime; t += step) {
-                    // linker Motor
-                    if (leftOn > 0) {
-                        let leftOnTime = leftOn * 1000 // in µs
-                        pins.digitalWritePin(pinLeft, t < leftOnTime ? 1 : 0)
-                    } else {
-                        pins.digitalWritePin(pinLeft, 0)
-                    }
+                    if (!runningTimed) break
 
-                    // rechter Motor
-                    if (rightOn > 0) {
-                        let rightOnTime = rightOn * 1000
-                        pins.digitalWritePin(pinRight, t < rightOnTime ? 1 : 0)
-                    } else {
-                        pins.digitalWritePin(pinRight, 0)
-                    }
+                    let leftTime = leftOn * 1000
+                    let rightTime = rightOn * 1000
+
+                    pins.digitalWritePin(pinLeft, t < leftTime ? 1 : 0)
+                    pins.digitalWritePin(pinRight, t < rightTime ? 1 : 0)
 
                     control.waitMicros(step)
                 }
 
-                // Überprüfen, ob beide Motoren deaktiviert wurden (live)
-                if (leftOn <= 0 && rightOn <= 0) {
-                    pins.digitalWritePin(pinLeft, 0)
-                    pins.digitalWritePin(pinRight, 0)
-                    running = false
-                }
+                if (leftOn <= 0 && rightOn <= 0) stopMotors()
             }
         })
     }
+
+    
 
 }

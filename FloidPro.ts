@@ -26,13 +26,18 @@ let advanced = true ;
 
 let staticdisplay = false;
 
-let pwmLeft = 0;
-let pwmRight = 0;
-let running = false;
+let pwmLeft = 0
+let pwmRight = 0
 
-const pinLeft = DigitalPin.P0;
-const pinRight = DigitalPin.P1;
-const periode = 10 // in ms;
+let pinLeft = DigitalPin.P0
+let pinRight = DigitalPin.P1
+
+let runningPWM = false
+let runningTimed = false
+
+let currentMode: "none" | "pwm" | "timed" = "none"
+
+let periode = 20;
 
 let reservepin60 = false;
 
