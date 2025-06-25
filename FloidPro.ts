@@ -83,11 +83,29 @@ function errornode(funct:string):void{
 control.inBackground(() => {
     while (true) {
         if(shouldrun){
-            pins.digitalWritePin(pwmpina,1)
-            basic.pause(longlob)
+            if (longlob != 0){
+                pins.digitalWritePin(pwmpina,1)
+                basic.pause(longlob)
+            }
             if (loffglob != 0){
                 pins.digitalWritePin(pwmpina,0)
                 basic.pause(loffglob)
+            }
+        }
+        else basic.pause(10)
+    }
+})
+
+control.inBackground(() => {
+    while (true) {
+        if (shouldrun) {
+            if (ronglob != 0) {
+                pins.digitalWritePin(pwmpinb, 1)
+                basic.pause(ronglob)
+            }
+            if (roffglob != 0) {
+                pins.digitalWritePin(pwmpinb, 0)
+                basic.pause(roffglob)
             }
         }
         else basic.pause(10)
