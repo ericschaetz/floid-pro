@@ -1,49 +1,6 @@
  //% weight=180 color=#004A99 icon="" block="FloidPro - Antrieb"
 namespace Motors{
     /**
-     * funktion zur Hintergrundausführung der Puls-Weiten-Modulation für Modul 4
-     */
-    function pwm(left: number, right: number): void {
-        pwmLeft = Math.clamp(0, 1023, left)
-        pwmRight = Math.clamp(0, 1023, right)
-
-        if (pwmLeft === 0 && pwmRight === 0) {
-            running = false
-            pins.digitalWritePin(pinLeft, 0)
-            pins.digitalWritePin(pinRight, 0)
-            return
-        }
-
-        if (running) return
-        running = true
-
-        control.inBackground(function () {
-            const step = 100 // 100 µs Schritte
-
-            while (running) {
-                let dutyL = pwmLeft / 1023
-                let dutyR = pwmRight / 1023
-
-                let einL = periode * dutyL * 1000  // in µs
-                let einR = periode * dutyR * 1000
-
-                for (let t = 0; t < periode * 1000; t += step) {
-                    pins.digitalWritePin(pinLeft, t < einL ? 1 : 0)
-                    pins.digitalWritePin(pinRight, t < einR ? 1 : 0)
-                    control.waitMicros(step)
-                }
-
-                // Nach jedem Zyklus prüfen, ob beide Werte 0 sind (z. B. live geändert)
-                if (pwmLeft === 0 && pwmRight === 0) {
-                    pins.digitalWritePin(pinLeft, 0)
-                    pins.digitalWritePin(pinRight, 0)
-                    running = false
-                }
-            }
-        })
-    }
-
-    /**
      * Antriebssteuerung für Module 1-4: ein positiver Wert lässt die Motoren vorwärts drehen, ein negativer rückwärts.
      */
     //% blockid="floidpro_motors3" block="Setze Motor A auf %left und Motor B auf %right"
@@ -135,7 +92,7 @@ namespace Motors{
     }
 
     /**
-     * Antriebssteuerung für die Modul 4: Die Steuerzahl bestimmt die Richtung der Motoren, PWM-Werte die Geschwindigkeit
+     * Manuelle Steuerung: Die Steuerzahl bestimmt die Richtung der Motoren, PWM-Werte die Geschwindigkeit
      */
     //% blockid="floidpro_motors1" block="Sende Steuerzahl %drivenumber. Schalte Motor A: AN:%lon ms AUS:%loff ms und Motor B: AN:%ron ms AUS:%roff ms."
     //% drivenumber.min=0 drivenumber.max=255
@@ -157,7 +114,7 @@ namespace Motors{
 
     
     /**
-     * Antriebssteuerung für Module 1-3: 
+     * Steuerung der Motoren mit Rihcutng und Geschwindigkeit 
      */
     //% blockid="floidpro_motors4" block="Setze Geschwindigkeit auf %speed und Richtung auf %direction"
     //% speed.min=-10 speed.max=10
@@ -209,5 +166,90 @@ namespace Motors{
     }
 
 
+    /**
+     * Funktion zur Hintergrundausführung der Puls-Weiten-Modulation
+     */
+    function pwm(left: number, right: number): void {
+        pwmLeft = Math.clamp(0, 1023, left)
+        pwmRight = Math.clamp(0, 1023, right)
+
+        if (pwmLeft === 0 && pwmRight === 0) {
+            running = false
+            pins.digitalWritePin(pinLeft, 0)
+            pins.digitalWritePin(pinRight, 0)
+            return
+        }
+
+        if (running) return
+        running = true
+
+        control.inBackground(function () {
+            const step = 100 // 100 µs Schritte
+
+            while (running) {
+                let dutyL = pwmLeft / 1023
+                let dutyR = pwmRight / 1023
+
+                let einL = periode * dutyL * 1000  // in µs
+                let einR = periode * dutyR * 1000
+
+                for (let t = 0; t < periode * 1000; t += step) {
+                    pins.digitalWritePin(pinLeft, t < einL ? 1 : 0)
+                    pins.digitalWritePin(pinRight, t < einR ? 1 : 0)
+                    control.waitMicros(step)
+                }
+
+                // Nach jedem Zyklus prüfen, ob beide Werte 0 sind (z. B. live geändert)
+                if (pwmLeft === 0 && pwmRight === 0) {
+                    pins.digitalWritePin(pinLeft, 0)
+                    pins.digitalWritePin(pinRight, 0)
+                    running = false
+                }
+            }
+        })
+    }
+
+    /**
+     * Funktion zur manuellen Umsetzung von PWM
+     */
+    function timedPWM(leftOn: number, leftOff: number, rightOn: number, rightOff: number): void {
+
+        if (running) return
+        running = true
+
+        control.inBackground(function () {
+            const step = 100 // µs-Schritte
+            let cycleTime = Math.max(leftOn + leftOff, rightOn + rightOff) * 1000 // in µs
+
+            while (running) {
+                for (let t = 0; t < cycleTime; t += step) {
+                    // linker Motor
+                    if (leftOn > 0) {
+                        let leftOnTime = leftOn * 1000 // in µs
+                        pins.digitalWritePin(pinLeft, t < leftOnTime ? 1 : 0)
+                    } else {
+                        pins.digitalWritePin(pinLeft, 0)
+                    }
+
+                    // rechter Motor
+                    if (rightOn > 0) {
+                        let rightOnTime = rightOn * 1000
+                        pins.digitalWritePin(pinRight, t < rightOnTime ? 1 : 0)
+                    } else {
+                        pins.digitalWritePin(pinRight, 0)
+                    }
+
+                    control.waitMicros(step)
+                }
+
+                // Überprüfen, ob beide Motoren deaktiviert wurden (live)
+                if (leftOn <= 0 && rightOn <= 0) {
+                    pins.digitalWritePin(pinLeft, 0)
+                    pins.digitalWritePin(pinRight, 0)
+                    running = false
+                }
+            }
+        })
+    }
 
 }

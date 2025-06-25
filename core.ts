@@ -19,7 +19,6 @@ namespace Core {
         if (advanced){
             showOnLcd("A",4,12)
         }
-        else showOnLcd("-", 4, 12)
         showOnLcd(versionnumber, 4, 1)
         showOnLcd(leveltranslater(lvl), 4, 19)
 
