@@ -85,20 +85,23 @@ control.inBackground(() => {
         let l = 0
         let r = 0
         let pina = 0
-        let pinb = 1 
+        let pinb = 0
         while(shouldrun){
-            
-            if (l < longlob && pina == 0){
+            if (l <= longlob && pina == 0 && longlob != 0){
                 pins.digitalWritePin(pwmpina,1)
+                pina = 1
             }
-            else if (l <= loffglob + longlob && pina == 1){
+            else if (l <= loffglob + longlob && pina == 1 && loffglob != 0){
                 pins.digitalWritePin(pwmpina, 0)
+                pina = 0
             }
-            else l = 0
+            else if (l > loffglob + longlob){
+                l = 0
+            }
 
-            l += 1
-            r += 1
-            basic.pause(2)
+            l++
+            r++
+            basic.pause(5)
         }
         basic.pause(10)
     }
