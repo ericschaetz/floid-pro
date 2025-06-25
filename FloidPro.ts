@@ -108,6 +108,12 @@ control.inBackground(() => {
             if (restb == 0){
                 restb = flip(pwmpinb)
             }
+            if (resta + restb == 0) {
+                shouldrun = false
+                break
+            }
+            else if (resta == 0) resta = restb + 1
+            else if (restb == 0) restb = resta + 1
         }
         basic.pause(1)
     }

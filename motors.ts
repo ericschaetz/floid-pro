@@ -5,10 +5,10 @@ namespace Motors{
      */
     //% blockid="floidpro_motors1" block="Sende Steuerzahl %drivenumber. Schalte Motor A: AN:%lon ms AUS:%loff ms und Motor B: AN:%ron ms AUS:%roff ms."
     //% drivenumber.min=0 drivenumber.max=255
-    //% lon.min=1 lon.max=1023
-    //% ron.min=1 ron.max=1023
-    //% loff.min=1 loff.max=1023
-    //% roff.min=1 roff.max=1023
+    //% lon.min=0 
+    //% ron.min=0 
+    //% loff.min=0 
+    //% roff.min=0
     //% weight=80 blockGap=8
     //% inlineInputMode=inline
 
