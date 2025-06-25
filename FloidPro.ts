@@ -85,7 +85,7 @@ function flip(pin: PWMPin): number{
         return pin.pwmoff
     }
     else{
-        pins.analogWritePin(pin.pin, 1)
+        pins.analogWritePin(pin.pin, 1023)
         pin.status = 1
         return pin.pwmon
     }
