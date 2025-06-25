@@ -26,18 +26,21 @@ let advanced = true ;
 
 let staticdisplay = false;
 
+enum Mode { None, PWM, Timed }
+
+let currentMode: Mode = Mode.None
+
 let pwmLeft = 0
 let pwmRight = 0
 
-let pinLeft = DigitalPin.P0
-let pinRight = DigitalPin.P1
+let runningLeft = false
+let runningRight = false
 
-let runningPWM = false
-let runningTimed = false
+const pinLeft = DigitalPin.P0
+const pinRight = DigitalPin.P1
 
-let currentMode: "none" | "pwm" | "timed" = "none"
-
-let periode = 20;
+const periode_us = 20000  // 20ms Periode
+const step_us = 100       // Schrittweite in µs
 
 let reservepin60 = false;
 
