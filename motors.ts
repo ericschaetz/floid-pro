@@ -155,10 +155,21 @@ namespace Motors{
         pins.analogWritePin(pwmpinb.pin, 0)
         pwmpina.status = 0
         pwmpinb.status = 0
+        if (lon + loff == 0){
+            pwmpina.pwmoff = 42
+        }
+        else pwmpina.pwmoff = loff
+        
         pwmpina.pwmon = lon
-        pwmpina.pwmoff = loff
+
+
+        if(ron + roff == 0){
+            pwmpinb.pwmoff = 42
+        }    
+        else pwmpinb.pwmoff = roff
+
         pwmpinb.pwmon = ron
-        pwmpinb.pwmoff = roff    
+
         shouldrun = true        
     }
 
