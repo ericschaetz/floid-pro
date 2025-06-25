@@ -24,23 +24,20 @@ const ENABLE = 0x04; // Enable Bit
 let level = 11; //Level auf dem der Roboter arbeitet
 let advanced = true ;
 
+let pwmpina = AnalogPin.P0;
+let pwmpinb = AnalogPin.P1;
+
+let shouldrun = false;
+
+let longlob = 0;
+let loffglob = 0;
+let ronglob = 0;
+let roffglob = 0;
+
+let motor_a = 0;
+let motor_b = 0;
+
 let staticdisplay = false;
-
-enum Mode { None, PWM, Timed }
-
-let currentMode: Mode = Mode.None
-
-let pwmLeft = 0
-let pwmRight = 0
-
-let runningLeft = false
-let runningRight = false
-
-const pinLeft = DigitalPin.P0
-const pinRight = DigitalPin.P1
-
-const periode_us = 20000  // 20ms Periode
-const step_us = 100       // Schrittweite in µs
 
 let reservepin60 = false;
 
@@ -82,6 +79,18 @@ function errornode(funct:string):void{
     while (true){
     }  
 }
+
+control.inBackground(() => {
+    while (true) {
+        if(shouldrun){
+            pins.digitalWritePin(pwmpina,1)
+            basic.pause(longlob)
+            pins.digitalWritePin(pwmpina,0)
+            basic.pause(loffglob)
+        }
+    }
+})
+
 
 
 

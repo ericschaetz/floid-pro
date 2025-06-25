@@ -14,9 +14,7 @@ namespace Motors{
 
     export function motors1(drivenumber: number, lon: number, loff: number, ron: number, roff: number): void {
 
-        // PWM-Funktion schreiben
-
-        //timedPWM (lon,loff,ron,roff)
+        pwm(lon,loff,ron,roff)
 
         pins.i2cWriteNumber(57, drivenumber, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(59, drivenumber, NumberFormat.Int8LE, false)
@@ -40,14 +38,13 @@ namespace Motors{
         pins.i2cWriteNumber(61, drivenumber, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(63, drivenumber, NumberFormat.Int8LE, false)
 
-        // PWM schreiben
         //if (testDevice(63)) {
         if (true){ 
             pwmlight(left,right)
         }
         else {
-            pins.analogWritePin(AnalogPin.P0, left)
-            pins.analogWritePin(AnalogPin.P1, right)
+            pins.analogWritePin(pwmpina, left)
+            pins.analogWritePin(pwmpinb, right)
         }
     }
 
@@ -59,6 +56,7 @@ namespace Motors{
     //% right.min=-10 right.max=10
     //% weight=60 blockGap=8
     export function motors3(left: number, right: number): void {
+        if (level < 20 ) errornode("Motorsteuerung")
         motorseasy(left,right)
     }
 
@@ -72,6 +70,7 @@ namespace Motors{
     //% weight=100 blockGap=8
 
     export function motors4(speed: number, direction: number): void {
+        if (level < 20) errornode("Motorsteuerung")
         let left = Math.clamp(-10, 10, speed + direction)
         let right = Math.clamp(-10, 10, speed - direction)        
         motorseasy(left, right)
@@ -79,10 +78,10 @@ namespace Motors{
 
     //*********************************************************************************************************** */
     function motorseasy(left: number, right: number): void {
-        let left1 = left
+        let sign = left
 
         // Antriebszahl berechnen
-        if (testDevice(61)) { //Passt die Vorzeichen entsprechend der Spezifikationen von Einheit 3 an
+        if (testDevice(61)&& level<30) { //Passt die Vorzeichen entsprechend der Spezifikationen von Einheit 3 an
             if (Math.sign(left) != Math.sign(right)) { //Motoren würden bei diesen Bedingungen gegenläufig drehen
                 if (Math.abs(left) == Math.abs(right)) {
                     if (Math.sign(left) < Math.sign(right)) {
@@ -94,21 +93,21 @@ namespace Motors{
                 }
                 if (Math.abs(left) < Math.abs(right)) {
                     left = 0
-                    left1 = right
+                    sign = right
                 }
                 if (Math.abs(left) > Math.abs(right)) {
                     right = 0
-                    left1 = left
                 }
 
             }
         }
+        //else if (testDevice(61)&&level>30) <<Hier Aufruf Florian (Hintergrund prozess, der beide zaheln getrennt sendet)
 
         let n = 0; //Berechnung der Steuerzahl in Abhänigkeit zu den Vorzeichen der Variablen
-        if (left1 > 0) { //Motor A vorwärts
+        if (sign > 0) { //Motor A vorwärts
             n += 1
         }
-        else if (left1 < 0) { //Motor A rückwärts
+        else if (sign < 0) { //Motor A rückwärts
             n += 2
         }
         if (right > 0) { //Motor B vorwärts
@@ -129,15 +128,34 @@ namespace Motors{
             pwmlight(Math.abs(left) / 10 * 723 + 300, Math.abs(right) / 10 * 723 + 300)
         }
         else {
-            pins.analogWritePin(AnalogPin.P0, Math.abs(left) / 10 * 723 + 300)
-            pins.analogWritePin(AnalogPin.P1, Math.abs(right) / 10 * 723 + 300)
+            shouldrun = false;
+            pins.analogWritePin(pwmpina, Math.abs(left) / 10 * 723 + 300)
+            pins.analogWritePin(pwmpinb, Math.abs(right) / 10 * 723 + 300)
         }
     }
 
 
-        function pwmlight(left: number, right: number) {
-        
+    function pwmlight(left: number, right: number): void{     
+        let periode = 30 //in ms
+
+        let lon = periode * left / 1023
+        let loff = periode - lon
+
+        let ron = periode * right / 1023
+        let roff = periode - ron
+
+        pwm(lon, loff, ron, roff)
+
     }
+
+    function pwm(lon: number,loff: number,ron: number,roff: number): void{
+        longlob = lon
+        loffglob = loff
+        ron = ronglob
+        roff = roffglob        
+        shouldrun = true        
+    }
+
 
 
     
