@@ -44,6 +44,7 @@ namespace Motors{
             pwmlight(left,right)
         }
         else {
+            shouldrun = false
             pins.analogWritePin(pwmpina.pin, left)
             pins.analogWritePin(pwmpinb.pin, right)
         }
@@ -150,7 +151,7 @@ namespace Motors{
     }
 
     function pwm(lon: number,loff: number,ron: number,roff: number): void{
-        pins.analogWritePin(pwmpina.pin,0)
+        pins.analogWritePin(pwmpina.pin, 0)
         pins.analogWritePin(pwmpinb.pin, 0)
         pwmpina.status = 0
         pwmpinb.status = 0

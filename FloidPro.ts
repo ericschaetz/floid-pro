@@ -96,10 +96,11 @@ control.inBackground(() => {
     while (true) {
         let resta = pwmpina.pwmoff
         let restb = pwmpinb.pwmoff
+        let t = 0
         while (shouldrun){
-            let t = Math.min(resta,restb)
-            resta-=t
-            restb-=t
+            t = Math.min(resta,restb)
+            resta = resta - t
+            restb = restb - t 
             basic.pause(t)
             if (resta == 0){
                 resta = flip(pwmpina)
@@ -108,6 +109,7 @@ control.inBackground(() => {
                 restb = flip(pwmpinb)
             }
         }
+        basic.pause(1)
     }
 })
 
