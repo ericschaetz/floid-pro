@@ -1,7 +1,9 @@
  //% weight=180 color=#004A99 icon="" block="FloidPro - Antrieb"
+//% groups="['Motorsteuerung', 'Fahrmanöver und Verifikation']"
 namespace Motors{
+
     /**
-     * Manuelle Steuerung: Die Steuerzahl bestimmt die Richtung der Motoren, PWM-Werte die Geschwindigkeit
+     * Manuelle Steuerung: Die Steuerzahl bestimmt die Richtung der Motoren, die PWM-Werte die Geschwindigkeit
      */
     //% blockid="floidpro_motors1" block="Sende Steuerzahl %drivenumber. Schalte Motor A: AN:%lon ms AUS:%loff ms und Motor B: AN:%ron ms AUS:%roff ms."
     //% drivenumber.min=0 drivenumber.max=255
@@ -9,7 +11,8 @@ namespace Motors{
     //% ron.min=0 
     //% loff.min=0 
     //% roff.min=0
-    //% weight=80 blockGap=8
+    //% weight=100
+    //% group="Motorsteuerung"
     //% inlineInputMode=inline
 
     export function motors1(drivenumber: number, lon: number, loff: number, ron: number, roff: number): void {
@@ -23,16 +26,17 @@ namespace Motors{
     }
 
     /**
-     *  Die Steuerzahl bestimmt die Richtung der Motoren, die PWM-Werte die Geschwindigkeit 
+     *  Die Steuerzahl bestimmt die Richtung der Motoren
      */
     //% blockid="floidpro_motors2" block="Sende Steuerzahl %drivenumber. Setze Geschwindigkeit von Motor A auf %left und Geschwindigkeit von Motor B auf %right."
     //% drivenumber.min=0 drivenumber.max=255
     //% left.min=0 left.max=1023
     //% right.min=0 right.max=1023
-    //% weight=90 blockGap=8
-    
+    //% weight=90 
+    //% group="Motorsteuerung"    
 
     export function motors2(drivenumber:number, left: number, right: number): void {
+        
         // Senden der Steuerzahl an alle Controlleradressen
         pins.i2cWriteNumber(57, drivenumber, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(59, drivenumber, NumberFormat.Int8LE, false)
@@ -56,7 +60,8 @@ namespace Motors{
     //% blockid="floidpro_motors3" block="Setze Motor A auf %left und Motor B auf %right"
     //% left.min=-10 left.max=10
     //% right.min=-10 right.max=10
-    //% weight=60 blockGap=8
+    //% weight=80
+    //% group="Motorsteuerung"
     export function motors3(left: number, right: number): void {
         if (level < 20 ) errornode("Motorsteuerung")
         motorseasy(left,right)
@@ -69,18 +74,24 @@ namespace Motors{
     //% blockid="floidpro_motors4" block="Setze Geschwindigkeit auf %speed und Richtung auf %direction"
     //% speed.min=-10 speed.max=10
     //% direction.min=-10 direction.max=10
-    //% weight=100 blockGap=8
+    //% weight=70
+    //% group="Motorsteuerung"
 
     export function motors4(speed: number, direction: number): void {
         if (level < 20) errornode("Motorsteuerung")
+
         let left = Math.clamp(-10, 10, speed + direction)
-        let right = Math.clamp(-10, 10, speed - direction)        
+        let right = Math.clamp(-10, 10, speed - direction)  
+
         motorseasy(left, right)
     }
 
-    //*********************************************************************************************************** */
+    //Ende Frontend*********************************************************************************************************** */
+    
     function motorseasy(left: number, right: number): void {
         let sign = left
+        motor_a = left
+        motor_b = right
 
         // Antriebszahl berechnen
         if (testDevice(61)&& level<30) { //Passt die Vorzeichen entsprechend der Spezifikationen von Einheit 3 an
