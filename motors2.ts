@@ -1,10 +1,49 @@
 
-namespace Motors{
+namespace Motors2 {
 
     const tyre_diameter = 14.4
     const axle_width = 18
     const turn_diameter = 56.5
     const numberofholes = 4
+    let lower_bounce_l = 0
+    let upper_bounce_l = 0
+    let lower_bounce_r = 0
+    let upper_bounce_r = 0
+
+    /**
+     * Init_Radsensoren: 
+     */
+    //% blockid="floidpro_init_rad" block="Kalibriere die Radsensoren"
+    //% group="Initialisierung"
+    export function init_rad(): void {
+        let last_statel = pins.analogReadPin(AnalogPin.P2)
+        let last_stater = pins.analogReadPin(AnalogPin.P3)
+        lower_bounce_l = last_statel
+        upper_bounce_l = last_statel
+        lower_bounce_r = last_stater
+        upper_bounce_r = last_stater
+        Motors.motors2(5, 700, 700)
+        for (let i = 0; i < 10; i++) {
+            basic.pause(5)
+            last_statel = pins.analogReadPin(AnalogPin.P2)
+            if (last_statel > upper_bounce_l) {
+                upper_bounce_l = last_statel
+            } else if (last_statel < lower_bounce_l) {
+                lower_bounce_l = last_statel
+            }
+            basic.pause(5)
+            last_stater = pins.analogReadPin(AnalogPin.P3)
+            if (last_stater > upper_bounce_r) {
+                upper_bounce_r = last_stater
+            } else if (last_stater < lower_bounce_r) {
+                lower_bounce_r = last_stater
+            }
+        }
+        // Stop motors
+        Motors.motors2(5, 0, 0)
+    }
+
+
     /**
      * Geradeausfahren: 
      */
@@ -29,9 +68,9 @@ namespace Motors{
 
         let targetdistance = distance
         if (direction == 0) {
-            motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else if (direction == 1) {
-            motors2(10, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(10, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
 
         while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
@@ -57,7 +96,7 @@ namespace Motors{
         }
 
         // Stop motors
-        motors2(5, 0, 0)
+        Motors.motors2(5, 0, 0)
     }
     /**
      * Graddrehung: 
@@ -89,7 +128,7 @@ namespace Motors{
 
         let changes = 0
 
-        motors2(m, 700, 700)
+        Motors.motors2(m, 700, 700)
         // Schleife bis beide Seiten die Zielentfernung erreicht haben
         while (distancel < targetdistance && distancer < targetdistance) {
             let next_statel = pins.analogReadPin(AnalogPin.P2)
@@ -101,7 +140,7 @@ namespace Motors{
                 distancel += tyre_diameter / numberofholes
                 if (distancel >= targetdistance) {
                     // Linker Motor stoppen, wenn Ziel erreicht
-                    motors2(m, 0, 700)
+                    Motors.motors2(m, 0, 700)
                 }
             }
             last_statel = new_statel
@@ -113,7 +152,7 @@ namespace Motors{
                 distancer += tyre_diameter / numberofholes
                 if (distancer >= targetdistance) {
                     // Rechter Motor stoppen, wenn Ziel erreicht
-                    motors2(m, 700, 0)
+                    Motors.motors2(m, 700, 0)
                 }
             }
             last_stater = new_stater
@@ -122,7 +161,7 @@ namespace Motors{
             basic.pause(10)
         }
 
-        motors2(m, 0, 0)
+        Motors.motors2(m, 0, 0)
     }
 
     /**
@@ -159,9 +198,9 @@ namespace Motors{
         let changes = 0
 
         if (directionx == 0) {
-            motors2(5, speed, speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(5, speed, speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else if (directionx == 1) {
-            motors2(10, speed, speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(10, speed, speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
 
         // Schleife bis Soll-Distanzen erreicht
@@ -189,7 +228,7 @@ namespace Motors{
         }
 
         // Motoren stoppen
-        motors2(5, 0, 0)
+        Motors.motors2(5, 0, 0)
     }
 
 }
