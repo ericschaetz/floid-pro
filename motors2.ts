@@ -9,11 +9,14 @@ namespace Motors2 {
     let upper_bounce_l = 0
     let lower_bounce_r = 0
     let upper_bounce_r = 0
+    let mid_l = 0
+    let mid_r = 0
 
     /**
      * Init_Radsensoren: 
      */
     //% blockid="floidpro_init_rad" block="Kalibriere die Radsensoren"
+    //% weight=20 blockGap=8
     //% group="Initialisierung"
     export function init_rad(): void {
         let last_statel = pins.analogReadPin(AnalogPin.P2)
@@ -41,8 +44,65 @@ namespace Motors2 {
         }
         // Stop motors
         Motors.motors2(5, 0, 0)
+
+        mid_l = Math.floor(upper_bounce_l - lower_bounce_l)
+        mid_r = Math.floor(upper_bounce_r - lower_bounce_r)
+        lower_bounce_l = lower_bounce_l + Math.floor(mid_l * 0.4)
+        lower_bounce_r = lower_bounce_r + Math.floor(mid_r * 0.4)
+        upper_bounce_l = upper_bounce_l - Math.floor(mid_l * 0.4)
+        upper_bounce_r = upper_bounce_r - Math.floor(mid_r * 0.4)
     }
 
+    /**
+     * wheels_turning: 
+     */
+    //% blockid="floidpro_wheels_turning" block="Prüfe Raddrehung"
+    //% weight=20 blockGap=8
+    //% group="Initialisierung"
+    export function wheels_turning(): number {
+        // returns are 0 for not turning, 1 for both turning and -1 for only one turning
+        basic.clearScreen()
+
+        let distancel = 0
+        let distancer = 0
+        let last_statel = pins.analogReadPin(AnalogPin.P2)
+        basic.pause(5)
+        let last_stater = pins.analogReadPin(AnalogPin.P3)
+        basic.pause(5)
+        let new_statel = pins.analogReadPin(AnalogPin.P2)
+        basic.pause(5)
+        let new_stater = pins.analogReadPin(AnalogPin.P3)
+        basic.pause(5)
+        let timeout = 0
+
+        while (distancel == 0 && distancer == 0 && timeout < 20) {
+            let next_statel = pins.analogReadPin(AnalogPin.P2)
+            basic.pause(5)
+            let next_stater = pins.analogReadPin(AnalogPin.P3)
+            Core.showNumber(next_statel, 4, 1, 1)
+            Core.showNumber(next_stater, 4, 2, 1)
+            if (Math.abs(new_statel - last_statel) >= 100 && Math.abs(new_statel - next_statel) <= 100) { //here we should use mid_l and mid_r but isnt tested
+                distancel = 1
+            }
+            last_statel = new_statel
+            new_statel = next_statel
+
+            if (Math.abs(new_stater - last_stater) >= 100 && Math.abs(new_stater - next_stater) <= 100) {
+                distancer = 1
+            }
+            last_stater = new_stater
+            new_stater = next_stater
+            timeout += 1
+            basic.pause(5)
+        }
+        if (distancel && distancer) {
+            return 1
+        } else if (!distancel && !distancer) {
+            return 0
+        } else {
+            return -1
+        }
+    }
 
     /**
      * Geradeausfahren: 
