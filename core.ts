@@ -282,7 +282,7 @@ namespace Core {
     }
 
     //% blockid="floidpro_light_flip"
-    //% block="Zustand von &light ändern"
+    //% block="Zustand von %light ändern"
     //% group="Beleuchtung"
     //% weight="59"
     export function light_flip(light: Light): void{
