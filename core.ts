@@ -288,6 +288,8 @@ namespace Core {
     export function light_flip(light: Light): void{
         let curr = pins.i2cReadNumber(58, NumberFormat.UInt8LE, false)
         let pattern = (1<<light)
+        let newpattern = curr ^ pattern
+        pins.i2cWriteNumber(58, newpattern, NumberFormat.UInt8LE, false)
         }
 
 
