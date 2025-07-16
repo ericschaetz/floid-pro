@@ -104,7 +104,7 @@ namespace Front {
     //% block="%sensor erkennt schwarzen Untergrund"
     //% weight=80
     //% group="Linetracking"
-    export function LineTracking(sensor: Linetracker): boolean {
+    export function lt_black(sensor: Linetracker): boolean {
 
         pins.i2cWriteNumber(56, sensor + 240 - 2 ** (sensor + 4), NumberFormat.Int8LE, false)
         let s = pins.digitalReadPin(DigitalPin.P14)

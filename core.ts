@@ -128,7 +128,7 @@ namespace Core {
     //% column.min=1 column.max=20
     //% zahl.min=0 zahl.max=255
     //% inlineInputMode=inline
-    export function showbinary(zahl: number, line: number, column: number): void {
+    export function showBinary(zahl: number, line: number, column: number): void {
         if (advanced) errornode("Zeige Binaer")
         let message = binarystring(zahl)
         showOnLcd(message, line, column)
@@ -147,7 +147,7 @@ namespace Core {
     //% line.min=1 line.max=4
     //% column.min=1 column.max=20
     //% inlineInputMode=inline
-    export function showboolean(bool: boolean, line: number, column: number): void {
+    export function showBoolean(bool: boolean, line: number, column: number): void {
         if (advanced) errornode("Zeige Wahrheitswert")
         if (bool) showOnLcd("WAHR", line, column);
         else showOnLcd("FALSCH", line, column);
@@ -160,7 +160,7 @@ namespace Core {
     //% block="Zeige Sensordaten auf Display an"
     //% weight=82
     //% group="Display"
-    export function showsensor():void{
+    export function showSensor():void{
         if (advanced) errornode("Sensorausgabe")
         if (!staticdisplay){
             showOnLcd("LTO:  BVL:   USR:",1, 1)
@@ -170,7 +170,7 @@ namespace Core {
         }
 
         for (let i = 0; i <= 3; i++){
-            if (Front.LineTracking(i)) showOnLcd("B",i + 1,5)
+            if (Front.lt_black(i)) showOnLcd("B",i + 1,5)
             else showOnLcd("W", i + 1, 5)
             basic.pause(5)
             if (bumper_single(i)) showOnLcd("J", i + 1, 11)
@@ -268,6 +268,7 @@ namespace Core {
     //% group="Beleuchtung"
     //% weight=60
     export function light_single(light: Light, status: OnOff): void {
+        if(advanced) errornode("Licht einzel")
         let curr = pins.i2cReadNumber(58,NumberFormat.UInt8LE, false)
         let pattern = (1 << light)
         let new_lights = 0
@@ -286,6 +287,7 @@ namespace Core {
     //% group="Beleuchtung"
     //% weight="59"
     export function light_flip(light: Light): void{
+        if (advanced) errornode("Licht wechseln")
         let curr = pins.i2cReadNumber(58, NumberFormat.UInt8LE, false)
         let pattern = (1<<light)
         let newpattern = curr ^ pattern
