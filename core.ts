@@ -99,6 +99,7 @@ namespace Core {
     //% column.min=1 column.max=20
     //% inlineInputMode=inline
     export function showNumber(zahl: number, laenge: number, line: number, column: number): void {
+        if (advanced) errornode("Zeige Zahl")
         let message = zahl + '';
         let padding = "";
 
@@ -128,6 +129,7 @@ namespace Core {
     //% zahl.min=0 zahl.max=255
     //% inlineInputMode=inline
     export function showbinary(zahl: number, line: number, column: number): void {
+        if (advanced) errornode("Zeige Binaer")
         let message = binarystring(zahl)
         showOnLcd(message, line, column)
     }
@@ -146,6 +148,7 @@ namespace Core {
     //% column.min=1 column.max=20
     //% inlineInputMode=inline
     export function showboolean(bool: boolean, line: number, column: number): void {
+        if (advanced) errornode("Zeige Wahrheitswert")
         if (bool) showOnLcd("WAHR", line, column);
         else showOnLcd("FALSCH", line, column);
     }
@@ -158,6 +161,7 @@ namespace Core {
     //% weight=82
     //% group="Display"
     export function showsensor():void{
+        if (advanced) errornode("Sensorausgabe")
         if (!staticdisplay){
             showOnLcd("LTO:  BVL:   USR:",1, 1)
             showOnLcd("LT1:  BVR:   USV:", 2, 1)
@@ -169,7 +173,7 @@ namespace Core {
             if (Front.LineTracking(i)) showOnLcd("B",i + 1,5)
             else showOnLcd("W", i + 1, 5)
             basic.pause(5)
-            if (bumpersingle(i)) showOnLcd("J", i + 1, 11)
+            if (bumper_single(i)) showOnLcd("J", i + 1, 11)
             else showOnLcd("N", i + 1, 11)
             Front.sonar_switch(i)
             showNumber(Front.sonar(), 3, i + 1 , 18)
@@ -202,9 +206,8 @@ namespace Core {
     //% block="Bumper %bumper ist gedrückt"
     //% group="Bumper"
     //% weight=75
-    export function bumpersingle(bumper:BumperSensor): boolean {
-        if (advanced) errornode("Bumper einzeln")
-        return ((bumperall() & (1 << bumper) )!= 0)
+    export function bumper_single(bumper:BumperSensor): boolean {
+        return ((bumper_all() & (1 << bumper) )!= 0)
     }
 
     /**
@@ -214,7 +217,7 @@ namespace Core {
     //% block="Dezimalzahl der Bumper"
     //% group="Bumper"
     //% weight=70
-    export function bumperall(): number {
+    export function bumper_all(): number {
         if (advanced) errornode("Bumper gesamt")
         let shift = 0
         if (!reservepin60) shift=240
@@ -230,7 +233,7 @@ namespace Core {
     //% block="Schalte Blinker VL:%VL_Blinker                 VR:%VR_Blinker                 HL:%HL_Blinker                 HR:%HR_Blinker         Licht   VL:%VL_Licht                 VR:%VR_Licht                 HL:%HL_Licht                 HR:%HR_Licht "
     //% group="Beleuchtung"
     //% weight=65
-    export function beleuchtung(VL_Blinker: OnOff, VR_Blinker: OnOff, HL_Blinker: OnOff, HR_Blinker: OnOff, VL_Licht: OnOff, VR_Licht: OnOff, HL_Licht: OnOff, HR_Licht: OnOff): void {
+    export function lights_all(VL_Blinker: OnOff, VR_Blinker: OnOff, HL_Blinker: OnOff, HR_Blinker: OnOff, VL_Licht: OnOff, VR_Licht: OnOff, HL_Licht: OnOff, HR_Licht: OnOff): void {
         let n = 0
         if (VL_Blinker) {
             n += 1
@@ -264,7 +267,7 @@ namespace Core {
     //% block="Schalte %light %status"
     //% group="Beleuchtung"
     //% weight=60
-    export function setlights(light: Light, status: OnOff): void {
+    export function light_single(light: Light, status: OnOff): void {
         let curr = pins.i2cReadNumber(58,NumberFormat.UInt8LE, false)
         let pattern = (1 << light)
         let new_lights = 0
@@ -277,6 +280,15 @@ namespace Core {
         
         pins.i2cWriteNumber(58, new_lights, NumberFormat.Int8LE, false)
     }
+
+    //% blockid="floidpro_light_flip"
+    //% block="Zustand von &light ändern"
+    //% group="Beleuchtung"
+    //% weight="59"
+    export function light_flip(light: Light): void{
+        let curr = pins.i2cReadNumber(58, NumberFormat.UInt8LE, false)
+        let pattern = (1<<light)
+        }
 
 
     /*Ende Beleuchtung*******************************************************************************************************************************/
