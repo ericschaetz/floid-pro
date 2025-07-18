@@ -149,7 +149,7 @@ namespace Core {
     //% inlineInputMode=inline
     export function showBoolean(bool: boolean, line: number, column: number): void {
         if (advanced) errornode("Zeige Wahrheitswert")
-        if (bool) showOnLcd("WAHR", line, column);
+        if (bool) showOnLcd("WAHR  ", line, column);
         else showOnLcd("FALSCH", line, column);
     }
 

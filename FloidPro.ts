@@ -293,10 +293,10 @@ enum Controller_read {
 }
 
 enum Modus{
-    //% block="Einfach"
+    //% block="Vollständig"
     einfach = 0,
 
-    //% block="Erweitert"
+    //% block="Eingeschränkt"
     erweitert = 1,
  }
 
