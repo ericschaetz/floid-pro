@@ -1,7 +1,7 @@
 /**
  * Die Frontsektion umfasst die Funktionen für Ultraschall, RGB und Linetracking
  */
-//% weight=190 color=#004A99 icon ="" block="FloidPro - Frontsektion"
+//% weight=190 color=#004A99 icon="" block="FloidPro - Frontsektion"
 //% groups="['Ultraschall und RGB', 'Linetracking']"
 
 namespace Front {
