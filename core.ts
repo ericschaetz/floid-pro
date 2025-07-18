@@ -207,6 +207,7 @@ namespace Core {
     //% group="Bumper"
     //% weight=75
     export function bumper_single(bumper:BumperSensor): boolean {
+        if (advanced) errornode("Bumper einzel")
         return ((bumper_all() & (1 << bumper) )!= 0)
     }
 
