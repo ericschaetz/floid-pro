@@ -1,5 +1,5 @@
 
-namespace Motors2 {
+namespace Motors {
 
     const tyre_diameter = 14.4
     const axle_width = 18
