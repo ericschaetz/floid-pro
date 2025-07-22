@@ -43,7 +43,6 @@ namespace Motors{
         pins.i2cWriteNumber(61, drivenumber, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(63, drivenumber, NumberFormat.Int8LE, false)
 
-        //if (testDevice(63)) {
         if (testDevice(63)){ 
             pwmlight(left,right)
         }
@@ -94,7 +93,7 @@ namespace Motors{
         motor_b = right
 
         // Antriebszahl berechnen
-        if (testDevice(61)&& level<30) { //Passt die Vorzeichen entsprechend der Spezifikationen von Einheit 3 an
+        if (testDevice(61) && level<30) { //Passt die Vorzeichen entsprechend der Spezifikationen von Einheit 3 an
             if (Math.sign(left) != Math.sign(right)) { //Motoren würden bei diesen Bedingungen gegenläufig drehen
                 if (Math.abs(left) == Math.abs(right)) {
                     if (Math.sign(left) < Math.sign(right)) {
@@ -114,7 +113,7 @@ namespace Motors{
 
             }
         }
-        //else if (testDevice(61)&&level>30) <<Hier Aufruf Florian (Hintergrund prozess, der beide zaheln getrennt sendet)
+        //else if (testDevice(61) && level>30) <<Hier Aufruf Florian (Hintergrund prozess, der beide zaheln getrennt sendet)
 
         let n = 0; //Berechnung der Steuerzahl in Abhänigkeit zu den Vorzeichen der Variablen
         if (sign > 0) { //Motor A vorwärts
