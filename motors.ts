@@ -44,7 +44,7 @@ namespace Motors{
         pins.i2cWriteNumber(63, drivenumber, NumberFormat.Int8LE, false)
 
         //if (testDevice(63)) {
-        if (true){ 
+        if (testDevice(63)){ 
             pwmlight(left,right)
         }
         else {
