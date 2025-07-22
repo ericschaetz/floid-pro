@@ -232,6 +232,7 @@ namespace Motors {
     //% radius.min=0 radius.max=255
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
+    //% inlineInputMode=inline
     export function kurvenfahrt(degrees: number, radius: number, directionx: number, directiony: number): void {
         // Kreisfahrt Start
         let targetdistancel = (2 * Math.PI * (radius - (axle_width / 2))) / (degrees / 360)
