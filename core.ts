@@ -10,6 +10,7 @@ namespace Core {
     //% blockid="floidpro_init" 
     //% block="FloidPro auf %lvl im Modus %mod hochfahren" 
     //% weight=100
+    //% lvl.defl=Level.l3c
     //% group="Initialisierung"
     export function init(lvl:Level, mod:Modus): void {
         level = lvl
