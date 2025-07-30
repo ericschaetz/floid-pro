@@ -22,7 +22,7 @@ namespace Motors{
         pins.i2cWriteNumber(57, drivenumber, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(59, drivenumber, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(61, drivenumber, NumberFormat.Int8LE, false)
-        pins.i2cWriteNumber(63, drivenumber, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(63, drivenumber63(drivenumber), NumberFormat.Int8LE, false)
     }
 
     /**
@@ -41,7 +41,7 @@ namespace Motors{
         pins.i2cWriteNumber(57, drivenumber, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(59, drivenumber, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(61, drivenumber, NumberFormat.Int8LE, false)
-        pins.i2cWriteNumber(63, drivenumber, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(63, drivenumber63(drivenumber), NumberFormat.Int8LE, false)
 
         if (testDevice(63)){ 
             pwmlight(left,right)
@@ -133,7 +133,7 @@ namespace Motors{
         pins.i2cWriteNumber(57, n, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(59, n, NumberFormat.Int8LE, false)
         pins.i2cWriteNumber(61, n, NumberFormat.Int8LE, false)
-        pins.i2cWriteNumber(63, n, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(63, drivenumber63(n), NumberFormat.Int8LE, false)
 
         // PWM schreiben
         if (testDevice(63)) {
@@ -183,8 +183,18 @@ namespace Motors{
         shouldrun = true        
     }
 
+    function drivenumber63(n:number): number {
 
+        const bit2 = (n >> 2) & 1;
+        const bit3 = (n >> 3) & 1;
 
+        if (bit2 !== bit3) {
+            const mask = (1 << 2) | (1 << 3);
+            return n ^ mask;
+        }
+
+        return n;
+    }
     
 
     
