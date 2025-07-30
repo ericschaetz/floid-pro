@@ -324,7 +324,7 @@ namespace Core {
     //% weight=50
     //% group="I2C"
     //% n.min=0 n.max=255
-    export function i2cwrite(n:number,addr:Controller_write):void{
+    export function i2cwrite(n:number, addr:Controller_write):void{
         if(addr==Controller_write.US){
             readus = n
         }
