@@ -1,2 +1,2 @@
 // This file is auto-generated from pxt.json
-let versionnumber = "0.0.43";
+let versionnumber = "0.0.44";
