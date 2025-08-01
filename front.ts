@@ -98,7 +98,7 @@ namespace Front {
     /*Ende Ultraschall und RGB *******************************************************************************************************************************/
 
     /**
-     * Gibt zurück, ob der eingestellte Sensor schwarzen Untergurnd erkannt hat
+     * Gibt zurück, ob der eingestellte Sensor schwarzen Untergrund erkannt hat
      */
     //% blockid="floidpro_linetrackingsimple"
     //% block="%sensor erkennt schwarzen Untergrund"
@@ -112,6 +112,66 @@ namespace Front {
         return !!s
 
     }
+
+    /**
+     * Gibt die Graustufe des Untergrund des eingestellten Sensors zurück
+     */
+    //% blockid="floidpro_linetrackingadvanced"
+    //% block="Graustufe von %sensor"
+    //% weight=80
+    //% group="Linetracking"
+    export function lt_value(sensor: Linetracker): number {
+        lt_set_sensor(sensor)
+
+        for (let i = 0; i < 9; i++) {
+            lt_set_daconv(i)
+            basic.pause(10)
+            if (lt_comparator) {
+                return i
+            }
+        }
+        return 10
+
+    }
+
+    /**
+     * Wählt einen LineTracking-Sensor aus
+     */
+    //% blockid="floidpro_linetrackingsimple"
+    //% block="Signalweiche auf %sensor einstellen"
+    //% weight=80
+    //% group="Linetracking"
+    export function lt_set_sensor(sensor: Linetracker): void {
+        pins.i2cWriteNumber(56, sensor + 240 - 2 ** (sensor + 4), NumberFormat.Int8LE, false) //todo: lichtabschaltung hinzufuegen
+    }
+
+
+    /**
+     * Spannugnsteiler einstellen
+     */
+    //% blockid="floidpro_linetrackingsetdaconverter"
+    //% block="Signalweiche auf %sensor einstellen"
+    //% weight=80
+    //% group="Linetracking"
+    export function lt_set_daconv(v: number): void {
+        pins.i2cWriteNumber(32, 2**v, NumberFormat.Int8LE, false) //adresse korrekt einstellen
+    }
+
+
+    /**
+     * Vergleicht das Signal des ausgewählten LineTracking Sensors mit dem des Spannugnsteilers
+     */
+    //% blockid="floidpro_linetrackingcomparator"
+    //% block="Signalweiche auf %sensor einstellen"
+    //% weight=80
+    //% group="Linetracking"
+    export function lt_comparator(): boolean{
+        let s = pins.digitalReadPin(DigitalPin.P14)
+        return !!s
+    }
+
+
+
     /*Ende Linetracking*******************************************************************************************************************************/
 
 }
