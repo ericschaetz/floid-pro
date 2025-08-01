@@ -151,7 +151,7 @@ namespace Front {
      */
     //% blockid="floidpro_linetrackingsetdaconverter"
     //% block="Spannungsteiler auf %v einstellen"
-    //% weight=76
+    //% weight=77
     //% group="Linetracking"
     //% v.min=0 v.max=8
     export function lt_set_daconv(v: number): void {
@@ -164,7 +164,7 @@ namespace Front {
      */
     //% blockid="floidpro_linetrackingcomparator"
     //% block="LineTracking-Komparator"
-    //% weight=77
+    //% weight=76
     //% group="Linetracking"
     export function lt_comparator(): boolean{
         let s = pins.digitalReadPin(DigitalPin.P14)
