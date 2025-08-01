@@ -153,6 +153,7 @@ namespace Front {
     //% block="Spannugnsteiler auf %v einstellen"
     //% weight=80
     //% group="Linetracking"
+    //% v.min=0 v.max=8
     export function lt_set_daconv(v: number): void {
         pins.i2cWriteNumber(32, 2**v, NumberFormat.Int8LE, false) //adresse korrekt einstellen
     }
