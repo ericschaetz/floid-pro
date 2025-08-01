@@ -118,7 +118,7 @@ namespace Front {
      */
     //% blockid="floidpro_linetrackingadvanced"
     //% block="Graustufe von %sensor"
-    //% weight=80
+    //% weight=79
     //% group="Linetracking"
     export function lt_value(sensor: Linetracker): number {
         lt_set_sensor(sensor)
@@ -139,7 +139,7 @@ namespace Front {
      */
     //% blockid="floidpro_linetrackingsimple"
     //% block="Signalweiche auf %sensor einstellen"
-    //% weight=80
+    //% weight=78
     //% group="Linetracking"
     export function lt_set_sensor(sensor: Linetracker): void {
         pins.i2cWriteNumber(56, sensor + 240 - 2 ** (sensor + 4), NumberFormat.Int8LE, false) //todo: lichtabschaltung hinzufuegen
@@ -151,7 +151,7 @@ namespace Front {
      */
     //% blockid="floidpro_linetrackingsetdaconverter"
     //% block="Spannungsteiler auf %v einstellen"
-    //% weight=80
+    //% weight=76
     //% group="Linetracking"
     //% v.min=0 v.max=8
     export function lt_set_daconv(v: number): void {
@@ -164,7 +164,7 @@ namespace Front {
      */
     //% blockid="floidpro_linetrackingcomparator"
     //% block="LineTracking-Komparator"
-    //% weight=80
+    //% weight=77
     //% group="Linetracking"
     export function lt_comparator(): boolean{
         let s = pins.digitalReadPin(DigitalPin.P14)
