@@ -150,7 +150,7 @@ namespace Front {
      * Spannungsteiler einstellen
      */
     //% blockid="floidpro_linetrackingsetdaconverter"
-    //% block="Spannugnsteiler auf %v einstellen"
+    //% block="Spannungsteiler auf %v einstellen"
     //% weight=80
     //% group="Linetracking"
     //% v.min=0 v.max=8
