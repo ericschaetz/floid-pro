@@ -147,10 +147,10 @@ namespace Front {
 
 
     /**
-     * Spannugnsteiler einstellen
+     * Spannungsteiler einstellen
      */
     //% blockid="floidpro_linetrackingsetdaconverter"
-    //% block="Signalweiche auf %sensor einstellen"
+    //% block="Spannugnsteiler auf %v einstellen"
     //% weight=80
     //% group="Linetracking"
     export function lt_set_daconv(v: number): void {
@@ -162,7 +162,7 @@ namespace Front {
      * Vergleicht das Signal des ausgewählten LineTracking Sensors mit dem des Spannugnsteilers
      */
     //% blockid="floidpro_linetrackingcomparator"
-    //% block="Signalweiche auf %sensor einstellen"
+    //% block="LineTracking-Komparator"
     //% weight=80
     //% group="Linetracking"
     export function lt_comparator(): boolean{
