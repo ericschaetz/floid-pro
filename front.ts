@@ -107,8 +107,10 @@ namespace Front {
     export function lt_black(sensor: Linetracker): boolean {
 
         pins.i2cWriteNumber(56, sensor + 240 - 2 ** (sensor + 4), NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(32, sensor + 240 - 2 ** (sensor + 4), NumberFormat.Int8LE, false)
         let s = pins.digitalReadPin(DigitalPin.P14)
         pins.i2cWriteNumber(56, 255, NumberFormat.Int8LE, false)
+        pins.i2cWriteNumber(32, 255, NumberFormat.Int8LE, false)
         return !!s
 
     }
