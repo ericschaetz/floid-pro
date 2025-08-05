@@ -142,7 +142,7 @@ namespace Front {
     //% weight=78
     //% group="Linetracking"
     export function lt_set_sensor(sensor: Linetracker): void {
-        pins.i2cWriteNumber(56, sensor + 240 - 2 ** (sensor + 4), NumberFormat.Int8LE, false) //todo: lichtabschaltung hinzufuegen
+        pins.i2cWriteNumber(32, sensor + 240 - 2 ** (sensor + 4), NumberFormat.Int8LE, false) //todo: lichtabschaltung hinzufuegen
     }
 
 
