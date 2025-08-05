@@ -29,11 +29,13 @@ namespace Core {
             for (let j = 0; j < 5; j++) {
                 pins.i2cWriteNumber(58, 255 - 2 ** j - 2 ** (j + 4), NumberFormat.Int8LE, false)
                 pins.i2cWriteNumber(56, j + 240 - 2 ** (j + 4), NumberFormat.Int8LE, false)
+                pins.i2cWriteNumber(32, j + 240 - 2 ** (j + 4), NumberFormat.Int8LE, false)
                 basic.pause(40)
             }
             for (let j = 3; j >= 0; j--) {
                 pins.i2cWriteNumber(58, 255 - 2 ** j - 2 ** (j + 4), NumberFormat.Int8LE, false)
                 pins.i2cWriteNumber(56, j + 240 - 2 ** (j + 4), NumberFormat.Int8LE, false)
+                pins.i2cWriteNumber(32, j + 240 - 2 ** (j + 4), NumberFormat.Int8LE, false)
                 basic.pause(40)
             }
         }
