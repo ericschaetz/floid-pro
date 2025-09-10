@@ -92,21 +92,46 @@ namespace Motors {
     /**
          * Aktuelle Radgeschwindigkeit in Meter pro Sekunde ausgeben:
          */
-    //% blockid="floidpro_current_speed_mps" block="Gebe Radgeschwindigkeit in m/s an vom Rad: %rad"
+    //% blockid="floidpro_current_speed_mps" block="Gebe Radgeschwindigkeit in %mode an vom Rad: %rad"
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
-    export function current_speed_mps(rad:Raddrehung): number {
+    export function current_speed_mps(mode:Geschwindigkeit_Einheit,rad:Raddrehung): number {
 
         let time_past = input.runningTime()-wheelspeed_timestamp
-        let distance_l = wheel_l * (tyre_diameter / numberofholes)
-        let distance_r = wheel_r * (tyre_diameter / numberofholes)
-        if (rad == 1) {
-            return (distance_l * 10) / (time_past)
-        } else if (rad == 2) {
-            return (distance_r * 10) / (time_past)
+        if (mode == Geschwindigkeit_Einheit.meter) {
+            let distance_l = wheel_l * (tyre_diameter / numberofholes)
+            let distance_r = wheel_r * (tyre_diameter / numberofholes)
+            if (rad == 1) {
+                return (distance_l * 10) / (time_past)
+            } else if (rad == 2) {
+                return (distance_r * 10) / (time_past)
+            } else {
+                return ((distance_l + distance_r) * 5) / (time_past) //Mittelwert aus beiden
+            }
+        } else if (mode == Geschwindigkeit_Einheit.drehungen) {
+            let distance_l = wheel_l / numberofholes
+            let distance_r = wheel_r / numberofholes
+            if (rad == 1) {
+                return (distance_l) / (time_past / 1000)
+            } else if (rad == 2) {
+                return (distance_r) / (time_past / 1000)
+            } else {
+                return ((distance_l + distance_r) / 2) / (time_past / 1000) //Mittelwert aus beiden
+            }
+        } else if (mode == Geschwindigkeit_Einheit.grad) {
+            let distance_l = wheel_l * (360 / numberofholes)
+            let distance_r = wheel_r * (360 / numberofholes)
+            if (rad == 1) {
+                return (distance_l) / (time_past / 1000)
+            } else if (rad == 2) {
+                return (distance_r) / (time_past / 1000)
+            } else {
+                return ((distance_l + distance_r) / 2) / (time_past / 1000) //Mittelwert aus beiden
+            }
         } else {
-            return ((distance_l+distance_r) * 5) / (time_past) //Mittelwert aus beiden
+            return -1
         }
+        
         
     }
 

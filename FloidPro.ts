@@ -319,4 +319,16 @@ enum Raddrehung {
 
     b = 3,
 }
+
+enum Geschwindigkeit_Einheit {
+    //% block="Meter/Sekunde"
+    meter = 1,
+
+    //% block="Drehungen/Sekunde"
+    drehungen = 2,
+
+    //% block="Grad/Sekunde"
+
+    grad = 3,
+}
 /**************************************************************************************************/
