@@ -9,8 +9,42 @@ namespace Motors {
     let upper_bounce_l = 0
     let lower_bounce_r = 0
     let upper_bounce_r = 0
-    let mid_l = 0
-    let mid_r = 0
+    let mid_l = 100
+    let mid_r = 100
+
+    let wheelchecking = true
+    let wheelspeed_timestamp = 0
+    let wheel_r = 0
+    let wheel_l = 0
+
+    let wheel_r_last = 0
+    let wheel_l_last = 0
+
+    let wheel_r_new = 0
+    let wheel_l_new = 0
+
+    control.inBackground(() => {
+        wheel_l_last = pins.analogReadPin(AnalogPin.P2)
+        wheel_r_last = pins.analogReadPin(AnalogPin.P3)
+        while (true) {
+            while (wheelchecking) {
+                wheel_l_new = pins.analogReadPin(AnalogPin.P2)
+                if (Math.abs(wheel_l_new - wheel_l_last) >= mid_l) {
+                    wheel_l += 1
+                }
+                wheel_l_last = wheel_l_new
+                basic.pause(5)
+                wheel_r_new = pins.analogReadPin(AnalogPin.P3)
+                if (Math.abs(wheel_r_new - wheel_r_last) >= mid_r) {
+                    wheel_r += 1
+                }
+                wheel_r_last = wheel_r_new
+                basic.pause(25)
+            }
+            basic.pause(500)
+        }
+    })
+
 
     /**
      * Init_Radsensoren: 
@@ -51,6 +85,50 @@ namespace Motors {
         lower_bounce_r = lower_bounce_r + Math.floor(mid_r * 0.4)
         upper_bounce_l = upper_bounce_l - Math.floor(mid_l * 0.4)
         upper_bounce_r = upper_bounce_r - Math.floor(mid_r * 0.4)
+        mid_l = Math.floor(mid_l*0.5)
+        mid_r = Math.floor(mid_r*0.5)
+    }
+
+    /**
+         * current_speed_mps: 
+         */
+    //% blockid="floidpro_current_speed_mps" block="Gebe Radgeschwindigkeit in m/s an"
+    //% weight=20 blockGap=8
+    //% group="Initialisierung"
+    export function current_speed_mps(): number {
+        let time_past = input.runningTime()-wheelspeed_timestamp
+        let distance_l = wheel_l * (tyre_diameter / numberofholes)
+        let distance_r = wheel_r * (tyre_diameter / numberofholes)
+
+        return (distance_l*10)/(time_past)
+    }
+
+    /**
+         * current_speed_degree: 
+         */
+    //% blockid="floidpro_current_speed_degree" block="Gebe Radgeschwindigkeit in grad/s an"
+    //% weight=20 blockGap=8
+    //% group="Initialisierung"
+    export function current_speed_degree(): number {
+        let time_past = input.runningTime() - wheelspeed_timestamp
+        let distance_l = wheel_l * (360 / numberofholes)
+        let distance_r = wheel_r * (360 / numberofholes)
+
+        return (distance_l) / (time_past/1000)
+    }
+
+    /**
+         * current_speed_puls: 
+         */
+    //% blockid="floidpro_current_speed_puls" block="Gebe Radgeschwindigkeit in Drehungen/s an"
+    //% weight=20 blockGap=8
+    //% group="Initialisierung"
+    export function current_speed_puls(): number {
+        let time_past = input.runningTime() - wheelspeed_timestamp
+        let distance_l = wheel_l / numberofholes
+        let distance_r = wheel_r / numberofholes
+
+        return (distance_l) / (time_past / 1000)
     }
 
     /**
