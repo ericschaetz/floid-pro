@@ -90,11 +90,11 @@ namespace Motors {
     }
 
     /**
-         * current_speed_mps: 
+         * Aktuelle Radgeschwindigkeit in Meter pro Sekunde ausgeben:
          */
     //% blockid="floidpro_current_speed_mps" block="Gebe Radgeschwindigkeit in m/s an vom Rad: %rad"
     //% weight=20 blockGap=8
-    //% group="Initialisierung"
+    //% group="Fahrmanöver und Verifikation"
     export function current_speed_mps(rad:Raddrehung): number {
 
         let time_past = input.runningTime()-wheelspeed_timestamp
@@ -111,31 +111,41 @@ namespace Motors {
     }
 
     /**
-         * current_speed_degree: 
+         * Aktuelle Radgeschwindigkeit in Grad pro Sekunde ausgeben:
          */
-    //% blockid="floidpro_current_speed_degree" block="Gebe Radgeschwindigkeit in grad/s an"
+    //% blockid="floidpro_current_speed_degree" block="Gebe Radgeschwindigkeit in grad/s an vom Rad: %rad"
     //% weight=20 blockGap=8
-    //% group="Initialisierung"
-    export function current_speed_degree(): number {
+    //% group="Fahrmanöver und Verifikation"
+    export function current_speed_degree(rad: Raddrehung): number {
         let time_past = input.runningTime() - wheelspeed_timestamp
         let distance_l = wheel_l * (360 / numberofholes)
         let distance_r = wheel_r * (360 / numberofholes)
-
-        return (distance_l) / (time_past/1000)
+        if (rad == 1) {
+            return (distance_l) / (time_past / 1000)
+        } else if (rad == 2) {
+            return (distance_r) / (time_past / 1000)
+        } else {
+            return ((distance_l + distance_r) / 2) / (time_past / 1000) //Mittelwert aus beiden
+        }
     }
 
     /**
-         * current_speed_puls: 
+         * Aktuelle Radgeschwindigkeit in Drehungen pro Sekunde ausgeben: 
          */
-    //% blockid="floidpro_current_speed_puls" block="Gebe Radgeschwindigkeit in Drehungen/s an"
+    //% blockid="floidpro_current_speed_puls" block="Gebe Radgeschwindigkeit in Drehungen/s an vom Rad: %rad"
     //% weight=20 blockGap=8
-    //% group="Initialisierung"
-    export function current_speed_puls(): number {
+    //% group="Fahrmanöver und Verifikation"
+    export function current_speed_puls(rad: Raddrehung): number {
         let time_past = input.runningTime() - wheelspeed_timestamp
         let distance_l = wheel_l / numberofholes
         let distance_r = wheel_r / numberofholes
-
-        return (distance_l) / (time_past / 1000)
+        if (rad == 1) {
+            return (distance_l) / (time_past / 1000)
+        } else if (rad == 2) {
+            return (distance_r) / (time_past / 1000)
+        } else {
+            return ((distance_l + distance_r) / 2) / (time_past / 1000) //Mittelwert aus beiden
+        }
     }
 
     /**
@@ -187,6 +197,50 @@ namespace Motors {
         } else {
             return -1
         }
+    }
+
+    /**
+         * Drehe die Räder um eine Bestimmte Anzahl an Drehungen: 
+         */
+    //% blockid="floidpro_turnwheel" block="Drehe Rad %rad um %turns Umdrehungen"
+    //% turns.min=1 turns.max=10
+    //% weight=20 blockGap=8
+    //% group="Fahrmanöver und Verifikation"
+    export function turnwheel(rad: Raddrehung, turns: number): void {
+
+        basic.clearScreen()
+        let neededpin = AnalogPin.P2
+        let mid = mid_l
+        if (rad == 2){
+            neededpin = AnalogPin.P3
+            mid = mid_r
+        }
+
+        let distance = 0
+        let last_state = pins.analogReadPin(neededpin)
+        basic.pause(10)
+        let new_state = pins.analogReadPin(neededpin)
+        basic.pause(10)
+        if (rad == 1) {
+            Motors.motors2(5, 700, 0) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        } else if (rad == 2) {
+            Motors.motors2(5, 0, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        } else {
+            Motors.motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        }
+        wheelspeed_timestamp = input.runningTime()
+        while (distance < (turns*numberofholes)) { 
+            let next_state = pins.analogReadPin(neededpin)
+            if (Math.abs(new_state - last_state) >= mid && Math.abs(new_state - next_state) <= mid) {
+                distance += 1
+            }
+            last_state = new_state
+            new_state = next_state
+            basic.pause(10)
+        }
+
+        // Stop motors
+        Motors.motors2(5, 0, 0)
     }
 
     /**
