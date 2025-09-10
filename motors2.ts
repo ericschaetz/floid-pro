@@ -92,15 +92,22 @@ namespace Motors {
     /**
          * current_speed_mps: 
          */
-    //% blockid="floidpro_current_speed_mps" block="Gebe Radgeschwindigkeit in m/s an"
+    //% blockid="floidpro_current_speed_mps" block="Gebe Radgeschwindigkeit in m/s an vom Rad: %rad"
     //% weight=20 blockGap=8
     //% group="Initialisierung"
-    export function current_speed_mps(): number {
+    export function current_speed_mps(rad:Raddrehung): number {
+
         let time_past = input.runningTime()-wheelspeed_timestamp
         let distance_l = wheel_l * (tyre_diameter / numberofholes)
         let distance_r = wheel_r * (tyre_diameter / numberofholes)
-
-        return (distance_l*10)/(time_past)
+        if (rad == 1) {
+            return (distance_l * 10) / (time_past)
+        } else if (rad == 2) {
+            return (distance_r * 10) / (time_past)
+        } else {
+            return ((distance_l+distance_r) * 5) / (time_past) //Mittelwert aus beiden
+        }
+        
     }
 
     /**
