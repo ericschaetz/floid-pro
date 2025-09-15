@@ -105,7 +105,7 @@ namespace Motors {
     /**
          * Aktuelle Radgeschwindigkeit in Einheit pro Sekunde ausgeben:
          */
-    //% blockid="floidpro_current_speed_mps" block="Gebe Radgeschwindigkeit in %mode pro Sekunde an vom Rad: %rad"
+    //% blockid="floidpro_current_speed_mps" block="Gib Radgeschwindigkeit in %mode pro Sekunde an vom Rad: %rad"
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
     export function current_speed_mps(mode:Geschwindigkeit_Einheit,rad:Raddrehung): number {
@@ -147,9 +147,9 @@ namespace Motors {
     }
 
     /**
-         * Zurück gelegter Radweg ausgeben:
+         * Zurückgelegte Strecke ausgeben:
          */
-    //% blockid="floidpro_current_wheel_dist" block="Gebe Radweg in %mode an vom Rad: %rad"
+    //% blockid="floidpro_current_wheel_dist" block="Gib zurückgelegte Strecke in %mode an vom Rad: %rad"
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
     export function current_wheel_dist(mode: Geschwindigkeit_Einheit, rad: Raddrehung): number {
