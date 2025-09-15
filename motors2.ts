@@ -90,9 +90,22 @@ namespace Motors {
     }
 
     /**
-         * Aktuelle Radgeschwindigkeit in Meter pro Sekunde ausgeben:
+           * Setze den Messpunkt der Radsensoren Zurück:
+           */
+    //% blockid="floidpro_reset_wheel_counter" block="Setze den Radsensorzähler zurück"
+    //% weight=20 blockGap=8
+    //% group="Fahrmanöver und Verifikation"
+    export function reset_wheel_counter(): void {
+        wheelspeed_timestamp = input.runningTime()
+        wheel_l = 0
+        wheel_r = 0
+    }
+
+
+    /**
+         * Aktuelle Radgeschwindigkeit in Einheit pro Sekunde ausgeben:
          */
-    //% blockid="floidpro_current_speed_mps" block="Gebe Radgeschwindigkeit in %mode an vom Rad: %rad"
+    //% blockid="floidpro_current_speed_mps" block="Gebe Radgeschwindigkeit in %mode pro Sekunde an vom Rad: %rad"
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
     export function current_speed_mps(mode:Geschwindigkeit_Einheit,rad:Raddrehung): number {
@@ -130,46 +143,36 @@ namespace Motors {
             }
         } else {
             return -1
-        }
-        
-        
+        }        
     }
 
     /**
-         * Aktuelle Radgeschwindigkeit in Grad pro Sekunde ausgeben:
+         * Zurück gelegter Radweg ausgeben:
          */
-    //% blockid="floidpro_current_speed_degree" block="Gebe Radgeschwindigkeit in grad/s an vom Rad: %rad"
+    //% blockid="floidpro_current_wheel_dist" block="Gebe Radweg in %mode an vom Rad: %rad"
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
-    export function current_speed_degree(rad: Raddrehung): number {
-        let time_past = input.runningTime() - wheelspeed_timestamp
-        let distance_l = wheel_l * (360 / numberofholes)
-        let distance_r = wheel_r * (360 / numberofholes)
-        if (rad == 1) {
-            return (distance_l) / (time_past / 1000)
-        } else if (rad == 2) {
-            return (distance_r) / (time_past / 1000)
+    export function current_wheel_dist(mode: Geschwindigkeit_Einheit, rad: Raddrehung): number {
+        let distance_l = 0
+        let distance_r = 0
+        if (mode == Geschwindigkeit_Einheit.meter) {
+            distance_l = wheel_l * (tyre_diameter / numberofholes)
+            distance_r = wheel_r * (tyre_diameter / numberofholes)
+        } else if (mode == Geschwindigkeit_Einheit.drehungen) {
+            distance_l = wheel_l / numberofholes
+            distance_r = wheel_r / numberofholes
+        } else if (mode == Geschwindigkeit_Einheit.grad) {
+            distance_l = wheel_l * (360 / numberofholes)
+            distance_r = wheel_r * (360 / numberofholes)
         } else {
-            return ((distance_l + distance_r) / 2) / (time_past / 1000) //Mittelwert aus beiden
+            return -1
         }
-    }
-
-    /**
-         * Aktuelle Radgeschwindigkeit in Drehungen pro Sekunde ausgeben: 
-         */
-    //% blockid="floidpro_current_speed_puls" block="Gebe Radgeschwindigkeit in Drehungen/s an vom Rad: %rad"
-    //% weight=20 blockGap=8
-    //% group="Fahrmanöver und Verifikation"
-    export function current_speed_puls(rad: Raddrehung): number {
-        let time_past = input.runningTime() - wheelspeed_timestamp
-        let distance_l = wheel_l / numberofholes
-        let distance_r = wheel_r / numberofholes
         if (rad == 1) {
-            return (distance_l) / (time_past / 1000)
+            return distance_l
         } else if (rad == 2) {
-            return (distance_r) / (time_past / 1000)
+            return distance_r
         } else {
-            return ((distance_l + distance_r) / 2) / (time_past / 1000) //Mittelwert aus beiden
+            return ((distance_l + distance_r) / 2) //Mittelwert aus beiden
         }
     }
 
