@@ -1,6 +1,6 @@
 
 namespace Motors {
-
+    led.enable(false)
     const pin_l = AnalogPin.P3
     const pin_r = AnalogPin.P2
     pins.setPull(pin_l, PinPullMode.PullDown);
