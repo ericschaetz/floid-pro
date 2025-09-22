@@ -5,11 +5,11 @@ namespace Motors {
     const pin_r = AnalogPin.P2
     pins.setPull(pin_l, PinPullMode.PullDown);
     pins.setPull(pin_r, PinPullMode.PullDown);
-    const cutoff = 900
+    const cutoff = 40
     const tyre_diameter = 14.4
     const axle_width = 18
     const turn_diameter = 56.5
-    const numberofholes = 4
+    const numberofholes = 8
     let lower_bounce_l = 0
     let upper_bounce_l = 0
     let lower_bounce_r = 0
@@ -487,9 +487,9 @@ namespace Motors {
 
         let targetdistance = distance
         if (direction == 0) {
-            Motors.motors2(5, 700*0, 700*0) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else if (direction == 1) {
-            Motors.motors2(10, 700*0, 700*0) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(10, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
 
         while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
