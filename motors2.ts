@@ -3,7 +3,7 @@ namespace Motors {
 
     const pin_l = AnalogPin.P3
     const pin_r = AnalogPin.P2
-
+    const cutoff = 900
     const tyre_diameter = 14.4
     const axle_width = 18
     const turn_diameter = 56.5
@@ -15,7 +15,7 @@ namespace Motors {
     let mid_l = 100
     let mid_r = 100
 
-    let wheelchecking = true
+    let wheelchecking = false
     let wheelspeed_timestamp = 0
     let wheel_r = 0
     let wheel_l = 0
@@ -92,6 +92,10 @@ namespace Motors {
     }
 
     //background loop
+
+    function get_state(pin: number): boolean {
+        return pins.analogReadPin(pin) > cutoff
+    }
 
     control.inBackground(() => {
         wheel_l_last = pins.analogReadPin(pin_l)
@@ -471,11 +475,11 @@ namespace Motors {
 
         let distancel = 0
         let distancer = 0
-        let last_statel = pins.analogReadPin(pin_l)
-        let last_stater = pins.analogReadPin(pin_r)
+        let last_statel = get_state(pin_l)
+        let last_stater = get_state(pin_r)
         basic.pause(10)
-        let new_statel = pins.analogReadPin(pin_l)
-        let new_stater = pins.analogReadPin(pin_r)
+        let new_statel = get_state(pin_l)
+        let new_stater = get_state(pin_r)
         basic.pause(10)
         let changes = 0
 
@@ -487,20 +491,18 @@ namespace Motors {
         }
 
         while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
-            let next_statel = pins.analogReadPin(pin_l)
-            let next_stater = pins.analogReadPin(pin_r)
-            Core.showNumber(next_statel, 4, 1, 1)
-            Core.showNumber(next_stater, 4, 2, 1)
-            Core.showNumber(distancel, 4, 3, 1)
-            Core.showNumber(distancer, 4, 3, 6)
-            if (Math.abs(new_statel - last_statel) >= 100 && Math.abs(new_statel - next_statel) <= 100) {
+            let next_statel = get_state(pin_l)
+            let next_stater = get_state(pin_r)
+            //Core.showNumber(next_statel, 4, 1, 1)
+            //Core.showNumber(next_stater, 4, 2, 1)
+            if ((new_statel != last_statel) && (new_statel == next_statel)) {
                 changes += 1
                 distancel += tyre_diameter / numberofholes
             }
             last_statel = new_statel
             new_statel = next_statel
 
-            if (Math.abs(new_stater - last_stater) >= 100 && Math.abs(new_stater - next_stater) <= 100) {
+            if ((new_stater != last_stater) && (new_stater == next_stater)) {
                 changes += 1
                 distancer += tyre_diameter / numberofholes
             }
@@ -524,7 +526,7 @@ namespace Motors {
     //% weight=20 blockGap=8
     //% group="Level 3: Antriebsregelung"
     export function speed_to(rad: Raddrehung, turns: number): void {
-    
+        //return 0
     }
 
     //Level 3.5
