@@ -495,9 +495,9 @@ namespace Motors {
         while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
             let next_statel = get_state(pin_l)
             let next_stater = get_state(pin_r)
-            if (next_statel) { Core.showNumber(1, 4, 1, 1)}
+            if (next_statel) { Core.showNumber(1, 4, 1, 6)}
             else { Core.showNumber(0, 4, 1, 1)}
-            if (next_stater) { Core.showNumber(1, 4, 2, 1) }
+            if (next_stater) { Core.showNumber(1, 4, 2, 6) }
             else { Core.showNumber(0, 4, 2, 1) }
             Core.showNumber(pins.analogReadPin(pin_l), 4, 1, 1)
             Core.showNumber(pins.analogReadPin(pin_r), 4, 2, 1)
