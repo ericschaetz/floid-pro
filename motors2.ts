@@ -4,7 +4,7 @@ namespace Motors {
     const pin_l = AnalogPin.P3
     const pin_r = AnalogPin.P2
     pins.setPull(pin_l, PinPullMode.PullUp);
-    pins.setPull(pin_r, PinPullMode.PullDown);
+    pins.setPull(pin_r, PinPullMode.PullUp);
     const cutoff = 900
     const tyre_diameter = 14.4
     const axle_width = 18
@@ -489,16 +489,16 @@ namespace Motors {
         if (direction == 0) {
             Motors.motors2(5, 700, 700*0) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else if (direction == 1) {
-            Motors.motors2(10, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(10, 700, 700*0) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
 
         while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
             let next_statel = get_state(pin_l)
             let next_stater = get_state(pin_r)
             if (next_statel) { Core.showNumber(1, 4, 1, 6)}
-            else { Core.showNumber(0, 4, 1, 1)}
+            else { Core.showNumber(0, 4, 1, 6)}
             if (next_stater) { Core.showNumber(1, 4, 2, 6) }
-            else { Core.showNumber(0, 4, 2, 1) }
+            else { Core.showNumber(0, 4, 2, 6) }
             Core.showNumber(pins.analogReadPin(pin_l), 4, 1, 1)
             Core.showNumber(pins.analogReadPin(pin_r), 4, 2, 1)
             if ((new_statel != last_statel) && (new_statel == next_statel)) {
