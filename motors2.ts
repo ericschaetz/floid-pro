@@ -487,9 +487,9 @@ namespace Motors {
 
         let targetdistance = distance
         if (direction == 0) {
-            Motors.motors2(5, 700, 700*0) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(5, 700*0, 700*0) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else if (direction == 1) {
-            Motors.motors2(10, 700, 700*0) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(10, 700*0, 700*0) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
 
         while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
@@ -515,7 +515,7 @@ namespace Motors {
             last_stater = new_stater
             new_stater = next_stater
 
-            basic.pause(10)
+            basic.pause(50)
         }
 
         // Stop motors
