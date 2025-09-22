@@ -1,10 +1,13 @@
 
 namespace Motors {
 
+    const pin_l = AnalogPin.P3
+    const pin_r = AnalogPin.P2
+
     const tyre_diameter = 14.4
     const axle_width = 18
     const turn_diameter = 56.5
-    const numberofholes = 8
+    const numberofholes = 4
     let lower_bounce_l = 0
     let upper_bounce_l = 0
     let lower_bounce_r = 0
@@ -91,17 +94,17 @@ namespace Motors {
     //background loop
 
     control.inBackground(() => {
-        wheel_l_last = pins.analogReadPin(AnalogPin.P2)
-        wheel_r_last = pins.analogReadPin(AnalogPin.P3)
+        wheel_l_last = pins.analogReadPin(pin_l)
+        wheel_r_last = pins.analogReadPin(pin_r)
         while (true) {
             while (wheelchecking) {
-                wheel_l_new = pins.analogReadPin(AnalogPin.P2)
+                wheel_l_new = pins.analogReadPin(pin_l)
                 if (Math.abs(wheel_l_new - wheel_l_last) >= mid_l) {
                     wheel_l += 1
                 }
                 wheel_l_last = wheel_l_new
                 basic.pause(5)
-                wheel_r_new = pins.analogReadPin(AnalogPin.P3)
+                wheel_r_new = pins.analogReadPin(pin_r)
                 if (Math.abs(wheel_r_new - wheel_r_last) >= mid_r) {
                     wheel_r += 1
                 }
@@ -121,8 +124,8 @@ namespace Motors {
     //% weight=20 blockGap=8
     //% group="Initialisierung"
     export function init_rad(): void {
-        let last_statel = pins.analogReadPin(AnalogPin.P2)
-        let last_stater = pins.analogReadPin(AnalogPin.P3)
+        let last_statel = pins.analogReadPin(pin_l)
+        let last_stater = pins.analogReadPin(pin_r)
         lower_bounce_l = last_statel
         upper_bounce_l = last_statel
         lower_bounce_r = last_stater
@@ -130,14 +133,14 @@ namespace Motors {
         Motors.motors2(5, 700, 700)
         for (let i = 0; i < 10; i++) {
             basic.pause(5)
-            last_statel = pins.analogReadPin(AnalogPin.P2)
+            last_statel = pins.analogReadPin(pin_l)
             if (last_statel > upper_bounce_l) {
                 upper_bounce_l = last_statel
             } else if (last_statel < lower_bounce_l) {
                 lower_bounce_l = last_statel
             }
             basic.pause(5)
-            last_stater = pins.analogReadPin(AnalogPin.P3)
+            last_stater = pins.analogReadPin(pin_r)
             if (last_stater > upper_bounce_r) {
                 upper_bounce_r = last_stater
             } else if (last_stater < lower_bounce_r) {
@@ -247,12 +250,12 @@ namespace Motors {
     //% group="Level 2: Messung"
     export function read_wheel_state(rad: Raddrehung): number {
         //basic.clearScreen()
-        let neededpin = AnalogPin.P2
+        let neededpin = pin_l
         let mid = mid_l
         let lower = lower_bounce_l
         let upper = upper_bounce_l
         if (rad == 2) {
-            neededpin = AnalogPin.P3
+            neededpin = pin_r
             mid = mid_r
             lower = lower_bounce_r
             upper = upper_bounce_r
@@ -269,32 +272,26 @@ namespace Motors {
 
 
 
-    /**
-     * wheels_turning: 
-     */
-    //% blockid="floidpro_wheels_turning" block="Prüfe Raddrehung"
-    //% weight=20 blockGap=8
-    //% group="Initialisierung"
-    export function wheels_turning(): number {
+    function wheels_turning(): number {
         // returns are 0 for not turning, 1 for both turning and -1 for only one turning
         basic.clearScreen()
 
         let distancel = 0
         let distancer = 0
-        let last_statel = pins.analogReadPin(AnalogPin.P2)
+        let last_statel = pins.analogReadPin(pin_l)
         basic.pause(5)
-        let last_stater = pins.analogReadPin(AnalogPin.P3)
+        let last_stater = pins.analogReadPin(pin_r)
         basic.pause(5)
-        let new_statel = pins.analogReadPin(AnalogPin.P2)
+        let new_statel = pins.analogReadPin(pin_l)
         basic.pause(5)
-        let new_stater = pins.analogReadPin(AnalogPin.P3)
+        let new_stater = pins.analogReadPin(pin_r)
         basic.pause(5)
         let timeout = 0
 
         while (distancel == 0 && distancer == 0 && timeout < 20) {
-            let next_statel = pins.analogReadPin(AnalogPin.P2)
+            let next_statel = pins.analogReadPin(pin_l)
             basic.pause(5)
-            let next_stater = pins.analogReadPin(AnalogPin.P3)
+            let next_stater = pins.analogReadPin(pin_r)
             Core.showNumber(next_statel, 4, 1, 1)
             Core.showNumber(next_stater, 4, 2, 1)
             if (Math.abs(new_statel - last_statel) >= 100 && Math.abs(new_statel - next_statel) <= 100) { //here we should use mid_l and mid_r but isnt tested
@@ -320,94 +317,66 @@ namespace Motors {
         }
     }
 
+    //Level 3
+
+    //Level 3.1
     /**
-         * Drehe die Räder um eine Bestimmte Anzahl an Drehungen: 
-         */
-    //% blockid="floidpro_turnwheel" block="Drehe Rad %rad um %turns Umdrehungen"
-    //% turns.min=1 turns.max=10
-    //% weight=20 blockGap=8
-    //% group="Fahrmanöver und Verifikation"
-    export function turnwheel(rad: Raddrehung, turns: number): void {
-
-        basic.clearScreen()
-        let neededpin = AnalogPin.P2
-        let mid = mid_l
-        if (rad == 2) {
-            neededpin = AnalogPin.P3
-            mid = mid_r
-        }
-
-        let distance = 0
-        let last_state = pins.analogReadPin(neededpin)
-        basic.pause(10)
-        let new_state = pins.analogReadPin(neededpin)
-        basic.pause(10)
-        if (rad == 1) {
-            Motors.motors2(5, 700, 0) // Start motors: direction = 5 vorwärts, 10 rückwärts
-        } else if (rad == 2) {
-            Motors.motors2(5, 0, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
-        } else {
-            Motors.motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
-        }
-        wheelspeed_timestamp = input.runningTime()
-        while (distance < (turns * numberofholes)) {
-            let next_state = pins.analogReadPin(neededpin)
-            if (Math.abs(new_state - last_state) >= mid && Math.abs(new_state - next_state) <= mid) {
-                distance += 1
-            }
-            last_state = new_state
-            new_state = next_state
-            basic.pause(10)
-        }
-
-        // Stop motors
-        Motors.motors2(5, 0, 0)
-    }
-
-    /**
-     * Geradeausfahren: 
+     * Kurvenfahrt: 
      */
-    //% blockid="floidpro_geradeaus" block="Fahre %distance cm geradeaus %direction"
-    //% distance.min=0 distance.max=255
-    //% direction.min= 0 direction.max= 1
+    //% blockid="floidpro_circle" block="Kurven fahrt %degrees ° mit %radius cm Radius"
+    //% degrees.min=0 degrees.max=360
+    //% radius.min=0 radius.max=255
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
-    export function gradeaus(distance: number, direction: number): void {
+    //% inlineInputMode=inline
+    export function circle(degrees: number, radius: number, directionx: number, directiony: number): void {
+        // Kreisfahrt Start
+        let targetdistancel = (2 * Math.PI * (radius - (axle_width / 2))) / (degrees / 360)
+        let targetdistancer = (2 * Math.PI * (radius + (axle_width / 2))) / (degrees / 360)
 
-        basic.clearScreen()
+        // Geschwindigkeit berechnen
+        let speed = (5 / 10) * 700 + 300
+
+        // Motoren starten: Rechts langsamer als Links
+        pins.analogWritePin(AnalogPin.P0, speed * targetdistancer / targetdistancel) // Rechts
+        pins.analogWritePin(AnalogPin.P1, speed) // Links
 
         let distancel = 0
         let distancer = 0
-        let last_statel = pins.analogReadPin(AnalogPin.P2)
-        let last_stater = pins.analogReadPin(AnalogPin.P3)
+
+        // Erste Sensormessungen
+        let last_statel = pins.analogReadPin(pin_l)
+        let last_stater = pins.analogReadPin(pin_r)
         basic.pause(10)
-        let new_statel = pins.analogReadPin(AnalogPin.P2)
-        let new_stater = pins.analogReadPin(AnalogPin.P3)
+        let new_statel = pins.analogReadPin(pin_l)
+        let new_stater = pins.analogReadPin(pin_r)
         basic.pause(10)
+
         let changes = 0
 
-        let targetdistance = distance
-        if (direction == 0) {
-            Motors.motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
-        } else if (direction == 1) {
-            Motors.motors2(10, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        if (directionx == 0) {
+            Motors.motors2(5, speed, speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        } else if (directionx == 1) {
+            Motors.motors2(10, speed, speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
 
-        while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
-            let next_statel = pins.analogReadPin(AnalogPin.P2)
-            let next_stater = pins.analogReadPin(AnalogPin.P3)
-            Core.showNumber(next_statel, 4, 1, 1)
-            Core.showNumber(next_stater, 4, 2, 1)
+        // Schleife bis Soll-Distanzen erreicht
+        while (distancel < targetdistancel && distancer < targetdistancer) {
+            let next_statel = pins.analogReadPin(pin_l)
+            let next_stater = pins.analogReadPin(pin_r)
+
+            // Linke Seite prüfen
             if (Math.abs(new_statel - last_statel) >= 100 && Math.abs(new_statel - next_statel) <= 100) {
                 changes += 1
-                distancel += tyre_diameter / numberofholes
+                distancel += tyre_diameter / 4
             }
             last_statel = new_statel
             new_statel = next_statel
 
-            if (Math.abs(new_stater - last_stater) >= 100 && Math.abs(new_stater - next_stater) <= 100) {
+            // Rechte Seite prüfen
+            if (Math.abs(new_stater - last_stater) >= 200 && Math.abs(new_stater - next_stater) <= 200) {
                 changes += 1
-                distancer += tyre_diameter / numberofholes
+                distancer += tyre_diameter / 4
             }
             last_stater = new_stater
             new_stater = next_stater
@@ -415,17 +384,20 @@ namespace Motors {
             basic.pause(10)
         }
 
-        // Stop motors
+        // Motoren stoppen
         Motors.motors2(5, 0, 0)
     }
+
+
+    //Level 3.2
     /**
      * Graddrehung: 
      */
-    //% blockid="floidpro_graddrehen" block="Drehung um %targetdegrees °"
+    //% blockid="floidpro_turn" block="Drehung um %targetdegrees °"
     //% targetdegrees.min=-360 targetdegrees.max=360
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
-    export function graddrehen(targetdegrees: number): void {
+    export function turn(targetdegrees: number): void {
         let m = 9
         if (targetdegrees < 0) {
             m = 6
@@ -439,11 +411,11 @@ namespace Motors {
         let distancer = 0
 
         // Erste Sensormessungen
-        let last_statel = pins.analogReadPin(AnalogPin.P2)
-        let last_stater = pins.analogReadPin(AnalogPin.P3)
+        let last_statel = pins.analogReadPin(pin_l)
+        let last_stater = pins.analogReadPin(pin_r)
         basic.pause(10)
-        let new_statel = pins.analogReadPin(AnalogPin.P2)
-        let new_stater = pins.analogReadPin(AnalogPin.P3)
+        let new_statel = pins.analogReadPin(pin_l)
+        let new_stater = pins.analogReadPin(pin_r)
         basic.pause(10)
 
         let changes = 0
@@ -451,8 +423,8 @@ namespace Motors {
         Motors.motors2(m, 700, 700)
         // Schleife bis beide Seiten die Zielentfernung erreicht haben
         while (distancel < targetdistance && distancer < targetdistance) {
-            let next_statel = pins.analogReadPin(AnalogPin.P2)
-            let next_stater = pins.analogReadPin(AnalogPin.P3)
+            let next_statel = pins.analogReadPin(pin_l)
+            let next_stater = pins.analogReadPin(pin_r)
 
             // Linke Seite prüfen
             if (Math.abs(new_statel - last_statel) >= 100 && Math.abs(new_statel - next_statel) <= 100) {
@@ -484,63 +456,51 @@ namespace Motors {
         Motors.motors2(m, 0, 0)
     }
 
+    //Level 3.3
     /**
-     * Kurvenfahrt: 
+     * Geradeausfahren: 
      */
-    //% blockid="floidpro_kurvenfahrt" block="Kurven fahrt %degrees ° mit %radius cm Radius"
-    //% degrees.min=0 degrees.max=360
-    //% radius.min=0 radius.max=255
+    //% blockid="floidpro_straight" block="Fahre %distance cm geradeaus %direction"
+    //% distance.min=0 distance.max=255
+    //% direction.min= 0 direction.max= 1
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
-    //% inlineInputMode=inline
-    export function kurvenfahrt(degrees: number, radius: number, directionx: number, directiony: number): void {
-        // Kreisfahrt Start
-        let targetdistancel = (2 * Math.PI * (radius - (axle_width / 2))) / (degrees / 360)
-        let targetdistancer = (2 * Math.PI * (radius + (axle_width / 2))) / (degrees / 360)
+    export function straight(distance: number, direction: number): void {
 
-        // Geschwindigkeit berechnen
-        let speed = (5 / 10) * 700 + 300
-
-        // Motoren starten: Rechts langsamer als Links
-        pins.analogWritePin(AnalogPin.P0, speed * targetdistancer / targetdistancel) // Rechts
-        pins.analogWritePin(AnalogPin.P1, speed) // Links
+        basic.clearScreen()
 
         let distancel = 0
         let distancer = 0
-
-        // Erste Sensormessungen
-        let last_statel = pins.analogReadPin(AnalogPin.P2)
-        let last_stater = pins.analogReadPin(AnalogPin.P3)
+        let last_statel = pins.analogReadPin(pin_l)
+        let last_stater = pins.analogReadPin(pin_r)
         basic.pause(10)
-        let new_statel = pins.analogReadPin(AnalogPin.P2)
-        let new_stater = pins.analogReadPin(AnalogPin.P3)
+        let new_statel = pins.analogReadPin(pin_l)
+        let new_stater = pins.analogReadPin(pin_r)
         basic.pause(10)
-
         let changes = 0
 
-        if (directionx == 0) {
-            Motors.motors2(5, speed, speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
-        } else if (directionx == 1) {
-            Motors.motors2(10, speed, speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        let targetdistance = distance
+        if (direction == 0) {
+            Motors.motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        } else if (direction == 1) {
+            Motors.motors2(10, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
 
-        // Schleife bis Soll-Distanzen erreicht
-        while (distancel < targetdistancel && distancer < targetdistancer) {
-            let next_statel = pins.analogReadPin(AnalogPin.P2)
-            let next_stater = pins.analogReadPin(AnalogPin.P3)
-
-            // Linke Seite prüfen
+        while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
+            let next_statel = pins.analogReadPin(pin_l)
+            let next_stater = pins.analogReadPin(pin_r)
+            Core.showNumber(next_statel, 4, 1, 1)
+            Core.showNumber(next_stater, 4, 2, 1)
             if (Math.abs(new_statel - last_statel) >= 100 && Math.abs(new_statel - next_statel) <= 100) {
                 changes += 1
-                distancel += tyre_diameter / 4
+                distancel += tyre_diameter / numberofholes
             }
             last_statel = new_statel
             new_statel = next_statel
 
-            // Rechte Seite prüfen
-            if (Math.abs(new_stater - last_stater) >= 200 && Math.abs(new_stater - next_stater) <= 200) {
+            if (Math.abs(new_stater - last_stater) >= 100 && Math.abs(new_stater - next_stater) <= 100) {
                 changes += 1
-                distancer += tyre_diameter / 4
+                distancer += tyre_diameter / numberofholes
             }
             last_stater = new_stater
             new_stater = next_stater
@@ -548,8 +508,70 @@ namespace Motors {
             basic.pause(10)
         }
 
-        // Motoren stoppen
+        // Stop motors
         Motors.motors2(5, 0, 0)
     }
+
+
+    //Level 3.4
+    /**
+         * Drehe die Räder um eine Bestimmte Anzahl an Drehungen: 
+         */
+    //% blockid="floidpro_speed_to" block="Beschleunige auf Stufe %rad"
+    //% turns.min=1 turns.max=10
+    //% weight=20 blockGap=8
+    //% group="Level 3: Antriebsregelung"
+    export function speed_to(rad: Raddrehung, turns: number): void {
+    
+    }
+
+    //Level 3.5
+    /**
+         * Drehe die Räder um eine Bestimmte Anzahl an Drehungen: 
+         */
+    //% blockid="floidpro_turn_wheel" block="Drehe Rad %rad um %turns Umdrehungen"
+    //% turns.min=1 turns.max=10
+    //% weight=20 blockGap=8
+    //% group="Level 3: Antriebsregelung"
+    export function turn_wheel(rad: Raddrehung, turns: number): void {
+
+        basic.clearScreen()
+        let neededpin = pin_l
+        let mid = mid_l
+        if (rad == 2) {
+            neededpin = pin_r
+            mid = mid_r
+        }
+
+        let distance = 0
+        let last_state = pins.analogReadPin(neededpin)
+        basic.pause(10)
+        let new_state = pins.analogReadPin(neededpin)
+        basic.pause(10)
+        if (rad == 1) {
+            Motors.motors2(5, 700, 0) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        } else if (rad == 2) {
+            Motors.motors2(5, 0, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        } else {
+            Motors.motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        }
+        wheelspeed_timestamp = input.runningTime()
+        while (distance < (turns * numberofholes)) {
+            let next_state = pins.analogReadPin(neededpin)
+            if (Math.abs(new_state - last_state) >= mid && Math.abs(new_state - next_state) <= mid) {
+                distance += 1
+            }
+            last_state = new_state
+            new_state = next_state
+            basic.pause(10)
+        }
+
+        // Stop motors
+        Motors.motors2(5, 0, 0)
+    }
+
+
+
+
 
 }
