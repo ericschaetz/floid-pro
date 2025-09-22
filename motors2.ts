@@ -499,8 +499,8 @@ namespace Motors {
             else { Core.showNumber(0, 4, 1, 6)}
             if (next_stater) { Core.showNumber(1, 4, 2, 6) }
             else { Core.showNumber(0, 4, 2, 6) }
-            Core.showNumber(pins.analogReadPin(pin_l), 4, 1, 1)
-            Core.showNumber(pins.analogReadPin(pin_r), 4, 2, 1)
+            Core.showNumber(pins.analogReadPin(AnalogPin.P3), 4, 1, 1)
+            Core.showNumber(pins.analogReadPin(AnalogPin.P2), 4, 2, 1)
             if ((new_statel != last_statel) && (new_statel == next_statel)) {
                 changes += 1
                 distancel += tyre_diameter / numberofholes
