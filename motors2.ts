@@ -495,12 +495,12 @@ namespace Motors {
         while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
             let next_statel = get_state(pin_l)
             let next_stater = get_state(pin_r)
-            if (next_statel) { Core.showNumber(1, 4, 1, 6)}
-            else { Core.showNumber(0, 4, 1, 6)}
-            if (next_stater) { Core.showNumber(1, 4, 2, 6) }
-            else { Core.showNumber(0, 4, 2, 6) }
-            Core.showNumber(pins.analogReadPin(AnalogPin.P3), 4, 1, 1)
-            Core.showNumber(pins.analogReadPin(AnalogPin.P2), 4, 2, 1)
+            //if (next_statel) { Core.showNumber(1, 4, 1, 6)}
+            //else { Core.showNumber(0, 4, 1, 6)}
+            //if (next_stater) { Core.showNumber(1, 4, 2, 6) }
+            //else { Core.showNumber(0, 4, 2, 6) }
+            Core.showNumber(distancel, 4, 1, 1)
+            Core.showNumber(distancer, 4, 2, 1)
             if ((new_statel != last_statel) && (new_statel == next_statel)) {
                 changes += 1
                 distancel += tyre_diameter / numberofholes
@@ -515,7 +515,7 @@ namespace Motors {
             last_stater = new_stater
             new_stater = next_stater
 
-            basic.pause(50)
+            basic.pause(10)
         }
 
         // Stop motors
