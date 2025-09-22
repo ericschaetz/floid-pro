@@ -23,6 +23,73 @@ namespace Motors {
     let wheel_r_new = 0
     let wheel_l_new = 0
 
+
+    //local functions
+
+    function current_speed_einheit(mode: Geschwindigkeit_Einheit, rad: Raddrehung): number {
+
+        let time_past = input.runningTime() - wheelspeed_timestamp
+        if (mode == Geschwindigkeit_Einheit.meter) {
+            let distance_l = wheel_l * (tyre_diameter / numberofholes)
+            let distance_r = wheel_r * (tyre_diameter / numberofholes)
+            if (rad == 1) {
+                return (distance_l * 10) / (time_past)
+            } else if (rad == 2) {
+                return (distance_r * 10) / (time_past)
+            } else {
+                return ((distance_l + distance_r) * 5) / (time_past) //Mittelwert aus beiden
+            }
+        } else if (mode == Geschwindigkeit_Einheit.drehungen) {
+            let distance_l = wheel_l / numberofholes
+            let distance_r = wheel_r / numberofholes
+            if (rad == 1) {
+                return (distance_l) / (time_past / 1000)
+            } else if (rad == 2) {
+                return (distance_r) / (time_past / 1000)
+            } else {
+                return ((distance_l + distance_r) / 2) / (time_past / 1000) //Mittelwert aus beiden
+            }
+        } else if (mode == Geschwindigkeit_Einheit.grad) {
+            let distance_l = wheel_l
+            let distance_r = wheel_r
+            if (rad == 1) {
+                return (distance_l) / (time_past / 1000)
+            } else if (rad == 2) {
+                return (distance_r) / (time_past / 1000)
+            } else {
+                return ((distance_l + distance_r) / 2) / (time_past / 1000) //Mittelwert aus beiden
+            }
+        } else {
+            return -1
+        }
+    }
+
+    function current_wheel_dist(mode: Geschwindigkeit_Einheit, rad: Raddrehung): number {
+        let distance_l = 0
+        let distance_r = 0
+        if (mode == Geschwindigkeit_Einheit.meter) {
+            distance_l = wheel_l * (tyre_diameter / numberofholes)
+            distance_r = wheel_r * (tyre_diameter / numberofholes)
+        } else if (mode == Geschwindigkeit_Einheit.drehungen) {
+            distance_l = wheel_l / numberofholes
+            distance_r = wheel_r / numberofholes
+        } else if (mode == Geschwindigkeit_Einheit.grad) {
+            distance_l = wheel_l
+            distance_r = wheel_r
+        } else {
+            return -1
+        }
+        if (rad == 1) {
+            return distance_l
+        } else if (rad == 2) {
+            return distance_r
+        } else {
+            return ((distance_l + distance_r) / 2) //Mittelwert aus beiden
+        }
+    }
+
+    //background loop
+
     control.inBackground(() => {
         wheel_l_last = pins.analogReadPin(AnalogPin.P2)
         wheel_r_last = pins.analogReadPin(AnalogPin.P3)
@@ -45,6 +112,7 @@ namespace Motors {
         }
     })
 
+    //init block
 
     /**
      * Init_Radsensoren: 
@@ -85,96 +153,121 @@ namespace Motors {
         lower_bounce_r = lower_bounce_r + Math.floor(mid_r * 0.4)
         upper_bounce_l = upper_bounce_l - Math.floor(mid_l * 0.4)
         upper_bounce_r = upper_bounce_r - Math.floor(mid_r * 0.4)
-        mid_l = Math.floor(mid_l*0.5)
-        mid_r = Math.floor(mid_r*0.5)
+        mid_l = Math.floor(mid_l * 0.5)
+        mid_r = Math.floor(mid_r * 0.5)
     }
 
+    //Level 2 export functions
+
+    //Level 2.1
+    /**
+         * Aktuelle Radgeschwindigkeit in Meter pro Sekunde ausgeben:
+         */
+    //% blockid="floidpro_speed" block="Gib Radgeschwindigkeit in Meter pro Sekunde an vom Rad: %rad"
+    //% weight=20 blockGap=8
+    //% group="Level 2: Messung"
+    export function speed(rad: Raddrehung): number {
+        return current_speed_einheit(1, rad)
+    }
+
+    //Level 2.2
+    /**
+         * Zurückgelegte Distanz in Metern ausgeben:
+         */
+    //% blockid="floidpro_distance" block="Gebe die zurückgelegte Distanz in Metern an vom Rad: %rad"
+    //% weight=20 blockGap=8
+    //% group="Level 2: Messung"
+    export function distance(rad: Raddrehung): number {
+        return current_wheel_dist(1, rad)
+    }
+
+    //Level 2.3
+    /**
+         * Aktuelle Radgeschwindigkeit in Umdrehungen pro Sekunde ausgeben:
+         */
+    //% blockid="floidpro_rot_speed" block="Gib Radgeschwindigkeit in Umdrehungen pro Sekunde an vom Rad: %rad"
+    //% weight=20 blockGap=8
+    //% group="Level 2: Messung"
+    export function rot_speed(rad: Raddrehung): number {
+        return current_speed_einheit(2, rad)
+    }
+
+    //Level 2.4
+    /**
+         * Zurückgelegte Umdrehungen ausgeben:
+         */
+    //% blockid="floidpro_rot_dist" block="Gebe die zurückgelegte Umdrehungen an vom Rad: %rad"
+    //% weight=20 blockGap=8
+    //% group="Level 2: Messung"
+    export function rot_dist(rad: Raddrehung): number {
+        return current_wheel_dist(2, rad)
+    }
+
+    //Level 2.5
+    /**
+         * Aktuelle Radgeschwindigkeit in Pulse pro Sekunde ausgeben:
+         */
+    //% blockid="floidpro_pulse_speed" block="Gib Radgeschwindigkeit in Pulse pro Sekunde an vom Rad: %rad"
+    //% weight=20 blockGap=8
+    //% group="Level 2: Messung"
+    export function pulse_speed(rad: Raddrehung): number {
+        return current_speed_einheit(3, rad)
+    }
+
+    //Level 2.6
+    /**
+         *Gezählte Pulse ausgeben:
+         */
+    //% blockid="floidpro_pulse_count" block="Gebe die gezählten Pulse an vom Rad: %rad"
+    //% weight=20 blockGap=8
+    //% group="Level 2: Messung"
+    export function pulse_count(rad: Raddrehung): number {
+        return current_wheel_dist(3, rad)
+    }
+
+    // Level 2.7
     /**
            * Setze den Messpunkt der Radsensoren Zurück:
            */
-    //% blockid="floidpro_reset_wheel_counter" block="Setze den Radsensorzähler zurück"
+    //% blockid="floidpro_reset_counter" block="Setze den Radsensorzähler zurück"
     //% weight=20 blockGap=8
-    //% group="Fahrmanöver und Verifikation"
-    export function reset_wheel_counter(): void {
+    //% group="Level 2: Messung"
+    export function reset_counter(): void {
         wheelspeed_timestamp = input.runningTime()
         wheel_l = 0
         wheel_r = 0
     }
 
-
+    //Level 2.8
     /**
-         * Aktuelle Radgeschwindigkeit in Einheit pro Sekunde ausgeben:
+         *Aktuellen Sensorwert ausgeben
          */
-    //% blockid="floidpro_current_speed_mps" block="Gib Radgeschwindigkeit in %mode pro Sekunde an vom Rad: %rad"
+    //% blockid="floidpro_read_wheel_state" block="Gebe den Aktuellen Sensorwert an vom Rad: %rad"
     //% weight=20 blockGap=8
-    //% group="Fahrmanöver und Verifikation"
-    export function current_speed_mps(mode:Geschwindigkeit_Einheit,rad:Raddrehung): number {
-
-        let time_past = input.runningTime()-wheelspeed_timestamp
-        if (mode == Geschwindigkeit_Einheit.meter) {
-            let distance_l = wheel_l * (tyre_diameter / numberofholes)
-            let distance_r = wheel_r * (tyre_diameter / numberofholes)
-            if (rad == 1) {
-                return (distance_l * 10) / (time_past)
-            } else if (rad == 2) {
-                return (distance_r * 10) / (time_past)
-            } else {
-                return ((distance_l + distance_r) * 5) / (time_past) //Mittelwert aus beiden
-            }
-        } else if (mode == Geschwindigkeit_Einheit.drehungen) {
-            let distance_l = wheel_l / numberofholes
-            let distance_r = wheel_r / numberofholes
-            if (rad == 1) {
-                return (distance_l) / (time_past / 1000)
-            } else if (rad == 2) {
-                return (distance_r) / (time_past / 1000)
-            } else {
-                return ((distance_l + distance_r) / 2) / (time_past / 1000) //Mittelwert aus beiden
-            }
-        } else if (mode == Geschwindigkeit_Einheit.grad) {
-            let distance_l = wheel_l * (360 / numberofholes)
-            let distance_r = wheel_r * (360 / numberofholes)
-            if (rad == 1) {
-                return (distance_l) / (time_past / 1000)
-            } else if (rad == 2) {
-                return (distance_r) / (time_past / 1000)
-            } else {
-                return ((distance_l + distance_r) / 2) / (time_past / 1000) //Mittelwert aus beiden
-            }
-        } else {
-            return -1
-        }        
-    }
-
-    /**
-         * Zurückgelegte Strecke ausgeben:
-         */
-    //% blockid="floidpro_current_wheel_dist" block="Gib zurückgelegte Strecke in %mode an vom Rad: %rad"
-    //% weight=20 blockGap=8
-    //% group="Fahrmanöver und Verifikation"
-    export function current_wheel_dist(mode: Geschwindigkeit_Einheit, rad: Raddrehung): number {
-        let distance_l = 0
-        let distance_r = 0
-        if (mode == Geschwindigkeit_Einheit.meter) {
-            distance_l = wheel_l * (tyre_diameter / numberofholes)
-            distance_r = wheel_r * (tyre_diameter / numberofholes)
-        } else if (mode == Geschwindigkeit_Einheit.drehungen) {
-            distance_l = wheel_l / numberofholes
-            distance_r = wheel_r / numberofholes
-        } else if (mode == Geschwindigkeit_Einheit.grad) {
-            distance_l = wheel_l * (360 / numberofholes)
-            distance_r = wheel_r * (360 / numberofholes)
+    //% group="Level 2: Messung"
+    export function read_wheel_state(rad: Raddrehung): number {
+        //basic.clearScreen()
+        let neededpin = AnalogPin.P2
+        let mid = mid_l
+        let lower = lower_bounce_l
+        let upper = upper_bounce_l
+        if (rad == 2) {
+            neededpin = AnalogPin.P3
+            mid = mid_r
+            lower = lower_bounce_r
+            upper = upper_bounce_r
+        }
+        let state = pins.analogReadPin(neededpin)
+        if (state <= lower) {
+            return 0
+        } else if (state >= upper) {
+            return 1
         } else {
             return -1
         }
-        if (rad == 1) {
-            return distance_l
-        } else if (rad == 2) {
-            return distance_r
-        } else {
-            return ((distance_l + distance_r) / 2) //Mittelwert aus beiden
-        }
     }
+
+
 
     /**
      * wheels_turning: 
@@ -239,7 +332,7 @@ namespace Motors {
         basic.clearScreen()
         let neededpin = AnalogPin.P2
         let mid = mid_l
-        if (rad == 2){
+        if (rad == 2) {
             neededpin = AnalogPin.P3
             mid = mid_r
         }
@@ -257,7 +350,7 @@ namespace Motors {
             Motors.motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
         wheelspeed_timestamp = input.runningTime()
-        while (distance < (turns*numberofholes)) { 
+        while (distance < (turns * numberofholes)) {
             let next_state = pins.analogReadPin(neededpin)
             if (Math.abs(new_state - last_state) >= mid && Math.abs(new_state - next_state) <= mid) {
                 distance += 1
