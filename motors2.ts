@@ -495,6 +495,10 @@ namespace Motors {
         while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
             let next_statel = get_state(pin_l)
             let next_stater = get_state(pin_r)
+            if (next_statel) { Core.showNumber(1, 4, 1, 1)}
+            else { Core.showNumber(0, 4, 1, 1)}
+            if (next_stater) { Core.showNumber(1, 4, 2, 1) }
+            else { Core.showNumber(0, 4, 2, 1) }
             //Core.showNumber(next_statel, 4, 1, 1)
             //Core.showNumber(next_stater, 4, 2, 1)
             if ((new_statel != last_statel) && (new_statel == next_statel)) {
