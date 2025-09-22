@@ -3,6 +3,8 @@ namespace Motors {
 
     const pin_l = AnalogPin.P3
     const pin_r = AnalogPin.P2
+    pins.setPull(pin_l, PinPullMode.PullUp);
+    pins.setPull(pin_r, PinPullMode.PullDown);
     const cutoff = 900
     const tyre_diameter = 14.4
     const axle_width = 18
