@@ -9,7 +9,7 @@ namespace Motors {
     const tyre_diameter = 14.4
     const axle_width = 18
     const turn_diameter = 56.5
-    const numberofholes = 4
+    const numberofholes = 8
     let lower_bounce_l = 0
     let upper_bounce_l = 0
     let lower_bounce_r = 0
@@ -105,7 +105,7 @@ namespace Motors {
         while (true) {
             while (wheelchecking) {
                 wheel_l_new = get_state(pin_l)
-                if (wheel_l_new!=wheel_l_last) {
+                if (wheel_l_new != wheel_l_last) {
                     wheel_l += 1
                 }
                 wheel_l_last = wheel_l_new
@@ -300,13 +300,13 @@ namespace Motors {
             let next_stater = pins.analogReadPin(pin_r)
             Core.showNumber(next_statel, 4, 1, 1)
             Core.showNumber(next_stater, 4, 2, 1)
-            if (Math.abs(new_statel - last_statel) >= 100 && Math.abs(new_statel - next_statel) <= 100) { //here we should use mid_l and mid_r but isnt tested
+            if ((new_statel != last_statel) && (new_statel == next_statel)) { //here we should use mid_l and mid_r but isnt tested
                 distancel = 1
             }
             last_statel = new_statel
             new_statel = next_statel
 
-            if (Math.abs(new_stater - last_stater) >= 100 && Math.abs(new_stater - next_stater) <= 100) {
+            if ((new_stater != last_stater) && (new_stater == next_stater)) {
                 distancer = 1
             }
             last_stater = new_stater
@@ -351,11 +351,11 @@ namespace Motors {
         let distancer = 0
 
         // Erste Sensormessungen
-        let last_statel = pins.analogReadPin(pin_l)
-        let last_stater = pins.analogReadPin(pin_r)
+        let last_statel = get_state(pin_l)
+        let last_stater = get_state(pin_r)
         basic.pause(10)
-        let new_statel = pins.analogReadPin(pin_l)
-        let new_stater = pins.analogReadPin(pin_r)
+        let new_statel = get_state(pin_l)
+        let new_stater = get_state(pin_r)
         basic.pause(10)
 
         let changes = 0
@@ -368,26 +368,26 @@ namespace Motors {
 
         // Schleife bis Soll-Distanzen erreicht
         while (distancel < targetdistancel && distancer < targetdistancer) {
-            let next_statel = pins.analogReadPin(pin_l)
-            let next_stater = pins.analogReadPin(pin_r)
+            let next_statel = get_state(pin_l)
+            let next_stater = get_state(pin_r)
 
             // Linke Seite prüfen
-            if (Math.abs(new_statel - last_statel) >= 100 && Math.abs(new_statel - next_statel) <= 100) {
+            if ((new_statel != last_statel) && (new_statel == next_statel)) {
                 changes += 1
-                distancel += tyre_diameter / 4
+                distancel += tyre_diameter / numberofholes
             }
             last_statel = new_statel
             new_statel = next_statel
 
             // Rechte Seite prüfen
-            if (Math.abs(new_stater - last_stater) >= 200 && Math.abs(new_stater - next_stater) <= 200) {
+            if ((new_stater != last_stater) && (new_stater == next_stater)) {
                 changes += 1
-                distancer += tyre_diameter / 4
+                distancer += tyre_diameter / numberofholes
             }
             last_stater = new_stater
             new_stater = next_stater
 
-            basic.pause(10)
+            basic.pause(20)
         }
 
         // Motoren stoppen
@@ -433,7 +433,7 @@ namespace Motors {
             let next_stater = get_state(pin_r)
 
             // Linke Seite prüfen
-            if ((new_statel != last_statel)&& (new_statel == next_statel)) {
+            if ((new_statel != last_statel) && (new_statel == next_statel)) {
                 changes += 1
                 distancel += tyre_diameter / numberofholes
                 if (distancel >= targetdistance) {
@@ -445,7 +445,7 @@ namespace Motors {
             new_statel = next_statel
 
             // Rechte Seite prüfen
-            if ((new_stater != last_stater)&&(new_stater == next_stater)) {
+            if ((new_stater != last_stater) && (new_stater == next_stater)) {
                 changes += 1
                 distancer += tyre_diameter / numberofholes
                 if (distancer >= targetdistance) {
@@ -515,7 +515,7 @@ namespace Motors {
             last_stater = new_stater
             new_stater = next_stater
 
-            basic.pause(10)
+            basic.pause(25)
         }
 
         // Stop motors
@@ -568,7 +568,7 @@ namespace Motors {
         wheelspeed_timestamp = input.runningTime()
         while (distance < (turns * numberofholes)) {
             let next_state = get_state(neededpin)
-            if ((new_state != last_state)&& (new_state == next_state)) {
+            if ((new_state != last_state) && (new_state == next_state)) {
                 distance += 1
             }
             last_state = new_state
