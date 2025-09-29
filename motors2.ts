@@ -19,7 +19,7 @@ namespace Motors {
     let mid_l = 100
     let mid_r = 100
 
-    let wheelchecking = false
+    let wheelchecking = true
     let wheelspeed_timestamp = 0
     let wheel_r = 0
     let wheel_l = 0
@@ -30,15 +30,38 @@ namespace Motors {
     let wheel_r_new = false
     let wheel_l_new = false
 
+    const HISTORY = 5
+
+    let lTimes: number[] = [-1, -1, -1, -1, -1]
+    let rTimes: number[] = [-1, -1, -1, -1, -1]
+
+    let lIdx = 0
+    let rIdx = 0
+
+    let lFilled = 0
+    let rFilled = 0
 
     //local functions
 
-    function current_speed_einheit(mode: Geschwindigkeit_Einheit, rad: Raddrehung): number {
+    function getTimestampLeftMinus5(): number {
+        // Wenn voll: lIdx zeigt auf den ältesten Eintrag (nächster, der überschrieben würde)
+        return lFilled < HISTORY ? -1 : lTimes[lIdx]
+    }
 
-        let time_past = input.runningTime() - wheelspeed_timestamp
+    function getTimestampRightMinus5(): number {
+        return rFilled < HISTORY ? -1 : rTimes[rIdx]
+    }
+
+    function current_speed_einheit(mode: Geschwindigkeit_Einheit, rad: Raddrehung): number {
+        let time_past = control.millis()
+        if (rad == 1) {
+            time_past = time_past - getTimestampLeftMinus5()
+        } else if (rad == 2) {
+            time_past = time_past - getTimestampRightMinus5()
+        }
         if (mode == Geschwindigkeit_Einheit.meter) {
-            let distance_l = wheel_l * (tyre_diameter / numberofholes)
-            let distance_r = wheel_r * (tyre_diameter / numberofholes)
+            let distance_l = HISTORY * (tyre_diameter / numberofholes)
+            let distance_r = HISTORY * (tyre_diameter / numberofholes)
             if (rad == 1) {
                 return (distance_l * 10) / (time_past)
             } else if (rad == 2) {
@@ -47,8 +70,8 @@ namespace Motors {
                 return ((distance_l + distance_r) * 5) / (time_past) //Mittelwert aus beiden
             }
         } else if (mode == Geschwindigkeit_Einheit.drehungen) {
-            let distance_l = wheel_l / numberofholes
-            let distance_r = wheel_r / numberofholes
+            let distance_l = HISTORY / numberofholes
+            let distance_r = HISTORY / numberofholes
             if (rad == 1) {
                 return (distance_l) / (time_past / 1000)
             } else if (rad == 2) {
@@ -57,8 +80,8 @@ namespace Motors {
                 return ((distance_l + distance_r) / 2) / (time_past / 1000) //Mittelwert aus beiden
             }
         } else if (mode == Geschwindigkeit_Einheit.grad) {
-            let distance_l = wheel_l
-            let distance_r = wheel_r
+            let distance_l = HISTORY
+            let distance_r = HISTORY
             if (rad == 1) {
                 return (distance_l) / (time_past / 1000)
             } else if (rad == 2) {
@@ -104,19 +127,33 @@ namespace Motors {
     control.inBackground(() => {
         wheel_l_last = get_state(pin_l)
         wheel_r_last = get_state(pin_r)
+
         while (true) {
             while (wheelchecking) {
+                // LINKS prüfen
                 wheel_l_new = get_state(pin_l)
                 if (wheel_l_new != wheel_l_last) {
                     wheel_l += 1
+                    // Zeitstempel im Ringpuffer ablegen
+                    lTimes[lIdx] = control.millis()
+                    lIdx = (lIdx + 1) % HISTORY
+                    if (lFilled < HISTORY) lFilled += 1
                 }
                 wheel_l_last = wheel_l_new
+
                 basic.pause(5)
+
+                // RECHTS prüfen
                 wheel_r_new = get_state(pin_r)
                 if (wheel_r_new != wheel_r_last) {
                     wheel_r += 1
+                    // Zeitstempel im Ringpuffer ablegen
+                    rTimes[rIdx] = control.millis()
+                    rIdx = (rIdx + 1) % HISTORY
+                    if (rFilled < HISTORY) rFilled += 1
                 }
                 wheel_r_last = wheel_r_new
+
                 basic.pause(pauseduration)
             }
             basic.pause(500)
