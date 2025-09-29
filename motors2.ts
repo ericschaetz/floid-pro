@@ -6,7 +6,7 @@ namespace Motors {
     pins.setPull(pin_l, PinPullMode.PullDown);
     pins.setPull(pin_r, PinPullMode.PullDown);
     const cutoff = 30
-    const tyre_diameter = 14.4
+    const tyre_diameter = 18.85
     const axle_width = 18
     const turn_diameter = 56.5
     const numberofholes = 8
@@ -515,7 +515,7 @@ namespace Motors {
             last_stater = new_stater
             new_stater = next_stater
 
-            basic.pause(25)
+            basic.pause(10)
         }
 
         // Stop motors
