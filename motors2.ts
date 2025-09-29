@@ -10,6 +10,8 @@ namespace Motors {
     const axle_width = 18
     const turn_diameter = 56.5
     const numberofholes = 8
+    const action_speed = 500
+    const pauseduration = 10
     let lower_bounce_l = 0
     let upper_bounce_l = 0
     let lower_bounce_r = 0
@@ -115,7 +117,7 @@ namespace Motors {
                     wheel_r += 1
                 }
                 wheel_r_last = wheel_r_new
-                basic.pause(25)
+                basic.pause(pauseduration)
             }
             basic.pause(500)
         }
@@ -136,7 +138,7 @@ namespace Motors {
         upper_bounce_l = last_statel
         lower_bounce_r = last_stater
         upper_bounce_r = last_stater
-        Motors.motors2(5, 700, 700)
+        Motors.motors2(5, action_speed, action_speed)
         for (let i = 0; i < 10; i++) {
             basic.pause(5)
             last_statel = pins.analogReadPin(pin_l)
@@ -341,7 +343,7 @@ namespace Motors {
         let targetdistancer = (2 * Math.PI * (radius + (axle_width / 2))) / (degrees / 360)
 
         // Geschwindigkeit berechnen
-        let speed = (5 / 10) * 700 + 300
+        let speed = (5 / 10) * action_speed + 300
 
         // Motoren starten: Rechts langsamer als Links
         pins.analogWritePin(AnalogPin.P0, speed * targetdistancer / targetdistancel) // Rechts
@@ -387,7 +389,7 @@ namespace Motors {
             last_stater = new_stater
             new_stater = next_stater
 
-            basic.pause(20)
+            basic.pause(pauseduration)
         }
 
         // Motoren stoppen
@@ -426,7 +428,7 @@ namespace Motors {
 
         let changes = 0
 
-        Motors.motors2(m, 700, 700)
+        Motors.motors2(m, 500, 500)
         // Schleife bis beide Seiten die Zielentfernung erreicht haben
         while (distancel < targetdistance && distancer < targetdistance) {
             let next_statel = get_state(pin_l)
@@ -438,7 +440,7 @@ namespace Motors {
                 distancel += tyre_diameter / numberofholes
                 if (distancel >= targetdistance) {
                     // Linker Motor stoppen, wenn Ziel erreicht
-                    Motors.motors2(m, 0, 700)
+                    Motors.motors2(m, 0, 500)
                 }
             }
             last_statel = new_statel
@@ -450,13 +452,13 @@ namespace Motors {
                 distancer += tyre_diameter / numberofholes
                 if (distancer >= targetdistance) {
                     // Rechter Motor stoppen, wenn Ziel erreicht
-                    Motors.motors2(m, 700, 0)
+                    Motors.motors2(m, 500, 0)
                 }
             }
             last_stater = new_stater
             new_stater = next_stater
 
-            basic.pause(10)
+            basic.pause(pauseduration)
         }
 
         Motors.motors2(m, 0, 0)
@@ -487,9 +489,9 @@ namespace Motors {
 
         let targetdistance = distance
         if (direction == 0) {
-            Motors.motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(5, action_speed, action_speed) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else if (direction == 1) {
-            Motors.motors2(10, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(10, action_speed, action_speed) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
 
         while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
@@ -515,7 +517,7 @@ namespace Motors {
             last_stater = new_stater
             new_stater = next_stater
 
-            basic.pause(10)
+            basic.pause(pauseduration)
         }
 
         // Stop motors
@@ -559,11 +561,11 @@ namespace Motors {
         let new_state = get_state(neededpin)
         basic.pause(10)
         if (rad == 1) {
-            Motors.motors2(5, 700, 0) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(5, action_speed, 0) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else if (rad == 2) {
-            Motors.motors2(5, 0, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(5, 0, action_speed) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else {
-            Motors.motors2(5, 700, 700) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(5, action_speed, action_speed) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
         wheelspeed_timestamp = input.runningTime()
         while (distance < (turns * numberofholes)) {
@@ -573,7 +575,7 @@ namespace Motors {
             }
             last_state = new_state
             new_state = next_state
-            basic.pause(10)
+            basic.pause(pauseduration)
         }
 
         // Stop motors
