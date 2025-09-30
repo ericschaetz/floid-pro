@@ -543,14 +543,16 @@ namespace Motors {
             Core.showNumber(distancer, 4, 2, 1)
             //Core.showNumber(pins.analogReadPin(pin_l), 4, 1, 1)
             //Core.showNumber(pins.analogReadPin(pin_r), 4, 2, 1)
-            if ((new_statel != last_statel) && (new_statel == next_statel)) {
+            //if ((new_statel != last_statel) && (new_statel == next_statel)) {
+            if (new_statel != next_statel) {
                 changes += 1
                 distancel += tyre_diameter / numberofholes
             }
             last_statel = new_statel
             new_statel = next_statel
 
-            if ((new_stater != last_stater) && (new_stater == next_stater)) {
+            //if ((new_stater != last_stater) && (new_stater == next_stater)) {
+            if (new_stater != next_stater) {
                 changes += 1
                 distancer += tyre_diameter / numberofholes
             }
