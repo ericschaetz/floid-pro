@@ -10,7 +10,7 @@ namespace Motors {
     const axle_width = 18
     const turn_diameter = 56.5
     const numberofholes = 8
-    const action_speed = 750
+    const action_speed = 500
     const pauseduration = 10
     let lower_bounce_l = 0
     let upper_bounce_l = 0
@@ -546,7 +546,7 @@ namespace Motors {
             //if ((new_statel != last_statel) && (new_statel == next_statel)) {
             if (new_statel != next_statel) {
                 changes += 1
-                distancel += tyre_diameter / numberofholes
+                distancel += (tyre_diameter / numberofholes)
             }
             last_statel = new_statel
             new_statel = next_statel
@@ -554,7 +554,7 @@ namespace Motors {
             //if ((new_stater != last_stater) && (new_stater == next_stater)) {
             if (new_stater != next_stater) {
                 changes += 1
-                distancer += tyre_diameter / numberofholes
+                distancer += (tyre_diameter / numberofholes)
             }
             last_stater = new_stater
             new_stater = next_stater
