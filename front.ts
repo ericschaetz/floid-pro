@@ -157,7 +157,7 @@ namespace Front {
     //% group="Linetracking"
     //% v.min=0 v.max=8
     export function lt_set_daconv(v: number): void {
-        pins.i2cWriteNumber(33, 256-2**v, NumberFormat.Int8LE, false) //adresse korrekt einstellen
+        pins.i2cWriteNumber(33, 2**v, NumberFormat.Int8LE, false) //adresse korrekt einstellen
     }
 
 
