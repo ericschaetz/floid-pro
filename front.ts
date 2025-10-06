@@ -124,7 +124,7 @@ namespace Front {
     //% group="Linetracking"
     export function lt_value(sensor: Linetracker): number {
         lt_set_sensor(sensor)
-
+        let r = 0;
         for (let i = 0; i < 9; i++) {
             lt_set_daconv(i)
             basic.pause(50)
@@ -137,10 +137,10 @@ namespace Front {
                 basic.pause(10)
             }
             if (sum/10 > 0.5) {
-                return i
+                r = i;
             }
         }
-        return 10
+        return r
 
     }
 
