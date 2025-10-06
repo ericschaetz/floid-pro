@@ -128,7 +128,14 @@ namespace Front {
         for (let i = 0; i < 9; i++) {
             lt_set_daconv(i)
             basic.pause(10)
-            if (lt_comparator) {
+            let sum = 0;
+            for (let i = 0; i < 10; i++) {
+                if (lt_comparator) {
+                    sum += 1;
+                }
+                basic.pause(50)
+            }
+            if (sum/10 > 5) {
                 return i
             }
         }
