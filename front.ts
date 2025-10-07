@@ -177,6 +177,7 @@ namespace Front {
     //% weight=76
     //% group="Linetracking"
     export function lt_comparator(): boolean{
+        pins.setPull(DigitalPin.P14, PinPullMode.PullDown);
         let s = pins.digitalReadPin(DigitalPin.P14)
         return !!s
     }
