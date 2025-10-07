@@ -136,7 +136,7 @@ namespace Front {
                 }
                 basic.pause(10)
             }
-            if (sum/10 > 0.5) {
+            if (sum/10 < 0.5) {
                 r = i;
             }
         }
