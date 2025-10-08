@@ -123,20 +123,19 @@ namespace Front {
     //% weight=79
     //% group="Linetracking"
     export function lt_value(sensor: Linetracker): number {
-        lt_set_sensor(sensor)
+        lt_set_sensor(sensor) 
+        let runs = 4; //wie viele wiederholungen fuer die glaettung
         let r = 0;
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < 8; i++) {
             lt_set_daconv(i)
-            basic.pause(50)
-            let sum = 0;
-            
-            for (let j = 0; j < 10; j++) {
-                if (lt_comparator) {
+            let sum = 0;            
+            for (let j = 0; j < runs; j++) {
+                basic.pause(50)
+                if (lt_comparator()) {
                     sum += 1;
                 }
-                basic.pause(10)
             }
-            if (sum/10 < 0.5) {
+            if (2*sum <= runs) {
                 r = i;
             }
         }
