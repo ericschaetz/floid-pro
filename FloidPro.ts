@@ -159,6 +159,9 @@ enum Level {
     //% block="Level 2B"
     l2b = 22,
 
+    //% block="Level 2C"
+    l2c = 23,
+
     //% block="Level 3A"
     l3a = 31,
 
