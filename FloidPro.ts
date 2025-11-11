@@ -145,10 +145,13 @@ type PWMPin = {
 
 enum Level {
     //% block="Level 1A"
-    l1A = 11,
+    l1a = 11,
 
     //% block="Level 1B"
-    l1B = 12,
+    l1b = 12,
+
+    //% block="Level 1C"
+    l1c = 13,
 
     //% block="Level 2A"
     l2a = 21,
