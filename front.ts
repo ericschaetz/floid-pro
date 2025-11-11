@@ -83,7 +83,7 @@ namespace Front {
         let richtung = 0
         if (rgb==2){
             curr = state & 0b11100011
-            richtung = (1 - r) * 4 + (1 - g) * 8 + (1 - b) * 16
+            richtung = (1 - r) * 4 + (1 - g) * 16 + (1 - b) * 8
         }
         else{
             curr = state & 0b00011111
