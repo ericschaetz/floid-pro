@@ -9,8 +9,8 @@ namespace Motors {
     const tyre_diameter = 18.85
     const axle_width = 18
     const turn_diameter = 56.5
-    const numberofholes = 8
-    const action_speed = 500
+    const numberofholes = 4
+    const action_speed = 700
     const pauseduration = 20
     let lower_bounce_l = 0
     let upper_bounce_l = 0
