@@ -527,13 +527,13 @@ namespace Motors {
         wheelchecking = false
         let distancel = 0
         let distancer = 0
-        let last_statel = get_state(pin_l)
-        let last_stater = get_state(pin_r)
-        basic.pause(10)
+        //let last_statel = get_state(pin_l)
+        //let last_stater = get_state(pin_r)
+        //basic.pause(10)
         let new_statel = get_state(pin_l)
         let new_stater = get_state(pin_r)
         basic.pause(10)
-        let changes = 0
+        //let changes = 0
         let m = 5
         let targetdistance = distance
         if (direction == 0) {
@@ -549,27 +549,29 @@ namespace Motors {
             Core.showNumber(distancel, 4, 1, 1)
             Core.showNumber(distancer, 4, 2, 1)
             // Linke Seite prüfen
-            if ((new_statel != last_statel) && (new_statel == next_statel)) {
-                changes += 1
+            //if ((new_statel != last_statel) && (new_statel == next_statel)) {
+            if (new_statel != next_statel) {
+                //changes += 1
                 distancel += tyre_diameter / numberofholes
-                if (distancel >= targetdistance) {
+                //if (distancel >= targetdistance) {
                     // Linker Motor stoppen, wenn Ziel erreicht
-                    Motors.motors2(m, 0, 700)
-                }
+                //    Motors.motors2(m, 0, 700)
+                //}
             }
-            last_statel = new_statel
+            //last_statel = new_statel
             new_statel = next_statel
 
             // Rechte Seite prüfen
-            if ((new_stater != last_stater) && (new_stater == next_stater)) {
-                changes += 1
+            //if ((new_stater != last_stater) && (new_stater == next_stater)) {
+            if (new_stater != next_stater) {
+                //changes += 1
                 distancer += tyre_diameter / numberofholes
-                if (distancer >= targetdistance) {
-                    // Rechter Motor stoppen, wenn Ziel erreicht
-                    Motors.motors2(m, 700, 0)
-                }
+                //if (distancer >= targetdistance) {
+                //    // Rechter Motor stoppen, wenn Ziel erreicht
+                //    Motors.motors2(m, 700, 0)
+                //}
             }
-            last_stater = new_stater
+            //last_stater = new_stater
             new_stater = next_stater
 
             basic.pause(pauseduration)
