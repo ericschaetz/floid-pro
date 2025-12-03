@@ -483,7 +483,8 @@ namespace Motors {
             let next_stater = get_state(pin_r)
 
             // Linke Seite prüfen
-            if ((new_statel != last_statel) && (new_statel == next_statel)) {
+            //if ((new_statel != last_statel) && (new_statel == next_statel)) {
+            if (new_statel != next_statel) {
                 changes += 1
                 distancel += tyre_diameter / numberofholes
                 if (distancel >= targetdistance) {
@@ -495,7 +496,8 @@ namespace Motors {
             new_statel = next_statel
 
             // Rechte Seite prüfen
-            if ((new_stater != last_stater) && (new_stater == next_stater)) {
+            if (new_stater != next_stater) {
+            //if ((new_stater != last_stater) && (new_stater == next_stater)) {
                 changes += 1
                 distancer += tyre_diameter / numberofholes
                 if (distancer >= targetdistance) {
