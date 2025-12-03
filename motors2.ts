@@ -11,7 +11,7 @@ namespace Motors {
     const turn_diameter = 56.5
     const numberofholes = 8
     const action_speed = 500
-    const pauseduration = 10
+    const pauseduration = 20
     let lower_bounce_l = 0
     let upper_bounce_l = 0
     let lower_bounce_r = 0
@@ -204,6 +204,17 @@ namespace Motors {
         mid_l = Math.floor(mid_l * 0.5)
         mid_r = Math.floor(mid_r * 0.5)
     }
+    //Level 0 export functions
+    /**
+         * Aktiviere oder Deaktiviere die Geschwindigkeitssensorik:
+         */
+    //% blockid="floidpro_toggle_speed" block="Setze die Geschwindigkeitssensorik aktiv: %state"
+    //% weight=20 blockGap=8
+    //% group="Level 0: Aktivierung"
+    export function toggle_speed(state: boolean): void {
+        wheelchecking = state
+    }
+
 
     //Level 2 export functions
 
