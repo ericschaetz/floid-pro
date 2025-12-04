@@ -382,41 +382,41 @@ namespace Motors {
     /**
      * Kurvenfahrt: 
      */
-    //% blockid="floidpro_circle" block="Kurven fahrt %degrees ° mit %radius cm Radius"
+    //% blockid="floidpro_circle" block="Kurven fahrt %direction %degrees ° mit %radius cm Radius , %directionx"
     //% degrees.min=0 degrees.max=360
     //% radius.min=0 radius.max=255
+    //% directionx.min= 0 directionx.max= 1
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
     //% inlineInputMode=inline
-    export function circle(degrees: number, radius: number, directionx: number, directiony: number): void {
-        // Kreisfahrt Start
+    export function circle(degrees: number, radius: number, directionx: number, direction:Kurvenrichtung): void {
         let targetdistancel = (2 * Math.PI * (radius - (axle_width / 2))) / (degrees / 360)
         let targetdistancer = (2 * Math.PI * (radius + (axle_width / 2))) / (degrees / 360)
-
-        // Geschwindigkeit berechnen
-        let speed = (5 / 10) * action_speed + 300
-
-        // Motoren starten: Rechts langsamer als Links
-        pins.analogWritePin(AnalogPin.P0, speed * targetdistancer / targetdistancel) // Rechts
-        pins.analogWritePin(AnalogPin.P1, speed) // Links
-
+        if (direction == 2) {
+            targetdistancel = (2 * Math.PI * (radius + (axle_width / 2))) / (degrees / 360)
+            targetdistancer = (2 * Math.PI * (radius - (axle_width / 2))) / (degrees / 360)
+        }
+        let changed = false
+        if (wheelchecking) {
+            wheelchecking = false
+            changed = true
+        }
+        
         let distancel = 0
         let distancer = 0
 
         // Erste Sensormessungen
-        let last_statel = get_state(pin_l)
-        let last_stater = get_state(pin_r)
-        basic.pause(10)
         let new_statel = get_state(pin_l)
         let new_stater = get_state(pin_r)
         basic.pause(10)
-
-        let changes = 0
+        // Motoren starten: 
+        pins.analogWritePin(AnalogPin.P0, action_speed * targetdistancer / targetdistancel) // Rechts
+        pins.analogWritePin(AnalogPin.P1, action_speed) // Links
 
         if (directionx == 0) {
-            Motors.motors2(5, speed, speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(5, action_speed, action_speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else if (directionx == 1) {
-            Motors.motors2(10, speed, speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(10, action_speed, action_speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
 
         // Schleife bis Soll-Distanzen erreicht
@@ -425,26 +425,24 @@ namespace Motors {
             let next_stater = get_state(pin_r)
 
             // Linke Seite prüfen
-            if ((new_statel != last_statel) && (new_statel == next_statel)) {
-                changes += 1
+            if (new_statel != next_statel) {
                 distancel += tyre_diameter / numberofholes
             }
-            last_statel = new_statel
             new_statel = next_statel
-
+            basic.pause(5)
             // Rechte Seite prüfen
-            if ((new_stater != last_stater) && (new_stater == next_stater)) {
-                changes += 1
+            if (new_stater != next_stater) {
                 distancer += tyre_diameter / numberofholes
             }
-            last_stater = new_stater
             new_stater = next_stater
-
             basic.pause(pauseduration)
         }
 
         // Motoren stoppen
         Motors.motors2(5, 0, 0)
+        if (changed) {
+            wheelchecking = true
+        }
     }
 
 

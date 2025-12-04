@@ -326,6 +326,15 @@ enum Raddrehung {
     b = 3,
 }
 
+enum Kurvenrichtung {
+    //% block="links"
+    l = 1,
+
+    //% block="rechts"
+    r = 2,
+
+}
+
 enum Geschwindigkeit_Einheit {
     //% block="Zentimeter"
     cm = 1,
