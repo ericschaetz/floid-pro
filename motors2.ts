@@ -5,7 +5,7 @@ namespace Motors {
     const pin_r = AnalogPin.P2
     pins.setPull(pin_l, PinPullMode.PullDown);
     pins.setPull(pin_r, PinPullMode.PullDown);
-    const cutoff = 30
+    let cutoff = 30
     const tyre_diameter = 18.85
     const axle_width = 18
     const turn_diameter = 56.5
@@ -59,15 +59,15 @@ namespace Motors {
         } else if (rad == 2) {
             time_past = time_past - getTimestampRightMinus5()
         }
-        if (mode == Geschwindigkeit_Einheit.meter) {
+        if (mode == Geschwindigkeit_Einheit.cm) {
             let distance_l = HISTORY * (tyre_diameter / numberofholes)
             let distance_r = HISTORY * (tyre_diameter / numberofholes)
             if (rad == 1) {
-                return (distance_l * 10) / (time_past)
+                return (distance_l * 1000) / (time_past)
             } else if (rad == 2) {
-                return (distance_r * 10) / (time_past)
+                return (distance_r * 1000) / (time_past)
             } else {
-                return ((distance_l + distance_r) * 5) / (time_past) //Mittelwert aus beiden
+                return ((distance_l + distance_r) * 500) / (time_past) //Mittelwert aus beiden
             }
         } else if (mode == Geschwindigkeit_Einheit.drehungen) {
             let distance_l = HISTORY / numberofholes
@@ -80,8 +80,8 @@ namespace Motors {
                 return ((distance_l + distance_r) / 2) / (time_past / 1000) //Mittelwert aus beiden
             }
         } else if (mode == Geschwindigkeit_Einheit.grad) {
-            let distance_l = HISTORY
-            let distance_r = HISTORY
+            let distance_l = HISTORY * (360 / numberofholes)
+            let distance_r = HISTORY * (360 / numberofholes)
             if (rad == 1) {
                 return (distance_l) / (time_past / 1000)
             } else if (rad == 2) {
@@ -97,15 +97,15 @@ namespace Motors {
     function current_wheel_dist(mode: Geschwindigkeit_Einheit, rad: Raddrehung): number {
         let distance_l = 0
         let distance_r = 0
-        if (mode == Geschwindigkeit_Einheit.meter) {
+        if (mode == Geschwindigkeit_Einheit.cm) {
             distance_l = wheel_l * (tyre_diameter / numberofholes)
             distance_r = wheel_r * (tyre_diameter / numberofholes)
         } else if (mode == Geschwindigkeit_Einheit.drehungen) {
             distance_l = wheel_l / numberofholes
             distance_r = wheel_r / numberofholes
         } else if (mode == Geschwindigkeit_Einheit.grad) {
-            distance_l = wheel_l
-            distance_r = wheel_r
+            distance_l = wheel_l * (360 / numberofholes)
+            distance_r = wheel_r * (360 / numberofholes)
         } else {
             return -1
         }
@@ -191,18 +191,21 @@ namespace Motors {
             } else if (last_stater < lower_bounce_r) {
                 lower_bounce_r = last_stater
             }
+            basic.pause(5)
         }
         // Stop motors
         Motors.motors2(5, 0, 0)
 
         mid_l = Math.floor(upper_bounce_l - lower_bounce_l)
         mid_r = Math.floor(upper_bounce_r - lower_bounce_r)
-        lower_bounce_l = lower_bounce_l + Math.floor(mid_l * 0.4)
-        lower_bounce_r = lower_bounce_r + Math.floor(mid_r * 0.4)
-        upper_bounce_l = upper_bounce_l - Math.floor(mid_l * 0.4)
-        upper_bounce_r = upper_bounce_r - Math.floor(mid_r * 0.4)
-        mid_l = Math.floor(mid_l * 0.5)
-        mid_r = Math.floor(mid_r * 0.5)
+        lower_bounce_l = lower_bounce_l + Math.floor(mid_l * 0.3)
+        lower_bounce_r = lower_bounce_r + Math.floor(mid_r * 0.3)
+        upper_bounce_l = upper_bounce_l - Math.floor(mid_l * 0.3)
+        upper_bounce_r = upper_bounce_r - Math.floor(mid_r * 0.3)
+        //mid_l = Math.floor(mid_l * 0.5)
+        //mid_r = Math.floor(mid_r * 0.5)
+
+        cutoff = lower_bounce_l
     }
     //Level 0 export functions
     /**

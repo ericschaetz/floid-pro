@@ -327,8 +327,8 @@ enum Raddrehung {
 }
 
 enum Geschwindigkeit_Einheit {
-    //% block="Meter"
-    meter = 1,
+    //% block="Zentimeter"
+    cm = 1,
 
     //% block="Drehungen"
     drehungen = 2,
