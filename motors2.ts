@@ -389,10 +389,10 @@ namespace Motors {
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
     //% inlineInputMode=inline
-    export function circle(degrees: number, radius: number, directionx: number, direction:Kurvenrichtung): void {
+    export function circle(direction:number,degrees: number, radius: number, directionx: Kurvenrichtung): void {
         let targetdistancel = (2 * Math.PI * (radius - (axle_width / 2))) / (degrees / 360)
         let targetdistancer = (2 * Math.PI * (radius + (axle_width / 2))) / (degrees / 360)
-        if (direction == 2) {
+        if (directionx == 2) {
             targetdistancel = (2 * Math.PI * (radius + (axle_width / 2))) / (degrees / 360)
             targetdistancer = (2 * Math.PI * (radius - (axle_width / 2))) / (degrees / 360)
         }
