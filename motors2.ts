@@ -523,18 +523,19 @@ namespace Motors {
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
     export function straight(distance: number, direction: number): void {
-
+        let correction = 0
+        let changed = false
+        if (wheelchecking) {
+            wheelchecking = false
+            changed = true
+        }
         basic.clearScreen()
         wheelchecking = false
         let distancel = 0
         let distancer = 0
-        //let last_statel = get_state(pin_l)
-        //let last_stater = get_state(pin_r)
-        //basic.pause(10)
         let new_statel = get_state(pin_l)
         let new_stater = get_state(pin_r)
         basic.pause(10)
-        //let changes = 0
         let m = 5
         let targetdistance = distance
         if (direction == 0) {
@@ -547,41 +548,32 @@ namespace Motors {
         let next_stater = false
         while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
             next_statel = get_state(pin_l)
-            //Core.showNumber(distancel, 4, 1, 1)
-            //Core.showNumber(distancer, 4, 2, 1)
-            // Linke Seite prüfen
-            //if ((new_statel != last_statel) && (new_statel == next_statel)) {
             if (new_statel != next_statel) {
-                //changes += 1
                 distancel += tyre_diameter / numberofholes
-                //if (distancel >= targetdistance) {
-                    // Linker Motor stoppen, wenn Ziel erreicht
-                //    Motors.motors2(m, 0, 700)
-                //}
             }
-            //last_statel = new_statel
             new_statel = next_statel
             basic.pause(5)
             next_stater = get_state(pin_r)
-            // Rechte Seite prüfen
-            //if ((new_stater != last_stater) && (new_stater == next_stater)) {
             if (new_stater != next_stater) {
-                //changes += 1
                 distancer += tyre_diameter / numberofholes
-                //if (distancer >= targetdistance) {
-                //    // Rechter Motor stoppen, wenn Ziel erreicht
-                //    Motors.motors2(m, 700, 0)
-                //}
+                if (distancer > distancel + (tyre_diameter / numberofholes)) {
+                    correction -= 10
+                    Motors.motors2(5, action_speed, action_speed+correction)
+                } else if ((distancer < distancel + (tyre_diameter / numberofholes))){
+                    correction += 10
+                    Motors.motors2(5, action_speed, action_speed + correction)
+                }
             }
-            //last_stater = new_stater
             new_stater = next_stater
-
             basic.pause(pauseduration)
         }
 
         // Stop motors
-        Motors.motors2(5, 0, 0)
-        wheelchecking = true
+        Motors.motors2(m, 0, 0)
+        if (changed) {
+            wheelchecking = true
+        }
+        
     }
 
 
