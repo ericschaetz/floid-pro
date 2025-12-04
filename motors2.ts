@@ -410,13 +410,11 @@ namespace Motors {
         let new_stater = get_state(pin_r)
         basic.pause(10)
         // Motoren starten: 
-        pins.analogWritePin(AnalogPin.P0, action_speed * targetdistancer / targetdistancel) // Rechts
-        pins.analogWritePin(AnalogPin.P1, action_speed) // Links
 
-        if (directionx == 0) {
-            Motors.motors2(5, action_speed, action_speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
+        if (direction == 0) {
+            Motors.motors2(5, (action_speed + 300), (action_speed+300) * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else if (directionx == 1) {
-            Motors.motors2(10, action_speed, action_speed * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(10, (action_speed + 300), (action_speed + 300) * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
 
         // Schleife bis Soll-Distanzen erreicht
