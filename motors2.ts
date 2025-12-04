@@ -543,12 +543,12 @@ namespace Motors {
             m = 10
             Motors.motors2(10, action_speed, action_speed) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
-
+        let next_statel = false
+        let next_stater = false
         while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
-            let next_statel = get_state(pin_l)
-            let next_stater = get_state(pin_r)
-            Core.showNumber(distancel, 4, 1, 1)
-            Core.showNumber(distancer, 4, 2, 1)
+            next_statel = get_state(pin_l)
+            //Core.showNumber(distancel, 4, 1, 1)
+            //Core.showNumber(distancer, 4, 2, 1)
             // Linke Seite prüfen
             //if ((new_statel != last_statel) && (new_statel == next_statel)) {
             if (new_statel != next_statel) {
@@ -561,7 +561,8 @@ namespace Motors {
             }
             //last_statel = new_statel
             new_statel = next_statel
-
+            basic.pause(5)
+            next_stater = get_state(pin_r)
             // Rechte Seite prüfen
             //if ((new_stater != last_stater) && (new_stater == next_stater)) {
             if (new_stater != next_stater) {
