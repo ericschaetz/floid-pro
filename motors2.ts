@@ -444,7 +444,7 @@ namespace Motors {
     }
 
 
-    //Level 3.2
+    //Level 3.2.a
     /**
      * Graddrehung: 
      */
@@ -453,22 +453,75 @@ namespace Motors {
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
     export function turn(targetdegrees: number): void {
+        let m = 5
+        let m2 = 10
+        if (targetdegrees < 0) {
+            m = 10
+            m2 = 5
+        }
+        targetdegrees = Math.abs(targetdegrees)
+        // Zielentfernung berechnen (basierend auf Drehwinkel)
+        let targetdistance = turn_diameter * targetdegrees / 360
+        let distancel = 0
+        let distancer = 0
+        // Erste Sensormessungen
+        let new_statel = get_state(pin_l)
+        let new_stater = get_state(pin_r)
+        basic.pause(10)
+        let next_statel = false
+        let next_stater = false
+        let left = false
+        let right = false
+        Motors.motors2(m, action_speed, 0)
+        // Schleife bis beide Seiten die Zielentfernung erreicht haben
+        while (distancel < targetdistance && distancer < targetdistance) {
+            while (!left) {
+                next_statel = get_state(pin_l)
+                if (next_statel != new_statel) {
+                    left = true
+                    distancel += tyre_diameter / numberofholes
+                    Motors.motors2(m2,0, action_speed)
+                }
+                new_statel = next_statel
+                basic.pause(pauseduration)
+            }
+            left = false
+
+            while (!right) {
+                next_stater = get_state(pin_r)
+                if (next_stater != new_stater) {
+                    right = true
+                    distancer += tyre_diameter / numberofholes
+                    Motors.motors2(m, action_speed, 0)
+                }
+                new_stater = next_stater
+                basic.pause(pauseduration)
+            }
+            right = false
+        }
+
+        Motors.motors2(m, 0, 0)
+    }
+
+    //Level 3.2.b
+    /**
+     * Graddrehung: 
+     */
+    //% blockid="floidpro_turn_m3" block="Drehung um %targetdegrees ° (Motormodul 3)"
+    //% targetdegrees.min=-360 targetdegrees.max=360
+    //% weight=20 blockGap=8
+    //% group="Fahrmanöver und Verifikation"
+    export function turn_m3(targetdegrees: number): void {
         let m = 9
         if (targetdegrees < 0) {
             m = 6
         }
         targetdegrees = Math.abs(targetdegrees)
-
         // Zielentfernung berechnen (basierend auf Drehwinkel)
         let targetdistance = turn_diameter * targetdegrees / 360
-
         let distancel = 0
         let distancer = 0
-
         // Erste Sensormessungen
-        let last_statel = get_state(pin_l)
-        let last_stater = get_state(pin_r)
-        basic.pause(10)
         let new_statel = get_state(pin_l)
         let new_stater = get_state(pin_r)
         basic.pause(10)
@@ -479,10 +532,8 @@ namespace Motors {
         // Schleife bis beide Seiten die Zielentfernung erreicht haben
         while (distancel < targetdistance && distancer < targetdistance) {
             let next_statel = get_state(pin_l)
-            let next_stater = get_state(pin_r)
 
             // Linke Seite prüfen
-            //if ((new_statel != last_statel) && (new_statel == next_statel)) {
             if (new_statel != next_statel) {
                 changes += 1
                 distancel += tyre_diameter / numberofholes
@@ -491,12 +542,12 @@ namespace Motors {
                     Motors.motors2(m, 0, 500)
                 }
             }
-            last_statel = new_statel
             new_statel = next_statel
 
+            basic.pause(5)
+            let next_stater = get_state(pin_r)
             // Rechte Seite prüfen
             if (new_stater != next_stater) {
-            //if ((new_stater != last_stater) && (new_stater == next_stater)) {
                 changes += 1
                 distancer += tyre_diameter / numberofholes
                 if (distancer >= targetdistance) {
@@ -504,7 +555,6 @@ namespace Motors {
                     Motors.motors2(m, 500, 0)
                 }
             }
-            last_stater = new_stater
             new_stater = next_stater
 
             basic.pause(pauseduration)
@@ -544,6 +594,7 @@ namespace Motors {
             m = 10
             Motors.motors2(10, action_speed, action_speed) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
+        let timeout = 0
         let next_statel = false
         let next_stater = false
         while (distancel < targetdistance && distancer < targetdistance) { // should be || but pin3 has issues ; tbf 
@@ -556,13 +607,17 @@ namespace Motors {
             next_stater = get_state(pin_r)
             if (new_stater != next_stater) {
                 distancer += tyre_diameter / numberofholes
-                if (distancer > distancel + (tyre_diameter / numberofholes)) {
-                    correction -= 10
-                    Motors.motors2(5, action_speed, action_speed+correction)
-                } else if ((distancer < distancel + (tyre_diameter / numberofholes))){
-                    correction += 10
-                    Motors.motors2(5, action_speed, action_speed + correction)
-                }
+                if (timeout == 0) {
+                    if (distancer > distancel + (tyre_diameter / numberofholes)) {
+                        correction -= 10
+                        timeout = 2
+                        Motors.motors2(5, action_speed, action_speed+correction)
+                    } else if ((distancer < distancel + (tyre_diameter / numberofholes))){
+                        correction += 10
+                        timeout = 2
+                        Motors.motors2(5, action_speed, action_speed + correction)
+                    }
+                } else { timeout -= 1}
             }
             new_stater = next_stater
             basic.pause(pauseduration)
@@ -598,18 +653,17 @@ namespace Motors {
     //% weight=20 blockGap=8
     //% group="Level 3: Antriebsregelung"
     export function turn_wheel(rad: Raddrehung, turns: number): void {
-
         basic.clearScreen()
+        let changed = false
+        if (wheelchecking) {
+            wheelchecking = false
+            changed = true
+        }
         let neededpin = pin_l
-        let mid = mid_l
         if (rad == 2) {
             neededpin = pin_r
-            mid = mid_r
         }
-
         let distance = 0
-        let last_state = get_state(neededpin)
-        basic.pause(10)
         let new_state = get_state(neededpin)
         basic.pause(10)
         if (rad == 1) {
@@ -619,19 +673,19 @@ namespace Motors {
         } else {
             Motors.motors2(5, action_speed, action_speed) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
-        wheelspeed_timestamp = input.runningTime()
         while (distance < (turns * numberofholes)) {
             let next_state = get_state(neededpin)
-            if ((new_state != last_state) && (new_state == next_state)) {
+            if (new_state != next_state) {
                 distance += 1
             }
-            last_state = new_state
             new_state = next_state
             basic.pause(pauseduration)
         }
-
         // Stop motors
         Motors.motors2(5, 0, 0)
+        if (changed) {
+            wheelchecking = true
+        }
     }
 
 
