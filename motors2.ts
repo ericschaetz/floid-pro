@@ -448,11 +448,11 @@ namespace Motors {
     /**
      * Graddrehung: 
      */
-    //% blockid="floidpro_turn" block="Drehung um %targetdegrees °"
+    //% blockid="floidpro_turn_m3" block="Drehung um %targetdegrees ° (Motormodul 3)"
     //% targetdegrees.min=-360 targetdegrees.max=360
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
-    export function turn(targetdegrees: number): void {
+    export function turn_m3(targetdegrees: number): void {
         let m = 5
         let m2 = 10
         if (targetdegrees < 0) {
@@ -474,7 +474,7 @@ namespace Motors {
         let right = false
         Motors.motors2(m, action_speed, 0)
         // Schleife bis beide Seiten die Zielentfernung erreicht haben
-        while (distancel < targetdistance && distancer < targetdistance) {
+        while (distancel < targetdistance || distancer < targetdistance) {
             while (!left) {
                 next_statel = get_state(pin_l)
                 if (next_statel != new_statel) {
@@ -507,11 +507,11 @@ namespace Motors {
     /**
      * Graddrehung: 
      */
-    //% blockid="floidpro_turn_m3" block="Drehung um %targetdegrees ° (Motormodul 3)"
+    //% blockid="floidpro_turn" block="Drehung um %targetdegrees °"
     //% targetdegrees.min=-360 targetdegrees.max=360
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
-    export function turn_m3(targetdegrees: number): void {
+    export function turn(targetdegrees: number): void {
         let m = 9
         if (targetdegrees < 0) {
             m = 6
@@ -648,16 +648,21 @@ namespace Motors {
     /**
          * Drehe die Räder um eine Bestimmte Anzahl an Drehungen: 
          */
-    //% blockid="floidpro_turn_wheel" block="Drehe Rad %rad um %turns Umdrehungen"
+    //% blockid="floidpro_turn_wheel" block="Drehe Rad %rad um %turns Umdrehungen, %direction"
     //% turns.min=1 turns.max=10
+    //% direction.min=0 direction.max=1
     //% weight=20 blockGap=8
     //% group="Level 3: Antriebsregelung"
-    export function turn_wheel(rad: Raddrehung, turns: number): void {
+    export function turn_wheel(rad: Raddrehung, turns: number, direction:number): void {
         basic.clearScreen()
         let changed = false
         if (wheelchecking) {
             wheelchecking = false
             changed = true
+        }
+        let m = 5
+        if (direction == 1) {
+            m = 10
         }
         let neededpin = pin_l
         if (rad == 2) {
@@ -667,11 +672,11 @@ namespace Motors {
         let new_state = get_state(neededpin)
         basic.pause(10)
         if (rad == 1) {
-            Motors.motors2(5, action_speed, 0) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(m, action_speed, 0) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else if (rad == 2) {
-            Motors.motors2(5, 0, action_speed) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(m, 0, action_speed) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else {
-            Motors.motors2(5, action_speed, action_speed) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(m, action_speed, action_speed) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
         while (distance < (turns * numberofholes)) {
             let next_state = get_state(neededpin)
