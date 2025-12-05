@@ -634,14 +634,41 @@ namespace Motors {
 
     //Level 3.4
     /**
-         * Drehe die Räder um eine Bestimmte Anzahl an Drehungen: 
+         * Beschleunige die Räder auf eine bestimmte Geschwindigkeit: 
          */
-    //% blockid="floidpro_speed_to" block="Beschleunige auf Stufe %rad"
-    //% turns.min=1 turns.max=10
+    //% blockid="floidpro_speed_to" block="Beschleunige das Rad %rad auf %speed cm/s"
+    //% speed.min=20 speed.max=70
+    //% direction.min=0 direction.max=1
     //% weight=20 blockGap=8
     //% group="Level 3: Antriebsregelung"
-    export function speed_to(rad: Raddrehung, turns: number): void {
-        //return 0
+    export function speed_to(rad: Raddrehung, speed: number): void {
+        basic.clearScreen()
+        let changed = false
+        if (!wheelchecking) {
+            wheelchecking = true
+            changed = true
+        }
+        let drivepin = pwmpina.pin
+        if (rad == 2) {
+            drivepin = pwmpinb.pin
+        }
+        let testspeed = 13*speed + 112
+        pins.analogWritePin(drivepin, testspeed)
+        let timeout = 0
+        basic.pause(255)
+        let current_speed = current_speed_einheit(Geschwindigkeit_Einheit.cm, rad)
+        while (((current_speed < speed - 2.5) || (current_speed > speed + 2.5))&& (testspeed < 1014) && (timeout < 20)){
+            if (current_speed < speed - 2.5) {
+                testspeed = testspeed + 10
+                pins.analogWritePin(drivepin, testspeed)
+            } else {
+                testspeed = testspeed - 10
+                pins.analogWritePin(drivepin, testspeed)
+            }
+            timeout += 1
+            basic.pause(255)
+            current_speed = current_speed_einheit(Geschwindigkeit_Einheit.cm, rad)
+        }
     }
 
     //Level 3.5
