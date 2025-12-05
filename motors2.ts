@@ -384,7 +384,7 @@ namespace Motors {
      */
     //% blockid="floidpro_circle" block="Kurven fahrt %direction %degrees ° mit %radius cm Radius , %directionx"
     //% degrees.min=0 degrees.max=360
-    //% radius.min=0 radius.max=255
+    //% radius.min=20 radius.max=255
     //% directionx.min= 0 directionx.max= 1
     //% weight=20 blockGap=8
     //% group="Fahrmanöver und Verifikation"
@@ -392,16 +392,19 @@ namespace Motors {
     export function circle(direction:number,degrees: number, radius: number, directionx: Kurvenrichtung): void {
         let targetdistancel = (2 * Math.PI * (radius - (axle_width / 2))) / (degrees / 360)
         let targetdistancer = (2 * Math.PI * (radius + (axle_width / 2))) / (degrees / 360)
+        let speed_r = 762
+        let speed_l = Math.floor(762 * (targetdistancel / targetdistancer))
         if (directionx == 2) {
             targetdistancel = (2 * Math.PI * (radius + (axle_width / 2))) / (degrees / 360)
             targetdistancer = (2 * Math.PI * (radius - (axle_width / 2))) / (degrees / 360)
+            speed_l = 762
+            speed_r = Math.floor(762 * (targetdistancer / targetdistancel))
         }
         let changed = false
         if (wheelchecking) {
             wheelchecking = false
             changed = true
         }
-        
         let distancel = 0
         let distancer = 0
 
@@ -412,9 +415,9 @@ namespace Motors {
         // Motoren starten: 
 
         if (direction == 0) {
-            Motors.motors2(5, (action_speed + 300), (action_speed+300) * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(5, speed_l, speed_r) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else if (directionx == 1) {
-            Motors.motors2(10, (action_speed + 300), (action_speed + 300) * targetdistancer / targetdistancel) // Start motors: direction = 5 vorwärts, 10 rückwärts
+            Motors.motors2(10, speed_l, speed_r) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
 
         // Schleife bis Soll-Distanzen erreicht
@@ -668,6 +671,9 @@ namespace Motors {
             timeout += 1
             basic.pause(255)
             current_speed = current_speed_einheit(Geschwindigkeit_Einheit.cm, rad)
+        }
+        if (changed) {
+            wheelchecking = false
         }
     }
 
