@@ -407,30 +407,28 @@ namespace Motors {
         }
         let distancel = 0
         let distancer = 0
-
         // Erste Sensormessungen
         let new_statel = get_state(pin_l)
         let new_stater = get_state(pin_r)
+        let next_statel = false
+        let next_stater = false
         basic.pause(10)
         // Motoren starten: 
-
         if (direction == 0) {
             Motors.motors2(5, speed_l, speed_r) // Start motors: direction = 5 vorwärts, 10 rückwärts
         } else if (directionx == 1) {
             Motors.motors2(10, speed_l, speed_r) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
-
         // Schleife bis Soll-Distanzen erreicht
         while (distancel < targetdistancel && distancer < targetdistancer) {
-            let next_statel = get_state(pin_l)
-            let next_stater = get_state(pin_r)
-
+            next_statel = get_state(pin_l)
             // Linke Seite prüfen
             if (new_statel != next_statel) {
                 distancel += tyre_diameter / numberofholes
             }
             new_statel = next_statel
             basic.pause(5)
+            next_stater = get_state(pin_r)
             // Rechte Seite prüfen
             if (new_stater != next_stater) {
                 distancer += tyre_diameter / numberofholes
@@ -438,7 +436,6 @@ namespace Motors {
             new_stater = next_stater
             basic.pause(pauseduration)
         }
-
         // Motoren stoppen
         Motors.motors2(5, 0, 0)
         if (changed) {
