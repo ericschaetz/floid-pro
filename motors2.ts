@@ -7,7 +7,7 @@ namespace Motors {
     pins.setPull(pin_r, PinPullMode.PullDown);
     let cutoff = 30
     const tyre_diameter = 18.85
-    const axle_width = 19
+    const axle_width = 18
     const turn_diameter = 59.6
     const numberofholes = 4
     const action_speed = 700
