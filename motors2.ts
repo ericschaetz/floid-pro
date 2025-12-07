@@ -416,7 +416,7 @@ namespace Motors {
         // Motoren starten: 
         if (direction == 0) {
             Motors.motors2(5, speed_l, speed_r) // Start motors: direction = 5 vorwärts, 10 rückwärts
-        } else if (directionx == 1) {
+        } else if (direction == 1) {
             Motors.motors2(10, speed_l, speed_r) // Start motors: direction = 5 vorwärts, 10 rückwärts
         }
         // Schleife bis Soll-Distanzen erreicht
