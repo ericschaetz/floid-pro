@@ -611,11 +611,11 @@ namespace Motors {
                     if (distancer > distancel + (tyre_diameter / numberofholes)) {
                         correction -= 10
                         timeout = 2
-                        Motors.motors2(5, action_speed, action_speed+correction)
+                        Motors.motors2(m, action_speed, action_speed+correction)
                     } else if ((distancer < distancel + (tyre_diameter / numberofholes))){
                         correction += 10
                         timeout = 2
-                        Motors.motors2(5, action_speed, action_speed + correction)
+                        Motors.motors2(m, action_speed, action_speed + correction)
                     }
                 } else { timeout -= 1}
             }
